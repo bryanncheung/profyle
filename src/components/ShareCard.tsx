@@ -558,7 +558,9 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
   function ShareCard({ result, format = "story", mobileBlob }, ref) {
     const cardRef = useRef<HTMLDivElement>(null);
     const hiddenStoryRef = useRef<HTMLDivElement>(null);
+    const screenshotCardRef = useRef<HTMLDivElement>(null);
     const [saveDataUrl, setSaveDataUrl] = useState<string | null>(null);
+    const [showScreenshotOverlay, setShowScreenshotOverlay] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
 
     const runHtml2canvas = async (el: HTMLDivElement): Promise<string> => {
@@ -603,19 +605,36 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
 
     const handleDownload = async () => {
       if (isDownloading || !cardRef.current) return;
-      setIsDownloading(true);
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      try {
-        let dataUrl: string;
-        if (isMobile && mobileBlob) {
-          dataUrl = await blobToDataUrl(mobileBlob);
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+        (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+
+      if (isMobile) {
+        if (mobileBlob) {
+          setIsDownloading(true);
+          try {
+            const dataUrl = await blobToDataUrl(mobileBlob);
+            setSaveDataUrl(dataUrl);
+          } catch {
+            setShowScreenshotOverlay(true);
+          } finally {
+            setIsDownloading(false);
+          }
         } else {
-          dataUrl = await runHtml2canvas(cardRef.current);
+          // html2canvas didn't produce a blob — show DOM card for screenshot
+          setShowScreenshotOverlay(true);
         }
+        return;
+      }
+
+      // Desktop
+      setIsDownloading(true);
+      try {
+        const dataUrl = await runHtml2canvas(cardRef.current);
         setSaveDataUrl(dataUrl);
       } catch (err) {
         console.error("Save failed:", err);
+        setShowScreenshotOverlay(true);
       } finally {
         setIsDownloading(false);
       }
@@ -659,6 +678,40 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
           </svg>
           {isDownloading ? "Saving…" : "Save as PNG"}
         </button>
+
+        {/* Screenshot overlay — shown when html2canvas fails (always works) */}
+        {showScreenshotOverlay && (
+          <div
+            style={{
+              position: "fixed", inset: 0, zIndex: 9999,
+              background: "#000",
+              display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center",
+              gap: "20px", padding: "24px",
+              overflowY: "auto",
+            }}
+          >
+            <StoryCard result={result} cardRef={screenshotCardRef} />
+            <p style={{
+              color: "rgba(255,255,255,0.75)", fontFamily: "inherit",
+              fontSize: "14px", textAlign: "center", margin: 0, lineHeight: 1.6,
+            }}>
+              Take a screenshot to save your card
+            </p>
+            <button
+              onClick={() => setShowScreenshotOverlay(false)}
+              style={{
+                padding: "12px 32px", borderRadius: "10px",
+                background: "rgba(255,255,255,0.12)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "white", fontSize: "14px", fontWeight: 600,
+                cursor: "pointer", fontFamily: "inherit",
+              }}
+            >
+              Done
+            </button>
+          </div>
+        )}
 
         {/* Save overlay — long-press (mobile) or right-click (desktop) */}
         {saveDataUrl && (
