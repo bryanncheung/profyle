@@ -562,16 +562,24 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
     const [isDownloading, setIsDownloading] = useState(false);
 
     const runHtml2canvas = async (el: HTMLDivElement): Promise<string> => {
+      await document.fonts.ready;
       const { default: html2canvas } = await import("html2canvas");
       const canvas = await html2canvas(el, {
         scale: 3,
         useCORS: true,
-        allowTaint: true,
         backgroundColor: null,
         logging: false,
       });
       return canvas.toDataURL("image/png");
     };
+
+    const blobToDataUrl = (blob: Blob): Promise<string> =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
 
     useImperativeHandle(ref, () => ({
       async captureStory() {
@@ -592,19 +600,17 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       try {
-        if (isMobile) {
-          // Mobile: use pre-captured blob for the overlay (no html2canvas delay)
-          if (mobileBlob) {
-            const reader = new FileReader();
-            reader.onload = () => setSaveDataUrl(reader.result as string);
-            reader.readAsDataURL(mobileBlob);
-          } else {
-            const dataUrl = await runHtml2canvas(cardRef.current);
-            setSaveDataUrl(dataUrl);
-          }
+        // Get data URL — use pre-captured blob on mobile, html2canvas on desktop
+        let dataUrl: string;
+        if (isMobile && mobileBlob) {
+          dataUrl = await blobToDataUrl(mobileBlob);
         } else {
-          // Desktop: html2canvas → dataURL → trigger download
-          const dataUrl = await runHtml2canvas(cardRef.current);
+          dataUrl = await runHtml2canvas(cardRef.current);
+        }
+
+        if (isMobile) {
+          setSaveDataUrl(dataUrl); // show overlay — user holds image to save
+        } else {
           const a = document.createElement("a");
           a.href = dataUrl;
           a.download = slug;
