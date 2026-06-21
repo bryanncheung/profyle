@@ -1,26 +1,91 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #F5F3EE;
+  --surface: #FFFFFF;
+  --border: #E8E4DC;
+  --ink: #0E0E0E;
+  --muted: #666660;
+  --faint: #A0A098;
+
+  --pill-mint-bg: #E8F7EF;
+  --pill-mint-text: #2A7A4E;
+  --pill-violet-bg: #EDE9FF;
+  --pill-violet-text: #5B3FD6;
+  --pill-gold-bg: #FFF4E8;
+  --pill-gold-text: #B86A1A;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-manrope);
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@keyframes fillBar {
+  from { width: 0%; }
+  to { width: var(--bar-fill); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fill-bar {
+  animation: fillBar 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-up {
+  animation: fadeUp 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.animate-scale-in {
+  animation: scaleIn 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.animate-slide-in {
+  animation: slideIn 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fill-bar,
+  .animate-fade-up,
+  .animate-scale-in,
+  .animate-slide-in {
+    animation: none !important;
+    opacity: 1 !important;
+    width: var(--bar-fill, 100%) !important;
+    transform: none !important;
+  }
 }
