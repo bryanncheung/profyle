@@ -77,14 +77,14 @@ export default function ResultsPage() {
   const industry = getIndustryRecommendations(result.archetype, industryQ18);
   const attrEntries = Object.entries(result.attributes) as [keyof typeof result.attributes, number][];
 
-  const shareMsg = `I'm a ${result.fullTitle} on Profyle.\nprofyle.co`;
+  const shareUrl = typeof window !== "undefined" ? window.location.origin : "https://profyle.co";
+  const shareMsg = `I'm a ${result.fullTitle} on Profyle.\n"${result.tagline}"\n\nWhat's your type? → ${shareUrl}`;
   const shareSlug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
 
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(shareMsg);
     } catch {
-      // Fallback for mobile browsers without clipboard API
       const ta = document.createElement("textarea");
       ta.value = shareMsg;
       ta.style.cssText = "position:fixed;left:-9999px;top:-9999px;opacity:0";
@@ -99,18 +99,31 @@ export default function ResultsPage() {
   };
 
   const captureAndShare = async (mode: "whatsapp" | "generic") => {
-    try {
-      const file = cardBlob ? new File([cardBlob], shareSlug, { type: "image/png" }) : null;
-      if (file && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], text: shareMsg });
-      } else if (mode === "whatsapp") {
-        window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, "_blank");
-      } else if (navigator.share) {
-        await navigator.share({ text: shareMsg });
-      } else {
-        await handleCopyLink();
+    const file = cardBlob ? new File([cardBlob], shareSlug, { type: "image/png" }) : null;
+
+    // Mobile: native share sheet — call navigator.share before any await
+    if (navigator.share) {
+      const canShareFiles = file && !!navigator.canShare?.({ files: [file] });
+      try {
+        if (canShareFiles) {
+          await navigator.share({ title: result.fullTitle, files: [file!], text: shareMsg });
+        } else {
+          await navigator.share({ title: result.fullTitle, text: shareMsg, url: shareUrl });
+        }
+        return;
+      } catch (err) {
+        // AbortError = user dismissed sheet — don't fall through
+        if ((err as Error)?.name === "AbortError") return;
+        // Other errors (e.g. file type not supported) — fall through to fallback
       }
-    } catch { /* user cancelled or browser blocked — fail silently */ }
+    }
+
+    // Desktop / unsupported browser fallback
+    if (mode === "whatsapp") {
+      window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, "_blank");
+    } else {
+      await handleCopyLink();
+    }
   };
 
   const sectionStyle: React.CSSProperties = {

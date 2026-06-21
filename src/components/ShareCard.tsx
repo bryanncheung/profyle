@@ -579,23 +579,37 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
 
     const handleDownload = async () => {
       if (!cardRef.current) return;
-      const blob = await captureElement(cardRef.current);
-      if (!blob) return;
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const slug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
-      const url = URL.createObjectURL(blob);
-      // iOS Safari doesn't support programmatic download — share the file instead
-      const file = new File([blob], slug, { type: "image/png" });
-      if (navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share({ files: [file] });
-        } catch { /* user cancelled */ }
+
+      // Open blank window synchronously NOW (before any await) so iOS doesn't block it as a popup
+      const preWin = isIOS ? window.open("", "_blank") : null;
+
+      const blob = await captureElement(cardRef.current);
+      if (!blob) { preWin?.close(); return; }
+
+      if (isIOS && preWin) {
+        // iOS: show image in new tab — user long-presses to save to Photos
+        const reader = new FileReader();
+        reader.onload = () => {
+          preWin.document.write(
+            `<meta name="viewport" content="width=device-width,initial-scale=1">` +
+            `<body style="margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100dvh;gap:16px">` +
+            `<img src="${reader.result as string}" style="max-width:100%;max-height:80dvh;display:block">` +
+            `<p style="color:rgba(255,255,255,0.6);font-family:-apple-system,sans-serif;font-size:14px;text-align:center;padding:0 24px;margin:0">Hold down on the image to save</p>` +
+            `</body>`
+          );
+        };
+        reader.readAsDataURL(blob);
       } else {
+        // Android / desktop: download directly
+        const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.download = slug;
         link.href = url;
         link.click();
+        URL.revokeObjectURL(url);
       }
-      URL.revokeObjectURL(url);
     };
 
     return (
