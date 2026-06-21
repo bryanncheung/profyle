@@ -559,53 +559,64 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
     const cardRef = useRef<HTMLDivElement>(null);
     const hiddenStoryRef = useRef<HTMLDivElement>(null);
     const [saveDataUrl, setSaveDataUrl] = useState<string | null>(null);
+    const [isDownloading, setIsDownloading] = useState(false);
 
-    const captureElement = async (el: HTMLDivElement): Promise<Blob | null> => {
+    const runHtml2canvas = async (el: HTMLDivElement): Promise<string> => {
       const { default: html2canvas } = await import("html2canvas");
       const canvas = await html2canvas(el, {
         scale: 3,
         useCORS: true,
+        allowTaint: true,
         backgroundColor: null,
         logging: false,
       });
-      return new Promise<Blob | null>(resolve => canvas.toBlob(resolve, "image/png"));
+      return canvas.toDataURL("image/png");
     };
 
     useImperativeHandle(ref, () => ({
       async captureStory() {
         const target = hiddenStoryRef.current;
         if (!target) return null;
-        return captureElement(target);
+        try {
+          const dataUrl = await runHtml2canvas(target);
+          const res = await fetch(dataUrl);
+          return res.blob();
+        } catch { return null; }
       },
     }));
 
-    const showOverlay = (blob: Blob) => {
-      const reader = new FileReader();
-      reader.onload = () => setSaveDataUrl(reader.result as string);
-      reader.readAsDataURL(blob);
-    };
-
     const handleDownload = async () => {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isDownloading || !cardRef.current) return;
+      setIsDownloading(true);
       const slug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      if (isMobile) {
-        // On mobile: use pre-captured blob (no html2canvas, no user-gesture issues)
-        // Falls back to capturing the visible card if no pre-captured blob
-        const blob = mobileBlob ?? await captureElement(cardRef.current!);
-        if (!blob) return;
-        showOverlay(blob);
-      } else {
-        // Desktop: html2canvas → download
-        if (!cardRef.current) return;
-        const blob = await captureElement(cardRef.current);
-        if (!blob) return;
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.download = slug;
-        link.href = url;
-        link.click();
-        URL.revokeObjectURL(url);
+      try {
+        if (isMobile) {
+          // Mobile: use pre-captured blob for the overlay (no html2canvas delay)
+          if (mobileBlob) {
+            const reader = new FileReader();
+            reader.onload = () => setSaveDataUrl(reader.result as string);
+            reader.readAsDataURL(mobileBlob);
+          } else {
+            const dataUrl = await runHtml2canvas(cardRef.current);
+            setSaveDataUrl(dataUrl);
+          }
+        } else {
+          // Desktop: html2canvas → dataURL → trigger download
+          const dataUrl = await runHtml2canvas(cardRef.current);
+          const a = document.createElement("a");
+          a.href = dataUrl;
+          a.download = slug;
+          a.style.display = "none";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+      } catch (err) {
+        console.error("Save failed:", err);
+      } finally {
+        setIsDownloading(false);
       }
     };
 
@@ -623,27 +634,29 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
 
         <button
           onClick={handleDownload}
+          disabled={isDownloading}
           style={{
             padding: "11px 22px",
             borderRadius: "10px",
-            background: "var(--ink)",
+            background: isDownloading ? "var(--muted)" : "var(--ink)",
             color: "white",
             fontSize: "13px",
             fontWeight: 700,
             border: "none",
-            cursor: "pointer",
+            cursor: isDownloading ? "default" : "pointer",
             fontFamily: "inherit",
             letterSpacing: "0.01em",
             display: "flex",
             alignItems: "center",
             gap: "8px",
+            transition: "background 200ms ease",
           }}
         >
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <path d="M8 2 L8 10 M5 7 L8 10 L11 7" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M2 12 L2 14 L14 14 L14 12" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
           </svg>
-          Save as PNG
+          {isDownloading ? "Saving…" : "Save as PNG"}
         </button>
 
         {/* Mobile save overlay — long-press image to save to Photos */}
