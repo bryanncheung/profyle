@@ -586,9 +586,17 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
         const target = hiddenStoryRef.current;
         if (!target) return null;
         try {
-          const dataUrl = await runHtml2canvas(target);
-          const res = await fetch(dataUrl);
-          return res.blob();
+          await document.fonts.ready;
+          const { default: html2canvas } = await import("html2canvas");
+          const canvas = await html2canvas(target, {
+            scale: 3,
+            useCORS: true,
+            backgroundColor: null,
+            logging: false,
+          });
+          return await new Promise<Blob | null>((resolve) => {
+            canvas.toBlob((blob) => resolve(blob), "image/png");
+          });
         } catch { return null; }
       },
     }));
@@ -596,29 +604,16 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
     const handleDownload = async () => {
       if (isDownloading || !cardRef.current) return;
       setIsDownloading(true);
-      const slug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       try {
-        // Get data URL — use pre-captured blob on mobile, html2canvas on desktop
         let dataUrl: string;
         if (isMobile && mobileBlob) {
           dataUrl = await blobToDataUrl(mobileBlob);
         } else {
           dataUrl = await runHtml2canvas(cardRef.current);
         }
-
-        if (isMobile) {
-          setSaveDataUrl(dataUrl); // show overlay — user holds image to save
-        } else {
-          const a = document.createElement("a");
-          a.href = dataUrl;
-          a.download = slug;
-          a.style.display = "none";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        }
+        setSaveDataUrl(dataUrl);
       } catch (err) {
         console.error("Save failed:", err);
       } finally {
@@ -665,7 +660,7 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
           {isDownloading ? "Saving…" : "Save as PNG"}
         </button>
 
-        {/* Mobile save overlay — long-press image to save to Photos */}
+        {/* Save overlay — long-press (mobile) or right-click (desktop) */}
         {saveDataUrl && (
           <div
             onClick={() => setSaveDataUrl(null)}
@@ -688,7 +683,11 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
               fontFamily: "inherit", fontSize: "15px",
               textAlign: "center", margin: 0, lineHeight: 1.5,
             }}>
-              Hold down on the image to save it to your photos
+              {/iPhone|iPad|iPod|Android/i.test(
+                typeof navigator !== "undefined" ? navigator.userAgent : ""
+              )
+                ? "Hold down on the image to save it to your photos"
+                : "Right-click the image and choose "Save Image As""}
             </p>
             <button
               onClick={() => setSaveDataUrl(null)}
