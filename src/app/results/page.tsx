@@ -22,7 +22,8 @@ export default function ResultsPage() {
   const barsRef = useRef<HTMLDivElement>(null);
   const [barsVisible, setBarsVisible] = useState(false);
   const shareCardRef = useRef<ShareCardHandle>(null);
-  const [isCapturing, setIsCapturing] = useState(false);
+  const [cardBlob, setCardBlob] = useState<Blob | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("profyle_result");
@@ -49,6 +50,18 @@ export default function ResultsPage() {
     return () => observer.disconnect();
   }, [result]);
 
+  // Pre-capture card image so share is instant (avoids mobile user-gesture timeout)
+  useEffect(() => {
+    if (!mounted || !result) return;
+    const timer = setTimeout(async () => {
+      try {
+        const blob = await shareCardRef.current?.captureStory();
+        if (blob) setCardBlob(blob);
+      } catch { /* silent — share falls back to text */ }
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [mounted, result]);
+
   if (!mounted || !result) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -65,24 +78,39 @@ export default function ResultsPage() {
   const attrEntries = Object.entries(result.attributes) as [keyof typeof result.attributes, number][];
 
   const shareMsg = `I'm a ${result.fullTitle} on Profyle.\nprofyle.co`;
+  const shareSlug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareMsg);
+    } catch {
+      // Fallback for mobile browsers without clipboard API
+      const ta = document.createElement("textarea");
+      ta.value = shareMsg;
+      ta.style.cssText = "position:fixed;left:-9999px;top:-9999px;opacity:0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand("copy"); } catch { /* silent */ }
+      document.body.removeChild(ta);
+    }
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   const captureAndShare = async (mode: "whatsapp" | "generic") => {
-    setIsCapturing(true);
     try {
-      const blob = await shareCardRef.current?.captureStory();
-      const slug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
-      if (blob && navigator.canShare?.({ files: [new File([blob], slug, { type: "image/png" })] })) {
-        await navigator.share({ files: [new File([blob], slug, { type: "image/png" })], text: shareMsg });
+      const file = cardBlob ? new File([cardBlob], shareSlug, { type: "image/png" }) : null;
+      if (file && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], text: shareMsg });
       } else if (mode === "whatsapp") {
         window.open(`https://wa.me/?text=${encodeURIComponent(shareMsg)}`, "_blank");
       } else if (navigator.share) {
         await navigator.share({ text: shareMsg });
       } else {
-        navigator.clipboard.writeText(shareMsg);
+        await handleCopyLink();
       }
-    } finally {
-      setIsCapturing(false);
-    }
+    } catch { /* user cancelled or browser blocked — fail silently */ }
   };
 
   const sectionStyle: React.CSSProperties = {
@@ -282,32 +310,28 @@ export default function ResultsPage() {
           <div style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap" }}>
             <button
               onClick={() => captureAndShare("generic")}
-              disabled={isCapturing}
               style={{
                 padding: "12px 24px", borderRadius: "10px",
                 background: theme.accent, color: "white",
                 fontSize: "14px", fontWeight: 700, border: "none",
-                cursor: isCapturing ? "default" : "pointer", fontFamily: "inherit",
+                cursor: "pointer", fontFamily: "inherit",
                 display: "flex", alignItems: "center", gap: "8px",
-                opacity: isCapturing ? 0.7 : 1,
               }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
                 <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
               </svg>
-              {isCapturing ? "Preparing…" : "Share"}
+              Share
             </button>
             <button
               onClick={() => captureAndShare("whatsapp")}
-              disabled={isCapturing}
               style={{
                 padding: "12px 24px", borderRadius: "10px",
                 background: "#25D366", color: "white",
                 fontSize: "14px", fontWeight: 700, border: "none",
-                cursor: isCapturing ? "default" : "pointer", fontFamily: "inherit",
+                cursor: "pointer", fontFamily: "inherit",
                 display: "flex", alignItems: "center", gap: "8px",
-                opacity: isCapturing ? 0.7 : 1,
               }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
@@ -316,16 +340,17 @@ export default function ResultsPage() {
               WhatsApp
             </button>
             <button
-              onClick={() => navigator.clipboard.writeText(shareMsg)}
+              onClick={handleCopyLink}
               style={{
                 padding: "12px 24px", borderRadius: "10px",
-                background: "transparent", color: "var(--ink)",
+                background: "transparent", color: isCopied ? theme.accent : "var(--ink)",
                 fontSize: "14px", fontWeight: 700,
-                border: "1.5px solid var(--border)",
+                border: `1.5px solid ${isCopied ? theme.accent : "var(--border)"}`,
                 cursor: "pointer", fontFamily: "inherit",
+                transition: "color 200ms ease, border-color 200ms ease",
               }}
             >
-              Copy link
+              {isCopied ? "Copied ✓" : "Copy link"}
             </button>
           </div>
         </div>
@@ -570,32 +595,28 @@ export default function ResultsPage() {
           <div style={{ display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
             <button
               onClick={() => captureAndShare("generic")}
-              disabled={isCapturing}
               style={{
                 padding: "14px 28px", borderRadius: "12px",
                 background: theme.accent, color: "white",
                 fontSize: "14px", fontWeight: 700, border: "none",
-                cursor: isCapturing ? "default" : "pointer", fontFamily: "inherit",
+                cursor: "pointer", fontFamily: "inherit",
                 display: "flex", alignItems: "center", gap: "8px",
-                opacity: isCapturing ? 0.7 : 1,
               }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
                 <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
               </svg>
-              {isCapturing ? "Preparing…" : "Share my result"}
+              Share my result
             </button>
             <button
               onClick={() => captureAndShare("whatsapp")}
-              disabled={isCapturing}
               style={{
                 padding: "14px 28px", borderRadius: "12px",
                 background: "#25D366", color: "white",
                 fontSize: "14px", fontWeight: 700, border: "none",
-                cursor: isCapturing ? "default" : "pointer", fontFamily: "inherit",
+                cursor: "pointer", fontFamily: "inherit",
                 display: "flex", alignItems: "center", gap: "8px",
-                opacity: isCapturing ? 0.7 : 1,
               }}
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">

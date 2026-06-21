@@ -581,12 +581,20 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
       if (!cardRef.current) return;
       const blob = await captureElement(cardRef.current);
       if (!blob) return;
-      const slug = `${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}`;
+      const slug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
       const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.download = `profyle-${slug}.png`;
-      link.href = url;
-      link.click();
+      // iOS Safari doesn't support programmatic download — share the file instead
+      const file = new File([blob], slug, { type: "image/png" });
+      if (navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file] });
+        } catch { /* user cancelled */ }
+      } else {
+        const link = document.createElement("a");
+        link.download = slug;
+        link.href = url;
+        link.click();
+      }
       URL.revokeObjectURL(url);
     };
 
