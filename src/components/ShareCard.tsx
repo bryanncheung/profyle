@@ -687,7 +687,7 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
                 typeof navigator !== "undefined" ? navigator.userAgent : ""
               )
                 ? "Hold down on the image to save it to your photos"
-                : "Right-click the image and choose "Save Image As""}
+                : "Right-click the image and choose 'Save Image As'"}
             </p>
             <button
               onClick={() => setSaveDataUrl(null)}
