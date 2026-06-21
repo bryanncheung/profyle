@@ -316,7 +316,7 @@ export default function ResultsPage() {
 
           {/* Scrollable container for the wider LinkedIn card */}
           <div style={{ overflowX: "auto", paddingBottom: "4px" }}>
-            <ShareCard ref={shareCardRef} result={result} format={cardFormat}/>
+            <ShareCard ref={shareCardRef} result={result} format={cardFormat} mobileBlob={cardBlob}/>
           </div>
 
           {/* Share link buttons */}

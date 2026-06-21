@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, forwardRef, useImperativeHandle, Fragment } from "react";
+import { useRef, useState, forwardRef, useImperativeHandle, Fragment } from "react";
 import type { ReactElement } from "react";
 import { QuizResult, Archetype } from "@/lib/types";
 
@@ -551,12 +551,14 @@ export interface ShareCardHandle {
 interface ShareCardProps {
   result: QuizResult;
   format?: "story" | "linkedin";
+  mobileBlob?: Blob | null;
 }
 
 export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
-  function ShareCard({ result, format = "story" }, ref) {
+  function ShareCard({ result, format = "story", mobileBlob }, ref) {
     const cardRef = useRef<HTMLDivElement>(null);
     const hiddenStoryRef = useRef<HTMLDivElement>(null);
+    const [saveDataUrl, setSaveDataUrl] = useState<string | null>(null);
 
     const captureElement = async (el: HTMLDivElement): Promise<Blob | null> => {
       const { default: html2canvas } = await import("html2canvas");
@@ -577,32 +579,27 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
       },
     }));
 
+    const showOverlay = (blob: Blob) => {
+      const reader = new FileReader();
+      reader.onload = () => setSaveDataUrl(reader.result as string);
+      reader.readAsDataURL(blob);
+    };
+
     const handleDownload = async () => {
-      if (!cardRef.current) return;
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       const slug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
 
-      // Open blank window synchronously NOW (before any await) so iOS doesn't block it as a popup
-      const preWin = isIOS ? window.open("", "_blank") : null;
-
-      const blob = await captureElement(cardRef.current);
-      if (!blob) { preWin?.close(); return; }
-
-      if (isIOS && preWin) {
-        // iOS: show image in new tab — user long-presses to save to Photos
-        const reader = new FileReader();
-        reader.onload = () => {
-          preWin.document.write(
-            `<meta name="viewport" content="width=device-width,initial-scale=1">` +
-            `<body style="margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100dvh;gap:16px">` +
-            `<img src="${reader.result as string}" style="max-width:100%;max-height:80dvh;display:block">` +
-            `<p style="color:rgba(255,255,255,0.6);font-family:-apple-system,sans-serif;font-size:14px;text-align:center;padding:0 24px;margin:0">Hold down on the image to save</p>` +
-            `</body>`
-          );
-        };
-        reader.readAsDataURL(blob);
+      if (isMobile) {
+        // On mobile: use pre-captured blob (no html2canvas, no user-gesture issues)
+        // Falls back to capturing the visible card if no pre-captured blob
+        const blob = mobileBlob ?? await captureElement(cardRef.current!);
+        if (!blob) return;
+        showOverlay(blob);
       } else {
-        // Android / desktop: download directly
+        // Desktop: html2canvas → download
+        if (!cardRef.current) return;
+        const blob = await captureElement(cardRef.current);
+        if (!blob) return;
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.download = slug;
@@ -648,6 +645,46 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
           </svg>
           Save as PNG
         </button>
+
+        {/* Mobile save overlay — long-press image to save to Photos */}
+        {saveDataUrl && (
+          <div
+            onClick={() => setSaveDataUrl(null)}
+            style={{
+              position: "fixed", inset: 0, zIndex: 9999,
+              background: "rgba(0,0,0,0.92)",
+              display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center",
+              gap: "20px", padding: "32px 24px",
+            }}
+          >
+            <img
+              src={saveDataUrl}
+              onClick={(e) => e.stopPropagation()}
+              style={{ maxWidth: "85vw", maxHeight: "65dvh", display: "block", borderRadius: "0px" }}
+              alt="Your Profyle card"
+            />
+            <p style={{
+              color: "rgba(255,255,255,0.75)",
+              fontFamily: "inherit", fontSize: "15px",
+              textAlign: "center", margin: 0, lineHeight: 1.5,
+            }}>
+              Hold down on the image to save it to your photos
+            </p>
+            <button
+              onClick={() => setSaveDataUrl(null)}
+              style={{
+                padding: "12px 32px", borderRadius: "10px",
+                background: "rgba(255,255,255,0.12)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "white", fontSize: "14px", fontWeight: 600,
+                cursor: "pointer", fontFamily: "inherit",
+              }}
+            >
+              Done
+            </button>
+          </div>
+        )}
       </div>
     );
   }
