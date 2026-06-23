@@ -209,7 +209,7 @@ async function render(req: NextRequest) {
         }}>
 
           {/* Top row: PROFYLE only */}
-          <div style={{ display: "flex", marginBottom: `${10*S}px` }}>
+          <div style={{ display: "flex", marginBottom: `${8*S}px` }}>
             <span style={{ fontSize: `${8*S}px`, fontWeight: 800, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
               Profyle
             </span>
@@ -236,7 +236,7 @@ async function render(req: NextRequest) {
           </div>
 
           {/* Archetype name */}
-          <div style={{ display: "flex", fontSize: `${42*S}px`, fontWeight: 800, letterSpacing: "-0.05em", color: "#fff", marginBottom: `${18*S}px`, textTransform: "uppercase", lineHeight: 0.9 }}>
+          <div style={{ display: "flex", fontSize: `${42*S}px`, fontWeight: 800, letterSpacing: "-0.05em", color: "#fff", marginBottom: `${12*S}px`, textTransform: "uppercase", lineHeight: 0.9 }}>
             {archetype}
           </div>
 
@@ -245,14 +245,14 @@ async function render(req: NextRequest) {
             display: "flex", fontSize: `${10*S}px`, fontWeight: 500,
             color: "rgba(255,255,255,0.88)", lineHeight: 1.55,
             borderLeft: `${2.5*S}px solid rgba(255,255,255,0.55)`,
-            paddingLeft: `${9*S}px`, marginBottom: `${20*S}px`,
+            paddingLeft: `${9*S}px`, marginBottom: `${12*S}px`,
             maxWidth: `${185*S}px`,
           }}>
             {tagline}
           </div>
 
           {/* Attribute dots */}
-          <div style={{ display: "flex", flexDirection: "column", gap: `${7*S}px`, marginBottom: `${18*S}px` }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: `${6*S}px`, marginBottom: `${10*S}px` }}>
             {attrs.map(({ label, value }) => (
               <div key={label} style={{ display: "flex", alignItems: "center", gap: `${8*S}px` }}>
                 <span style={{ fontSize: `${7*S}px`, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", color: "rgba(255,255,255,0.82)", width: `${74*S}px` }}>
@@ -275,24 +275,24 @@ async function render(req: NextRequest) {
           </div>
 
           {/* Population stat */}
-          <div style={{ display: "flex", marginBottom: `${14*S}px`, marginTop: `-${4*S}px` }}>
-            <span style={{ fontSize: `${7*S}px`, fontWeight: 600, color: "rgba(255,255,255,0.65)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          <div style={{ display: "flex", marginBottom: `${10*S}px` }}>
+            <span style={{ fontSize: `${7*S}px`, fontWeight: 600, color: "rgba(255,255,255,0.8)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {pct ? `Only ${pct}% of people share this profile` : ""}
             </span>
           </div>
 
           {/* Adjective badges — star / hexagon / oval */}
           {adjectives.length > 0 && (
-            <div style={{ display: "flex", gap: `${6*S}px`, marginBottom: `${18*S}px` }}>
+            <div style={{ display: "flex", gap: `${6*S}px`, marginBottom: `${12*S}px` }}>
               {adjectives.map((adj, i) => {
                 const bw = i === 1 ? 70 : 62;
                 const bh = 26;
                 return (
                   <div key={adj} style={{ position: "relative", width: `${bw*S}px`, height: `${bh*S}px`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <svg width={bw*S} height={bh*S} viewBox={`0 0 ${bw} ${bh}`} fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
-                      {i === 0 && <path d={ADJ_STAR} fill="rgba(255,255,255,0.35)" stroke="rgba(255,255,255,0.6)" strokeWidth="0.8"/>}
-                      {i === 1 && <path d={ADJ_HEX}  fill="rgba(255,255,255,0.35)" stroke="rgba(255,255,255,0.6)" strokeWidth="0.8"/>}
-                      {i === 2 && <ellipse cx="31" cy="13" rx="28" ry="11" fill="rgba(255,255,255,0.35)" stroke="rgba(255,255,255,0.6)" strokeWidth="0.8" transform="rotate(-6 31 13)"/>}
+                      {i === 0 && <path d={ADJ_STAR} fill="rgba(255,255,255,0.45)" stroke="rgba(255,255,255,0.75)" strokeWidth="0.8"/>}
+                      {i === 1 && <path d={ADJ_HEX}  fill="rgba(255,255,255,0.45)" stroke="rgba(255,255,255,0.75)" strokeWidth="0.8"/>}
+                      {i === 2 && <ellipse cx="31" cy="13" rx="28" ry="11" fill="rgba(255,255,255,0.45)" stroke="rgba(255,255,255,0.75)" strokeWidth="0.8" transform="rotate(-6 31 13)"/>}
                     </svg>
                     <span style={{ position: "relative", fontSize: `${7.5*S}px`, fontWeight: 800, color: "rgba(0,0,0,0.85)", letterSpacing: "0.3px" }}>
                       {adj}
@@ -318,7 +318,7 @@ async function render(req: NextRequest) {
               {compats.map((arch, idx) => (
                 <div key={arch} style={{ position: "relative", width: `${84*S}px`, height: `${28*S}px`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <svg width={84*S} height={28*S} viewBox="0 0 84 28" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
-                    <path d={idx === 0 ? PILL_PATH : DIAM_PATH} fill="rgba(255,255,255,0.32)" stroke="rgba(255,255,255,0.6)" strokeWidth="1"/>
+                    <path d={idx === 0 ? PILL_PATH : DIAM_PATH} fill="rgba(255,255,255,0.4)" stroke="rgba(255,255,255,0.75)" strokeWidth="1"/>
                   </svg>
                   <div style={{ position: "relative", display: "flex", alignItems: "center", gap: `${4*S}px`, fontSize: `${7.5*S}px`, fontWeight: 800, color: "rgba(0,0,0,0.85)", whiteSpace: "nowrap" }}>
                     <MiniIcon archetype={arch}/>
