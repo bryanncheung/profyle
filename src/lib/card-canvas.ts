@@ -177,11 +177,14 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
     ctx.scale(SCALE, SCALE);
 
     // ── Gradient ──
-    const diag = Math.sqrt(W * W + H * H);
-    const rad = (175 - 90) * (Math.PI / 180);
+    // CSS linear-gradient(175deg) formula: direction = (sinθ, -cosθ) in y-down coords.
+    // Start (first color) = center - direction × r; End (last color) = center + direction × r.
+    const θ = 175 * Math.PI / 180;
+    const sinθ = Math.sin(θ), cosθ = Math.cos(θ); // sin≈0.087, cos≈-0.996
+    const r = Math.sqrt(W * W + H * H) / 2;
     const grad = ctx.createLinearGradient(
-      W/2 + Math.cos(rad)*diag/2, H/2 + Math.sin(rad)*diag/2,
-      W/2 - Math.cos(rad)*diag/2, H/2 - Math.sin(rad)*diag/2,
+      W/2 - sinθ * r, H/2 + cosθ * r,  // start: first color (dark) near top
+      W/2 + sinθ * r, H/2 - cosθ * r,  // end: last color (light) near bottom
     );
     for (const [stop, color] of GRADIENT_STOPS[result.archetype]) grad.addColorStop(stop, color);
     ctx.fillStyle = grad;
@@ -232,8 +235,9 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
 
     // ── Tagline: pre-calculate wrapping so border height matches text ──
     f(500, 10);
+    // maxRight matches React card's maxWidth: 185px from px=20, so px + 185 = 205
     const { lines: tagLines, endY: tagEndY } = prewrap(
-      ctx, result.tagline, px + 9, cy + 11, W - px - 4, 15.5
+      ctx, result.tagline, px + 9, cy + 11, px + 185, 15.5
     );
     const tagH = Math.max(tagEndY - cy + 16, 28);
 
