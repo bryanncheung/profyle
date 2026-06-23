@@ -14,6 +14,27 @@ import { ArchetypeCharacter } from "@/components/characters";
 import { ShareCard } from "@/components/ShareCard";
 import type { ShareCardHandle } from "@/components/ShareCard";
 
+function buildCardImageUrl(result: QuizResult): string {
+  const base = typeof window !== "undefined" ? window.location.origin : "";
+  const p = new URLSearchParams({
+    p: result.prefix,
+    a: result.archetype,
+    t: result.tagline,
+    e: String(result.attributes.execution),
+    v: String(result.attributes.vision),
+    i: String(result.attributes.independence),
+    c: String(result.attributes.collaboration),
+    ad: String(result.attributes.adaptability),
+    j1: result.adjectives[0] ?? "",
+    j2: result.adjectives[1] ?? "",
+    j3: result.adjectives[2] ?? "",
+    b: result.blindSpot,
+    w1: result.compatibleWith[0] ?? "",
+    w2: result.compatibleWith[1] ?? "",
+  });
+  return `${base}/api/card-image?${p}`;
+}
+
 export default function ResultsPage() {
   const router = useRouter();
   const [result, setResult] = useState<QuizResult | null>(null);
@@ -24,6 +45,7 @@ export default function ResultsPage() {
   const shareCardRef = useRef<ShareCardHandle>(null);
   const [cardBlob, setCardBlob] = useState<Blob | null>(null);
   const [isCopied, setIsCopied] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("profyle_result");
@@ -50,15 +72,16 @@ export default function ResultsPage() {
     return () => observer.disconnect();
   }, [result]);
 
-  // Pre-capture card image so share is instant (avoids mobile user-gesture timeout)
+  // Pre-fetch card image blob so iOS share is instant within user gesture
   useEffect(() => {
     if (!mounted || !result) return;
+    const url = buildCardImageUrl(result);
     const timer = setTimeout(async () => {
       try {
-        const blob = await shareCardRef.current?.captureStory();
-        if (blob) setCardBlob(blob);
-      } catch { /* silent — share falls back to text */ }
-    }, 1200);
+        const res = await fetch(url);
+        if (res.ok) setCardBlob(await res.blob());
+      } catch { /* silent */ }
+    }, 800);
     return () => clearTimeout(timer);
   }, [mounted, result]);
 
@@ -76,6 +99,45 @@ export default function ResultsPage() {
   const industryQ18 = result.industryAnswers[0] ?? "A";
   const industry = getIndustryRecommendations(result.archetype, industryQ18);
   const attrEntries = Object.entries(result.attributes) as [keyof typeof result.attributes, number][];
+
+  const cardImageUrl = result ? buildCardImageUrl(result) : "";
+  const filename = result ? `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png` : "profyle.png";
+
+  const handleStoryDownload = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+
+    try {
+      let blob = (cardBlob && cardBlob.size > 0) ? cardBlob : null;
+      if (!blob) blob = await fetch(cardImageUrl).then(r => r.blob());
+
+      if (isIOS && blob && navigator.share) {
+        const file = new File([blob], filename, { type: "image/png" });
+        if (navigator.canShare?.({ files: [file] })) {
+          try { await navigator.share({ files: [file] }); } catch (e) { if ((e as Error)?.name !== "AbortError") throw e; }
+          return;
+        }
+        // Fallback: open in new tab so user can long-press → Save to Photos
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank");
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        return;
+      }
+
+      // Desktop / Android: trigger download
+      const objectUrl = URL.createObjectURL(blob!);
+      const a = document.createElement("a");
+      a.href = objectUrl; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
+    } catch (err) {
+      console.error("Download failed:", err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const shareUrl = typeof window !== "undefined" ? window.location.origin : "https://profyle.co";
   const shareMsg = `I'm a ${result.fullTitle} on Profyle.\n"${result.tagline}"\n\nWhat's your type? → ${shareUrl}`;
@@ -99,11 +161,9 @@ export default function ResultsPage() {
   };
 
   const captureAndShare = async (mode: "whatsapp" | "generic") => {
-    let blob = cardBlob;
-
-    // If pre-cache missed, fetch on-demand (within user gesture context window)
-    if (!blob && shareCardRef.current) {
-      try { blob = await shareCardRef.current.captureStory() ?? null; } catch { /* ignore */ }
+    let blob = (cardBlob && cardBlob.size > 0) ? cardBlob : null;
+    if (!blob) {
+      try { blob = await fetch(cardImageUrl).then(r => r.blob()); } catch { /* ignore */ }
     }
 
     const file = blob ? new File([blob], shareSlug, { type: "image/png" }) : null;
@@ -321,9 +381,37 @@ export default function ResultsPage() {
             ))}
           </div>
 
-          {/* Scrollable container for the wider LinkedIn card */}
+          {/* Card preview */}
           <div style={{ overflowX: "auto", paddingBottom: "4px" }}>
-            <ShareCard ref={shareCardRef} result={result} format={cardFormat} mobileBlob={cardBlob}/>
+            {cardFormat === "story" ? (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px" }}>
+                <div style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={cardImageUrl} width={270} height={480} alt="Your Profyle card" style={{ display: "block" }}/>
+                </div>
+                <button
+                  onClick={handleStoryDownload}
+                  disabled={isDownloading}
+                  style={{
+                    padding: "11px 22px", borderRadius: "10px",
+                    background: isDownloading ? "var(--muted)" : "var(--ink)",
+                    color: "white", fontSize: "13px", fontWeight: 700,
+                    border: "none", cursor: isDownloading ? "default" : "pointer",
+                    fontFamily: "inherit", letterSpacing: "0.01em",
+                    display: "flex", alignItems: "center", gap: "8px",
+                    transition: "background 200ms ease",
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2 L8 10 M5 7 L8 10 L11 7" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 12 L2 14 L14 14 L14 12" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+                  </svg>
+                  {isDownloading ? "Saving…" : "Save as PNG"}
+                </button>
+              </div>
+            ) : (
+              <ShareCard ref={shareCardRef} result={result} format="linkedin" mobileBlob={cardBlob}/>
+            )}
           </div>
 
           {/* Share link buttons */}
