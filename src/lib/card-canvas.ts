@@ -277,18 +277,40 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
     }
     cy += 6;
 
-    // ── Adjective badges ──
-    let bx = px;
-    for (const adj of result.adjectives) {
-      f(800, 7.5);
-      const bw = ctx.measureText(adj).width + 16, bh = 18;
-      rrect(ctx, bx, cy, bw, bh, 3);
-      ctx.fillStyle = "rgba(255,255,255,0.25)"; ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,0.45)"; ctx.lineWidth = 0.8; ctx.stroke();
-      ctx.fillStyle = "rgba(0,0,0,0.72)"; ctx.fillText(adj, bx+8, cy+13);
-      bx += bw + 6;
+    // ── Adjective badges — matching star/hexagon/oval shapes from the React card ──
+    {
+      let bx = px;
+      const BH = 26;
+      for (let bi = 0; bi < result.adjectives.length; bi++) {
+        const adj = result.adjectives[bi];
+        const BW = bi === 1 ? 70 : 62;
+        ctx.save();
+        ctx.translate(bx, cy);
+        ctx.beginPath();
+        if (bi === 0) {
+          // Star: M31 1 L35 8 L43 5 L40 13 L48 16 L40 19 L43 23 L35 20 L31 25 L27 20 L19 23 L22 19 L14 16 L22 13 L19 5 L27 8 Z
+          const sp = [31,1,35,8,43,5,40,13,48,16,40,19,43,23,35,20,31,25,27,20,19,23,22,19,14,16,22,13,19,5,27,8];
+          ctx.moveTo(sp[0],sp[1]);
+          for (let i=2;i<sp.length;i+=2) ctx.lineTo(sp[i],sp[i+1]);
+          ctx.closePath();
+        } else if (bi === 1) {
+          // Hexagon in 70×26: M12 2 L58 2 L68 13 L58 24 L12 24 L2 13 Z
+          ctx.moveTo(12,2);ctx.lineTo(58,2);ctx.lineTo(68,13);ctx.lineTo(58,24);ctx.lineTo(12,24);ctx.lineTo(2,13);ctx.closePath();
+        } else {
+          // Oval: ellipse cx=31 cy=13 rx=28 ry=11 rotated -6°
+          ctx.save(); ctx.translate(31,13); ctx.rotate(-6*Math.PI/180); ctx.ellipse(0,0,28,11,0,0,Math.PI*2); ctx.restore();
+        }
+        ctx.fillStyle="rgba(255,255,255,0.25)"; ctx.fill();
+        ctx.strokeStyle="rgba(255,255,255,0.45)"; ctx.lineWidth=0.8; ctx.stroke();
+        f(800,7.5); ctx.fillStyle="rgba(0,0,0,0.72)";
+        ctx.textAlign="center"; ctx.textBaseline="middle";
+        ctx.fillText(adj, BW/2, BH/2);
+        ctx.textAlign="left"; ctx.textBaseline="alphabetic";
+        ctx.restore();
+        bx += BW + 6;
+      }
+      cy += BH + 8;
     }
-    cy += 28;
 
     // ── Blind spot (bold prefix + normal text, wraps back to left margin) ──
     f(800, 8.5); ctx.fillStyle = "#ffffff";
@@ -317,12 +339,24 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
       if (!arch) continue;
       f(800, 7.5);
       const label = `The ${arch}`;
-      const pw2 = ctx.measureText(label).width + 18;
-      rrect(ctx, pillX, cy, pw2, 18, pi === 0 ? 9 : 2);
+      const PW = ctx.measureText(label).width + 22, PH = 22;
+      if (pi === 0) {
+        rrect(ctx, pillX, cy, PW, PH, PH / 2); // pill
+      } else {
+        const ind = 10;
+        ctx.beginPath();
+        ctx.moveTo(pillX+ind,cy); ctx.lineTo(pillX+PW-ind,cy);
+        ctx.lineTo(pillX+PW,cy+PH/2); ctx.lineTo(pillX+PW-ind,cy+PH);
+        ctx.lineTo(pillX+ind,cy+PH); ctx.lineTo(pillX,cy+PH/2);
+        ctx.closePath();
+      }
       ctx.fillStyle = "rgba(255,255,255,0.22)"; ctx.fill();
       ctx.strokeStyle = "rgba(255,255,255,0.4)"; ctx.lineWidth = 1; ctx.stroke();
-      ctx.fillStyle = "rgba(0,0,0,0.72)"; ctx.fillText(label, pillX+9, cy+13);
-      pillX += pw2 + 6;
+      f(800, 7.5); ctx.fillStyle = "rgba(0,0,0,0.72)";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(label, pillX + PW/2, cy + PH/2);
+      ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+      pillX += PW + 6;
     }
 
     // ── Footer ──

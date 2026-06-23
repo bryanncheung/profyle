@@ -225,39 +225,29 @@ function WavyUnderline({ width = 60 }: { width?: number }) {
 
 // ─── Adjective badge shapes ──────────────────────────────────────────────────
 
+// Text lives inside the SVG (textAnchor="middle") so centering is SVG-native —
+// no CSS transforms or absolute positioning that html2canvas mishandles.
 const ADJ_SHAPES = [
-  // star — fixed-size container; SVG is absolute background, text is flex-centered (no transform)
+  // star
   (adj: string) => (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: "62px", height: "26px" }}>
-      <svg width="62" height="26" viewBox="0 0 62 26" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
-        <path d="M31 1 L35 8 L43 5 L40 13 L48 16 L40 19 L43 23 L35 20 L31 25 L27 20 L19 23 L22 19 L14 16 L22 13 L19 5 L27 8 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>
-      </svg>
-      <span style={{ position: "relative", zIndex: 1, fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
-        {adj}
-      </span>
-    </span>
+    <svg width="62" height="26" viewBox="0 0 62 26" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, display: "block" }}>
+      <path d="M31 1 L35 8 L43 5 L40 13 L48 16 L40 19 L43 23 L35 20 L31 25 L27 20 L19 23 L22 19 L14 16 L22 13 L19 5 L27 8 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>
+      <text x="31" y="13" textAnchor="middle" dominantBaseline="central" fontSize="7.5" fontWeight="800" fill="rgba(0,0,0,0.72)" fontFamily="Manrope, sans-serif" letterSpacing="0.3">{adj}</text>
+    </svg>
   ),
   // hexagon
   (adj: string) => (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: "70px", height: "26px" }}>
-      <svg width="70" height="26" viewBox="0 0 70 26" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
-        <path d="M12 2 L58 2 L68 13 L58 24 L12 24 L2 13 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>
-      </svg>
-      <span style={{ position: "relative", zIndex: 1, fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
-        {adj}
-      </span>
-    </span>
+    <svg width="70" height="26" viewBox="0 0 70 26" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, display: "block" }}>
+      <path d="M12 2 L58 2 L68 13 L58 24 L12 24 L2 13 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>
+      <text x="35" y="13" textAnchor="middle" dominantBaseline="central" fontSize="7.5" fontWeight="800" fill="rgba(0,0,0,0.72)" fontFamily="Manrope, sans-serif" letterSpacing="0.3">{adj}</text>
+    </svg>
   ),
   // oval
   (adj: string) => (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: "62px", height: "26px" }}>
-      <svg width="62" height="26" viewBox="0 0 62 26" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
-        <ellipse cx="31" cy="13" rx="28" ry="11" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8" transform="rotate(-6 31 13)"/>
-      </svg>
-      <span style={{ position: "relative", zIndex: 1, fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
-        {adj}
-      </span>
-    </span>
+    <svg width="62" height="26" viewBox="0 0 62 26" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, display: "block" }}>
+      <ellipse cx="31" cy="13" rx="28" ry="11" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8" transform="rotate(-6 31 13)"/>
+      <text x="31" y="13" textAnchor="middle" dominantBaseline="central" fontSize="7.5" fontWeight="800" fill="rgba(0,0,0,0.72)" fontFamily="Manrope, sans-serif" letterSpacing="0.3">{adj}</text>
+    </svg>
   ),
 ];
 
@@ -290,6 +280,7 @@ function StoryCard({ result, cardRef }: { result: QuizResult; cardRef: React.Ref
   const prefixWidth = prefixText.length * 6.5;
 
   return (
+    <div style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)" }}>
     <div
       ref={cardRef}
       style={{
@@ -302,7 +293,6 @@ function StoryCard({ result, cardRef }: { result: QuizResult; cardRef: React.Ref
         display: "flex",
         flexDirection: "column",
         fontFamily: "'Manrope', sans-serif",
-        boxShadow: "0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)",
       }}
     >
       {/* Dot-grid texture */}
@@ -404,6 +394,7 @@ function StoryCard({ result, cardRef }: { result: QuizResult; cardRef: React.Ref
         </span>
       </div>
     </div>
+    </div>
   );
 }
 
@@ -498,18 +489,18 @@ function LinkedInCard({ result, cardRef }: { result: QuizResult; cardRef: React.
 
         {/* Adjective badges (smaller) */}
         <div style={{ display: "flex", gap: "5px" }}>
-          {result.adjectives.map((adj, i) => (
-            <span key={adj} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: i === 1 ? "62px" : "54px", height: "22px" }}>
-              <svg width={i === 1 ? 62 : 54} height="22" viewBox={`0 0 ${i === 1 ? 66 : 56} 24`} fill="none" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}>
-                {i === 0 && <path d="M28 1 L32 8 L39 5 L37 12 L44 15 L37 18 L39 21 L32 18 L28 23 L24 18 L17 21 L19 18 L12 15 L19 12 L17 5 L24 8 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>}
-                {i === 1 && <path d="M10 2 L56 2 L64 12 L56 22 L10 22 L2 12 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>}
-                {i === 2 && <ellipse cx="28" cy="12" rx="25" ry="10" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8" transform="rotate(-5 28 12)"/>}
-              </svg>
-              <span style={{ position: "relative", zIndex: 1, fontSize: "7px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
-                {adj}
-              </span>
-            </span>
-          ))}
+          {result.adjectives.map((adj, i) => {
+            const w = i === 1 ? 62 : 54;
+            const cx = i === 1 ? 33 : 28;
+            return (
+            <svg key={adj} width={w} height="22" viewBox={`0 0 ${w} 22`} fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, display: "block" }}>
+              {i === 0 && <path d="M28 1 L32 8 L39 5 L37 12 L44 15 L37 18 L39 21 L32 18 L28 23 L24 18 L17 21 L19 18 L12 15 L19 12 L17 5 L24 8 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>}
+              {i === 1 && <path d="M10 2 L52 2 L62 11 L52 20 L10 20 L0 11 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>}
+              {i === 2 && <ellipse cx="27" cy="11" rx="24" ry="9" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8" transform="rotate(-5 27 11)"/>}
+              <text x={cx} y="11" textAnchor="middle" dominantBaseline="central" fontSize="7" fontWeight="800" fill="rgba(0,0,0,0.72)" fontFamily="Manrope, sans-serif" letterSpacing="0.3">{adj}</text>
+            </svg>
+            );
+          })}
         </div>
 
         {/* Blind spot */}
@@ -546,9 +537,9 @@ function LinkedInCard({ result, cardRef }: { result: QuizResult; cardRef: React.
 
 // ─── Capture helpers ─────────────────────────────────────────────────────────
 
-// Capture the card via html2canvas. Clones the element off-screen so the live
-// preview never flickers (no style mutations on the visible element).
-// Falls back to the canvas renderer if html2canvas throws.
+// Capture the visible card element via html2canvas. The cardRef div has no
+// boxShadow (shadow is on the wrapper), so we can capture it directly without
+// any style mutations or cloning — which is what was causing iOS failures.
 async function captureCardElement(
   el: HTMLDivElement | null,
   result: QuizResult,
@@ -556,13 +547,7 @@ async function captureCardElement(
   if (el) {
     try {
       const { default: h2c } = await import("html2canvas");
-      const clone = el.cloneNode(true) as HTMLDivElement;
-      clone.style.boxShadow = "none";
-      clone.style.position = "absolute";
-      clone.style.top = "0";
-      clone.style.left = "-9999px";
-      document.body.appendChild(clone);
-      const canvas = await h2c(clone, {
+      const canvas = await h2c(el, {
         scale: 3,
         useCORS: true,
         allowTaint: false,
@@ -570,7 +555,6 @@ async function captureCardElement(
         logging: false,
         removeContainer: true,
       });
-      document.body.removeChild(clone);
       return new Promise<Blob | null>(resolve => canvas.toBlob(resolve, "image/png"));
     } catch (err) {
       console.warn("html2canvas failed, falling back to canvas renderer:", err);
@@ -598,8 +582,8 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
 
     useImperativeHandle(ref, () => ({
       async captureStory(): Promise<Blob | null> {
-        // Use html2canvas so iOS share-sheet image matches the preview exactly.
-        // The clone approach means no visual flash on the live card.
+        // Capture the visible element directly — no clone, no style mutations.
+        // cardRef has no boxShadow so the output is clean.
         return captureCardElement(cardRef.current, result);
       },
     }));
