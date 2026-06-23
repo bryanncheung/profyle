@@ -114,9 +114,9 @@ export default function QuizPage() {
         }} />
       </div>
 
-      {/* Profyle home link */}
+      {/* Profyle home link — top-left on all screen sizes */}
       <a href="/" style={{
-        position: "fixed", top: "16px", left: "50%", transform: "translateX(-50%)",
+        position: "fixed", top: "20px", left: "24px",
         fontSize: "12px", fontWeight: 800, letterSpacing: "0.18em",
         textTransform: "uppercase", color: "var(--ink)",
         textDecoration: "none", zIndex: 50, opacity: 0.5,
@@ -124,34 +124,6 @@ export default function QuizPage() {
       }}>
         Profyle
       </a>
-
-      {/* Back button */}
-      {current > 0 && (
-        <button onClick={handleBack} style={{
-          position: "fixed", top: "20px", left: "24px",
-          background: "none", border: "none", cursor: "pointer",
-          fontSize: "13px", fontWeight: 600, color: "var(--muted)",
-          fontFamily: "inherit", padding: "8px 0",
-          display: "flex", alignItems: "center", gap: "6px",
-          letterSpacing: "0.02em", zIndex: 50,
-        }}>
-          ← Back
-        </button>
-      )}
-
-      {/* Forward button */}
-      {canGoForward && (
-        <button onClick={handleForward} style={{
-          position: "fixed", top: "20px", left: current > 0 ? "100px" : "24px",
-          background: "none", border: "none", cursor: "pointer",
-          fontSize: "13px", fontWeight: 600, color: "var(--muted)",
-          fontFamily: "inherit", padding: "8px 0",
-          display: "flex", alignItems: "center", gap: "6px",
-          letterSpacing: "0.02em", zIndex: 50,
-        }}>
-          Next →
-        </button>
-      )}
 
       {/* Question counter */}
       <div style={{
@@ -254,7 +226,7 @@ export default function QuizPage() {
                             cursor: "pointer", fontFamily: "inherit",
                           }}
                         >
-                          Q{id}
+                          Q{idx + 1}
                         </button>
                       );
                     })}
@@ -297,7 +269,7 @@ export default function QuizPage() {
               <button
                 key={q.id}
                 onClick={() => jumpTo(idx)}
-                title={`Question ${q.id}`}
+                title={`Question ${idx + 1}`}
                 style={{
                   width: "28px", height: "28px",
                   borderRadius: "8px",
@@ -321,7 +293,7 @@ export default function QuizPage() {
                   lineHeight: 1,
                 }}
               >
-                {q.id}
+                {idx + 1}
               </button>
             );
           })}

@@ -622,16 +622,12 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
         }
       }
 
-      // Desktop + Android (and iOS fallback when blob not yet cached): render then download
+      // Desktop + Android: always capture via html2canvas for pixel-perfect match to preview.
+      // (The pre-cached canvas blob is only used for the iOS share sheet above.)
       try {
-        let blob: Blob;
-        if (cachedBlob) {
-          blob = cachedBlob;
-        } else {
-          const rendered = await captureCardElement(cardRef.current, result);
-          if (!rendered || rendered.size === 0) throw new Error("could not generate image");
-          blob = rendered;
-        }
+        const rendered = await captureCardElement(cardRef.current, result);
+        if (!rendered || rendered.size === 0) throw new Error("could not generate image");
+        const blob = rendered;
 
         const objectUrl = URL.createObjectURL(blob);
         const a = document.createElement("a");
