@@ -9,6 +9,8 @@ import {
   ADJECTIVE_PILL_COLORS,
   ATTRIBUTE_LABELS,
   getIndustryRecommendations,
+  ARCHETYPE_POPULATION,
+  DIMENSION_POPULATION,
 } from "@/lib/archetypes";
 import { ArchetypeCharacter } from "@/components/characters";
 import { ShareCard } from "@/components/ShareCard";
@@ -466,7 +468,58 @@ export default function ResultsPage() {
 
       <div style={dividerStyle} />
 
-      {/* ─── 3. WHO YOU ARE ─── */}
+      {/* ─── 3. RARITY ─── */}
+      <section style={{ padding: "64px 0" }}>
+        <div style={sectionStyle}>
+          {(() => {
+            const archetypePct = ARCHETYPE_POPULATION[result.archetype];
+            const dimPct = DIMENSION_POPULATION[result.prefix];
+            const permutationPct = Math.round(archetypePct * dimPct / 100 * 10) / 10;
+            const allArchetypes: Array<typeof result.archetype> = ["Builder", "Anchor", "Catalyst", "Sovereign", "Disruptor"];
+            return (
+              <>
+                <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "16px" }}>
+                  How rare is your type
+                </div>
+                <div style={{ marginBottom: "32px" }}>
+                  <p style={{ fontSize: "clamp(22px, 3.5vw, 30px)", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--ink)", lineHeight: 1.2, marginBottom: "8px" }}>
+                    Only <span style={{ color: theme.accent }}>{permutationPct}%</span> of people are {result.fullTitle}.
+                  </p>
+                  <p style={{ fontSize: "15px", fontWeight: 400, color: "var(--muted)", lineHeight: 1.6 }}>
+                    {archetypePct}% of people share your archetype. Your {result.prefix.toLowerCase()} dimension narrows that to a rare {permutationPct}%.
+                  </p>
+                </div>
+
+                {/* Archetype breakdown bar chart */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "480px" }}>
+                  {allArchetypes.map((a) => {
+                    const pct = ARCHETYPE_POPULATION[a];
+                    const isYours = a === result.archetype;
+                    const t = ARCHETYPE_THEMES[a];
+                    return (
+                      <div key={a} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <span style={{ fontSize: "12px", fontWeight: isYours ? 700 : 500, color: isYours ? "var(--ink)" : "var(--muted)", width: "80px", flexShrink: 0 }}>
+                          {a}
+                        </span>
+                        <div style={{ flex: 1, height: "8px", borderRadius: "4px", background: "var(--border)", overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: `${(pct / 24) * 100}%`, borderRadius: "4px", background: isYours ? t.accent : "var(--border)", transition: "width 800ms ease" }}/>
+                        </div>
+                        <span style={{ fontSize: "12px", fontWeight: isYours ? 700 : 400, color: isYours ? t.accent : "var(--faint)", width: "36px", textAlign: "right" }}>
+                          {pct}%
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            );
+          })()}
+        </div>
+      </section>
+
+      <div style={dividerStyle} />
+
+      {/* ─── 4. WHO YOU ARE ─── */}
       <section id="deep-dive" style={{ padding: "64px 0" }}>
         <div style={sectionStyle}>
           <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "20px" }}>
@@ -483,7 +536,7 @@ export default function ResultsPage() {
 
       <div style={dividerStyle} />
 
-      {/* ─── 4. FAMOUS PEOPLE ─── */}
+      {/* ─── 5. FAMOUS PEOPLE ─── */}
       <section style={{ padding: "64px 0" }}>
         <div style={sectionStyle}>
           <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "20px" }}>

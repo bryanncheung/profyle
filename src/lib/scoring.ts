@@ -129,9 +129,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Runs so fast they forget to check if they're still going the right way.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
-      { name: "Jensen Huang", reason: "Obsessive executor who turned vision into hardware dominance." },
-      { name: "Kanye West", reason: "Relentlessly builds — albums, brands, collections — without waiting for permission." },
-      { name: "Sara Blakely", reason: "Built Spanx alone, brick by brick, from a $5k idea to a billion-dollar company." },
+      { name: "Jensen Huang", reason: "Ran 30-year sprints at Nvidia — obsessive output that never let up until the world caught up to his vision." },
+      { name: "Sara Blakely", reason: "Built Spanx from a $5k idea alone, shipping product every day before anyone in the industry took her seriously." },
+      { name: "Kanye West", reason: "Released albums, fashion lines, and architecture projects in parallel — relentless creation that never waited for permission." },
     ],
   },
   "Quiet Builder": {
@@ -142,9 +142,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Does the work without taking credit, then wonders why they're overlooked.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
-      { name: "Jensen Huang", reason: "Obsessive executor who turned vision into hardware dominance." },
-      { name: "Kanye West", reason: "Builds in silence until the output speaks for itself." },
-      { name: "Sara Blakely", reason: "Built Spanx alone, brick by brick, from a $5k idea to a billion-dollar company." },
+      { name: "Steve Wozniak", reason: "Built the Apple I and II in a garage with zero fanfare — his engineering spoke so loudly he never had to." },
+      { name: "James Dyson", reason: "Made 5,127 prototypes alone before releasing a product, letting the work carry all the weight." },
+      { name: "Shigeru Miyamoto", reason: "Quietly revolutionised interactive entertainment by building worlds people fell in love with, not pitching ideas." },
     ],
   },
   "Bold Builder": {
@@ -155,9 +155,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Moves so fast they sometimes leave the team behind without realising.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
-      { name: "Jensen Huang", reason: "Obsessive executor who turned vision into hardware dominance." },
-      { name: "Kanye West", reason: "Relentlessly builds — albums, brands, collections — without waiting for permission." },
-      { name: "Sara Blakely", reason: "Built Spanx alone, brick by brick, from a $5k idea to a billion-dollar company." },
+      { name: "Mark Cuban", reason: "Declared ambitions loudly, then built the companies and deals to back every word." },
+      { name: "Anna Wintour", reason: "Commanded Vogue with unwavering authority — she built an institution by making her standards impossible to ignore." },
+      { name: "Elon Musk", reason: "Publicly announces timelines, goals, and moonshots before the infrastructure exists — then builds until they do." },
     ],
   },
   "Grounded Builder": {
@@ -168,9 +168,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "So committed to the plan they can be slow to pivot when things change.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
-      { name: "Jensen Huang", reason: "Obsessive executor who turned vision into hardware dominance." },
-      { name: "Kanye West", reason: "Relentlessly builds — albums, brands, collections — without waiting for permission." },
-      { name: "Sara Blakely", reason: "Built Spanx alone, brick by brick, from a $5k idea to a billion-dollar company." },
+      { name: "Tim Cook", reason: "Turned Apple's supply chain into an unbeatable moat — patient, methodical building compounded into the world's most valuable company." },
+      { name: "Phil Knight", reason: "Built Nike over decades through disciplined incrementalism, never letting urgency override the long game." },
+      { name: "Howard Schultz", reason: "Scaled Starbucks from 11 stores to 30,000 by staying steady on culture and quality through every growth phase." },
     ],
   },
   "Relentless Disruptor": {
@@ -181,9 +181,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Challenges everything so consistently that people sometimes stop listening.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
-      { name: "Steve Jobs", reason: "Refused to accept the ordinary — built the extraordinary instead." },
-      { name: "Elon Musk", reason: "Sees every industry's assumptions as an invitation to challenge them." },
-      { name: "Malala Yousafzai", reason: "Disrupted a system that tried to silence her, with relentless conviction." },
+      { name: "Steve Jobs", reason: "Refused to ship anything ordinary — relentlessly tore up his own drafts until the product was impossible to ignore." },
+      { name: "Reed Hastings", reason: "Disrupted cable TV and then disrupted his own DVD business before the market could do it for him." },
+      { name: "Peter Thiel", reason: "Bets relentlessly on ideas that contradict consensus, building monopolies where others see crowded markets." },
     ],
   },
   "Quiet Disruptor": {
@@ -194,9 +194,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Sees the problem clearly but waits too long to say something about it.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
-      { name: "Steve Jobs", reason: "Refused to accept the ordinary — built the extraordinary instead." },
-      { name: "Elon Musk", reason: "Sees every industry's assumptions as an invitation to challenge them." },
-      { name: "Malala Yousafzai", reason: "Disrupted a system that tried to silence her, with quiet, unshakeable courage." },
+      { name: "Alan Turing", reason: "Quietly dismantled the assumption that machines couldn't think, changing history without ever seeking a stage." },
+      { name: "Michael Burry", reason: "Read data nobody else bothered with, arrived at a contrarian truth alone, and shorted the entire housing market." },
+      { name: "Nikola Tesla", reason: "Worked in near-isolation to overturn the established electrical order — his disruption was silent until it lit up the world." },
     ],
   },
   "Bold Disruptor": {
@@ -207,9 +207,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Can be so convinced they're right that they don't leave room for other perspectives.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
-      { name: "Steve Jobs", reason: "Refused to accept the ordinary — built the extraordinary instead." },
-      { name: "Elon Musk", reason: "Sees every industry's assumptions as an invitation to challenge them." },
-      { name: "Malala Yousafzai", reason: "Disrupted a system that tried to silence her, fearlessly and publicly." },
+      { name: "Jack Dorsey", reason: "Publicly challenged how communication and finance work, launching platforms that rewrote both conversations." },
+      { name: "Arianna Huffington", reason: "Called out hustle culture from a mainstream stage and built a media empire that changed how people consume news." },
+      { name: "Marc Andreessen", reason: "Declared software was eating the world before anyone believed it, then backed the disruption loudly and at scale." },
     ],
   },
   "Grounded Disruptor": {
@@ -220,9 +220,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Challenges the system quietly enough that the impact doesn't always land.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
-      { name: "Steve Jobs", reason: "Refused to accept the ordinary — built the extraordinary instead." },
-      { name: "Elon Musk", reason: "Sees every industry's assumptions as an invitation to challenge them." },
-      { name: "Malala Yousafzai", reason: "Disrupted a system that tried to silence her, with grounded, unwavering purpose." },
+      { name: "Ray Dalio", reason: "Challenged conventional investing wisdom with principles-first thinking, disrupting finance from a place of deep, steady conviction." },
+      { name: "Charlie Munger", reason: "Overturned orthodoxies in investing and business by applying calm, methodical contrary reasoning over decades." },
+      { name: "Nassim Taleb", reason: "Dismantled how the world thinks about risk and uncertainty through grounded, painstaking intellectual disruption." },
     ],
   },
   "Relentless Anchor": {
@@ -233,9 +233,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Gives so much to others that their own needs consistently come last.",
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
-      { name: "Tim Cook", reason: "The operational anchor who made Apple's vision scalable." },
-      { name: "Beyoncé", reason: "Relentlessly holds the standard — for herself and everyone around her." },
-      { name: "Satya Nadella", reason: "Transformed Microsoft by being the steady force that trusted people to grow." },
+      { name: "Beyoncé", reason: "Holds an unrelenting standard for herself and her entire team — no detail is too small, no output too polished." },
+      { name: "Kobe Bryant", reason: "Anchored every team he played for through obsessive preparation and a refusal to let standards drop." },
+      { name: "Indra Nooyi", reason: "Led PepsiCo for 12 years with tireless focus on people and long-term purpose, holding the organisation together through constant change." },
     ],
   },
   "Quiet Anchor": {
@@ -246,9 +246,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "So understated that people don't always realise how much they're carrying.",
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
-      { name: "Tim Cook", reason: "The operational anchor who made Apple's vision scalable." },
-      { name: "Beyoncé", reason: "Holds the standard quietly — her consistency speaks louder than any announcement." },
-      { name: "Satya Nadella", reason: "Transformed Microsoft by being the steady force that trusted people to grow." },
+      { name: "Fred Rogers", reason: "Anchored a generation of children with quiet, consistent warmth — no spotlight needed, just presence." },
+      { name: "Melinda Gates", reason: "Holds the moral and operational centre of one of the world's most consequential philanthropic organisations, without seeking the stage." },
+      { name: "Jacinda Ardern", reason: "Led New Zealand through crises with understated steadiness, earning deep trust by never performing more than she delivered." },
     ],
   },
   "Bold Anchor": {
@@ -259,9 +259,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Takes up so much space holding others together that they neglect their own direction.",
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
-      { name: "Tim Cook", reason: "The operational anchor who made Apple's vision scalable." },
-      { name: "Beyoncé", reason: "Anchors any room she's in — bold, reliable, and impossible to ignore." },
-      { name: "Satya Nadella", reason: "Transformed Microsoft by being the steady force that trusted people to grow." },
+      { name: "Michelle Obama", reason: "Publicly anchors values of empathy, service, and dignity — her bold presence makes whole rooms believe in what's possible." },
+      { name: "Brené Brown", reason: "Built a global platform on the bold anchor move of making vulnerability a strength rather than a weakness." },
+      { name: "Magic Johnson", reason: "Held his teams together through sheer force of spirit, commanding the floor while making everyone around him better." },
     ],
   },
   "Grounded Anchor": {
@@ -272,9 +272,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "So focused on stability that they can resist necessary change for too long.",
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
-      { name: "Tim Cook", reason: "The operational anchor who made Apple's vision scalable." },
-      { name: "Beyoncé", reason: "The grounded anchor behind decades of consistent, world-class output." },
-      { name: "Satya Nadella", reason: "Transformed Microsoft by being the steady force that trusted people to grow." },
+      { name: "Angela Merkel", reason: "Anchored Germany and the EU through 16 years of turbulence through calm, methodical, long-term governance." },
+      { name: "Satya Nadella", reason: "Transformed Microsoft not through disruption but through grounded, consistent trust-building that compounded over a decade." },
+      { name: "Tim Cook", reason: "Held Apple together after Jobs by being the steady, principled operational anchor the company needed to scale." },
     ],
   },
   "Relentless Catalyst": {
@@ -285,9 +285,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Moves so fast between ideas that the people they inspire can't keep up.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
-      { name: "Oprah Winfrey", reason: "Relentlessly catalyses growth in everyone she meets." },
-      { name: "Richard Branson", reason: "Turns people's belief in the impossible into companies." },
-      { name: "LeBron James", reason: "Makes every team he joins perform beyond what anyone expected." },
+      { name: "Oprah Winfrey", reason: "Relentlessly catalyses transformation in the people she platforms — her output across media, giving, and community never slows." },
+      { name: "Tony Robbins", reason: "Has spent decades in relentless motion across stages, books, and companies — fuelled by an obsession with unlocking human potential." },
+      { name: "LeBron James", reason: "Makes every team he joins perform beyond expectation through tireless investment in the people around him." },
     ],
   },
   "Quiet Catalyst": {
@@ -298,9 +298,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Unlocks everyone around them but rarely stops to invest in themselves.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
-      { name: "Oprah Winfrey", reason: "Catalyses breakthroughs through deep listening and quiet intuition." },
-      { name: "Richard Branson", reason: "Turns people's belief in the impossible into companies." },
-      { name: "LeBron James", reason: "Makes every team he joins perform beyond what anyone expected." },
+      { name: "Sheryl Sandberg", reason: "Shifted the conversation around women in leadership through precise, understated advocacy that moved organisations from the inside." },
+      { name: "Susan Cain", reason: "Catalysed a global rethink of introversion with a quiet conviction that didn't need a loud stage to reshape workplaces worldwide." },
+      { name: "Fred Rogers", reason: "Changed how children understand themselves through the gentlest possible catalysis — a quiet presence that unlocked emotional growth." },
     ],
   },
   "Bold Catalyst": {
@@ -311,9 +311,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "So focused on what's possible that they underestimate what's actually hard.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
-      { name: "Oprah Winfrey", reason: "Electric in any room — changes what people believe is possible for themselves." },
-      { name: "Richard Branson", reason: "Turns people's belief in the impossible into companies." },
-      { name: "LeBron James", reason: "Makes every team he joins perform beyond what anyone expected." },
+      { name: "Richard Branson", reason: "Publicly declares belief in people and ideas — turning his enthusiasm into companies that pull others along with him." },
+      { name: "Gary Vaynerchuk", reason: "Catalyses ambition at scale from a very loud stage, making millions of people feel seen and capable of more." },
+      { name: "Brené Brown", reason: "Walked boldly onto global stages and catalysed a cultural shift in how people talk about courage and belonging." },
     ],
   },
   "Grounded Catalyst": {
@@ -324,9 +324,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "So invested in the team's success that they downplay their own contribution.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
-      { name: "Oprah Winfrey", reason: "Consistently catalyses growth in people through warmth and grounded presence." },
-      { name: "Richard Branson", reason: "Turns people's belief in the impossible into companies." },
-      { name: "LeBron James", reason: "Makes every team he joins perform beyond what anyone expected." },
+      { name: "Nelson Mandela", reason: "Catalysed national transformation through 27 years of patient, grounded conviction — then held a fractured country together with steady purpose." },
+      { name: "Maya Angelou", reason: "Unlocked something in every reader and listener through calm, earned wisdom that never needed urgency to move people." },
+      { name: "Jacinda Ardern", reason: "Catalysed empathetic leadership on a world stage through grounded consistency, proving steadiness can be as galvanising as fire." },
     ],
   },
   "Relentless Sovereign": {
@@ -337,9 +337,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Takes on everything because they can, until they're spread too thin to excel at any of it.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
-      { name: "Barack Obama", reason: "Brought vision, execution, and humanity to the world's most complex job." },
-      { name: "Rihanna", reason: "Sovereign across music, beauty, and fashion — relentlessly expanding what's possible." },
-      { name: "Jeff Bezos", reason: "Held the long vision and drove the daily execution simultaneously." },
+      { name: "Jeff Bezos", reason: "Relentlessly expanded Amazon's scope across a dozen industries simultaneously, never pausing to consolidate before pushing further." },
+      { name: "Rihanna", reason: "Built dominant positions in music, beauty, and fashion in parallel — a sovereign who never stops adding territory." },
+      { name: "Patrick Mahomes", reason: "Combines relentless competitive drive with full-field vision — adapting mid-play at a pace that consistently overwhelms everyone else." },
     ],
   },
   "Quiet Sovereign": {
@@ -350,9 +350,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "So self-sufficient that people don't always feel needed or invited in.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
-      { name: "Barack Obama", reason: "Brought vision, execution, and humanity to the world's most complex job." },
-      { name: "Rihanna", reason: "Moves in silence, then changes the industry entirely." },
-      { name: "Jeff Bezos", reason: "Held the long vision and drove the daily execution simultaneously." },
+      { name: "Barack Obama", reason: "Held vision and execution across the world's most complex job, doing it with a quiet composure that made the range invisible." },
+      { name: "Bill Gates", reason: "Built Microsoft as a full-stack sovereign — setting technical direction, managing operations, and shaping industry quietly from every angle." },
+      { name: "Beyoncé", reason: "Operates across music, film, fashion, and philanthropy as a quiet sovereign — the scale only visible when you step back to see the whole." },
     ],
   },
   "Bold Sovereign": {
@@ -363,9 +363,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Can dominate a room so naturally that collaboration becomes performance rather than partnership.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
-      { name: "Barack Obama", reason: "Brought vision, execution, and humanity to the world's most complex job." },
-      { name: "Rihanna", reason: "Commands every room and every industry she enters." },
-      { name: "Jeff Bezos", reason: "Held the long vision and drove the daily execution simultaneously." },
+      { name: "Jay-Z", reason: "Built music, spirits, sports, and media empires while boldly declaring his ambition — a sovereign who claims every room before entering it." },
+      { name: "Elon Musk", reason: "Commands the narrative across SpaceX, Tesla, and X simultaneously, projecting sovereign range from a very loud public position." },
+      { name: "Oprah Winfrey", reason: "A bold sovereign who built an empire across media, film, and philanthropy while making her authority feel like an open invitation." },
     ],
   },
   "Grounded Sovereign": {
@@ -376,9 +376,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "So balanced that they sometimes lack the single-minded intensity a moment demands.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
-      { name: "Barack Obama", reason: "Brought vision, execution, and humanity to the world's most complex job." },
-      { name: "Rihanna", reason: "Grounded at the centre of multiple empires, built with quiet, deliberate range." },
-      { name: "Jeff Bezos", reason: "Held the long vision and drove the daily execution simultaneously." },
+      { name: "Warren Buffett", reason: "A sovereign across investing, capital allocation, and public influence — built over decades through patient, grounded compounding." },
+      { name: "Angela Merkel", reason: "Governed with full-spectrum sovereign range — strategic vision, operational control, and crisis leadership — all from a place of methodical calm." },
+      { name: "Serena Williams", reason: "Built a dominant multi-decade sporting legacy and a business empire through grounded discipline that never confused range with recklessness." },
     ],
   },
 };

@@ -71,9 +71,24 @@ export function getIndustryRecommendations(
   return INDUSTRY_MAP[archetype][key];
 }
 
-export const PREFIX_DESCRIPTIONS: Record<Prefix, string> = {
+export const DIMENSION_DESCRIPTIONS: Record<Prefix, string> = {
   Relentless: "You don't stop. Where others slow down, you accelerate. Your output is relentless — not because you're working harder, but because you simply don't know how to half-commit.",
   Quiet: "You don't need the room to know you're in it. Your power is understated and that's by design. The best work you do, nobody sees coming.",
   Bold: "You walk into rooms like you own them — not out of arrogance, but out of conviction. You set the pace, frame the narrative, and make other people feel like they're capable of more.",
   Grounded: "Nothing rattles you. While everyone else is reacting, you're observing. Your steadiness isn't passive — it's the most active thing in the room.",
+};
+
+export const ARCHETYPE_POPULATION: Record<Archetype, number> = {
+  Builder: 24,
+  Anchor: 22,
+  Catalyst: 21,
+  Sovereign: 18,
+  Disruptor: 15,
+};
+
+export const DIMENSION_POPULATION: Record<Prefix, number> = {
+  Bold: 31,
+  Grounded: 27,
+  Quiet: 25,
+  Relentless: 17,
 };
