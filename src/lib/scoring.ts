@@ -131,7 +131,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Jensen Huang", reason: "Ran 30-year sprints at Nvidia — obsessive output that never let up until the world caught up to his vision." },
       { name: "Sara Blakely", reason: "Built Spanx from a $5k idea alone, shipping product every day before anyone in the industry took her seriously." },
-      { name: "Kanye West", reason: "Released albums, fashion lines, and architecture projects in parallel — relentless creation that never waited for permission." },
+      { name: "Elon Musk", reason: "Built SpaceX, Tesla, and Neuralink in parallel — an unrelenting output machine who ships rockets, cars, and brain chips simultaneously." },
     ],
   },
   "Quiet Builder": {
@@ -142,9 +142,9 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Does the work without taking credit, then wonders why they're overlooked.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
-      { name: "Steve Wozniak", reason: "Built the Apple I and II in a garage with zero fanfare — his engineering spoke so loudly he never had to." },
+      { name: "Jony Ive", reason: "Designed the iMac, iPod, and iPhone in near-silence — his work spoke so loudly he never had to." },
       { name: "James Dyson", reason: "Made 5,127 prototypes alone before releasing a product, letting the work carry all the weight." },
-      { name: "Shigeru Miyamoto", reason: "Quietly revolutionised interactive entertainment by building worlds people fell in love with, not pitching ideas." },
+      { name: "Hayao Miyazaki", reason: "Handcrafted entire cinematic worlds frame by frame over decades, building an animation legacy through obsessive, solitary craftsmanship." },
     ],
   },
   "Bold Builder": {
@@ -157,7 +157,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Mark Cuban", reason: "Declared ambitions loudly, then built the companies and deals to back every word." },
       { name: "Anna Wintour", reason: "Commanded Vogue with unwavering authority — she built an institution by making her standards impossible to ignore." },
-      { name: "Elon Musk", reason: "Publicly announces timelines, goals, and moonshots before the infrastructure exists — then builds until they do." },
+      { name: "Gary Vaynerchuk", reason: "Built a media and marketing empire by declaring where the world was going, then building companies to prove it." },
     ],
   },
   "Grounded Builder": {
@@ -183,7 +183,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Steve Jobs", reason: "Refused to ship anything ordinary — relentlessly tore up his own drafts until the product was impossible to ignore." },
       { name: "Reed Hastings", reason: "Disrupted cable TV and then disrupted his own DVD business before the market could do it for him." },
-      { name: "Peter Thiel", reason: "Bets relentlessly on ideas that contradict consensus, building monopolies where others see crowded markets." },
+      { name: "Travis Kalanick", reason: "Relentlessly dismantled the global taxi industry before it knew what was happening — built Uber by refusing to accept the status quo was fixed." },
     ],
   },
   "Quiet Disruptor": {
@@ -194,8 +194,8 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     blindSpot: "Sees the problem clearly but waits too long to say something about it.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
-      { name: "Alan Turing", reason: "Quietly dismantled the assumption that machines couldn't think, changing history without ever seeking a stage." },
-      { name: "Michael Burry", reason: "Read data nobody else bothered with, arrived at a contrarian truth alone, and shorted the entire housing market." },
+      { name: "Elon Musk", reason: "Worked in near-isolation on electric vehicles and private rocketry long before they were mainstream — disrupting industries one quiet, obsessive bet at a time." },
+      { name: "Yuval Noah Harari", reason: "Overturned how the world thinks about humanity and technology through deep, solitary research that reached hundreds of millions of readers." },
       { name: "Nikola Tesla", reason: "Worked in near-isolation to overturn the established electrical order — his disruption was silent until it lit up the world." },
     ],
   },
@@ -209,7 +209,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Jack Dorsey", reason: "Publicly challenged how communication and finance work, launching platforms that rewrote both conversations." },
       { name: "Arianna Huffington", reason: "Called out hustle culture from a mainstream stage and built a media empire that changed how people consume news." },
-      { name: "Marc Andreessen", reason: "Declared software was eating the world before anyone believed it, then backed the disruption loudly and at scale." },
+      { name: "Kanye West", reason: "Declared himself a genius and then disrupted music, fashion, and culture with output that routinely forced the world to reckon with his terms." },
     ],
   },
   "Grounded Disruptor": {
@@ -221,8 +221,8 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
       { name: "Ray Dalio", reason: "Challenged conventional investing wisdom with principles-first thinking, disrupting finance from a place of deep, steady conviction." },
-      { name: "Charlie Munger", reason: "Overturned orthodoxies in investing and business by applying calm, methodical contrary reasoning over decades." },
-      { name: "Nassim Taleb", reason: "Dismantled how the world thinks about risk and uncertainty through grounded, painstaking intellectual disruption." },
+      { name: "Naval Ravikant", reason: "Dismantled conventional thinking about wealth, status, and leverage through calm, methodical reasoning that rewired how a generation thinks about work." },
+      { name: "Jordan Peterson", reason: "Challenged cultural orthodoxies with steady, structured arguments — methodically disrupting mainstream assumptions about identity, meaning, and responsibility." },
     ],
   },
   "Relentless Anchor": {
@@ -235,7 +235,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Beyoncé", reason: "Holds an unrelenting standard for herself and her entire team — no detail is too small, no output too polished." },
       { name: "Kobe Bryant", reason: "Anchored every team he played for through obsessive preparation and a refusal to let standards drop." },
-      { name: "Indra Nooyi", reason: "Led PepsiCo for 12 years with tireless focus on people and long-term purpose, holding the organisation together through constant change." },
+      { name: "Serena Williams", reason: "Anchored women's tennis for two decades through tireless dedication — her relentlessness held the sport to a higher standard than it had ever set for itself." },
     ],
   },
   "Quiet Anchor": {
@@ -260,7 +260,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
       { name: "Michelle Obama", reason: "Publicly anchors values of empathy, service, and dignity — her bold presence makes whole rooms believe in what's possible." },
-      { name: "Brené Brown", reason: "Built a global platform on the bold anchor move of making vulnerability a strength rather than a weakness." },
+      { name: "Oprah Winfrey", reason: "Held a global audience together through bold, empathetic presence — her platform became the most trusted anchor in American culture." },
       { name: "Magic Johnson", reason: "Held his teams together through sheer force of spirit, commanding the floor while making everyone around him better." },
     ],
   },
@@ -274,7 +274,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Angela Merkel", reason: "Anchored Germany and the EU through 16 years of turbulence through calm, methodical, long-term governance." },
       { name: "Satya Nadella", reason: "Transformed Microsoft not through disruption but through grounded, consistent trust-building that compounded over a decade." },
-      { name: "Tim Cook", reason: "Held Apple together after Jobs by being the steady, principled operational anchor the company needed to scale." },
+      { name: "Warren Buffett", reason: "Has anchored Berkshire Hathaway and investor confidence for six decades through patient, grounded consistency that never wavered." },
     ],
   },
   "Relentless Catalyst": {
@@ -286,7 +286,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Oprah Winfrey", reason: "Relentlessly catalyses transformation in the people she platforms — her output across media, giving, and community never slows." },
-      { name: "Tony Robbins", reason: "Has spent decades in relentless motion across stages, books, and companies — fuelled by an obsession with unlocking human potential." },
+      { name: "Will Smith", reason: "Spent three decades relentlessly catalysing his audiences — from music to film to social media, always investing in unlocking something in the people watching." },
       { name: "LeBron James", reason: "Makes every team he joins perform beyond expectation through tireless investment in the people around him." },
     ],
   },
@@ -299,8 +299,8 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Sheryl Sandberg", reason: "Shifted the conversation around women in leadership through precise, understated advocacy that moved organisations from the inside." },
-      { name: "Susan Cain", reason: "Catalysed a global rethink of introversion with a quiet conviction that didn't need a loud stage to reshape workplaces worldwide." },
-      { name: "Fred Rogers", reason: "Changed how children understand themselves through the gentlest possible catalysis — a quiet presence that unlocked emotional growth." },
+      { name: "Malala Yousafzai", reason: "Catalysed a global conversation about girls' education through quiet, unwavering conviction that moved governments and millions of people." },
+      { name: "Brené Brown", reason: "Changed how people understand courage and vulnerability through careful research that catalysed a worldwide shift in how people talk about emotion." },
     ],
   },
   "Bold Catalyst": {
@@ -313,7 +313,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Richard Branson", reason: "Publicly declares belief in people and ideas — turning his enthusiasm into companies that pull others along with him." },
       { name: "Gary Vaynerchuk", reason: "Catalyses ambition at scale from a very loud stage, making millions of people feel seen and capable of more." },
-      { name: "Brené Brown", reason: "Walked boldly onto global stages and catalysed a cultural shift in how people talk about courage and belonging." },
+      { name: "Tony Robbins", reason: "Has spent decades on global stages boldly catalysing transformation in millions — making audiences believe they are capable of more than they imagined." },
     ],
   },
   "Grounded Catalyst": {
@@ -339,7 +339,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Jeff Bezos", reason: "Relentlessly expanded Amazon's scope across a dozen industries simultaneously, never pausing to consolidate before pushing further." },
       { name: "Rihanna", reason: "Built dominant positions in music, beauty, and fashion in parallel — a sovereign who never stops adding territory." },
-      { name: "Patrick Mahomes", reason: "Combines relentless competitive drive with full-field vision — adapting mid-play at a pace that consistently overwhelms everyone else." },
+      { name: "Cristiano Ronaldo", reason: "Built dominance across football, business, and global brand simultaneously — a sovereign who never stops expanding his territory." },
     ],
   },
   "Quiet Sovereign": {
@@ -352,7 +352,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     famousPeople: [
       { name: "Barack Obama", reason: "Held vision and execution across the world's most complex job, doing it with a quiet composure that made the range invisible." },
       { name: "Bill Gates", reason: "Built Microsoft as a full-stack sovereign — setting technical direction, managing operations, and shaping industry quietly from every angle." },
-      { name: "Beyoncé", reason: "Operates across music, film, fashion, and philanthropy as a quiet sovereign — the scale only visible when you step back to see the whole." },
+      { name: "Taylor Swift", reason: "Built and rebuilt a music empire on her own terms across multiple genres — a quiet sovereign whose strategic control of her career is only visible in retrospect." },
     ],
   },
   "Bold Sovereign": {
@@ -364,8 +364,8 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Jay-Z", reason: "Built music, spirits, sports, and media empires while boldly declaring his ambition — a sovereign who claims every room before entering it." },
-      { name: "Elon Musk", reason: "Commands the narrative across SpaceX, Tesla, and X simultaneously, projecting sovereign range from a very loud public position." },
-      { name: "Oprah Winfrey", reason: "A bold sovereign who built an empire across media, film, and philanthropy while making her authority feel like an open invitation." },
+      { name: "Kanye West", reason: "Claimed sovereignty over music, fashion, and culture from a very loud position — a bold sovereign who defines the terms before entering any room." },
+      { name: "Beyoncé", reason: "Commands music, film, fashion, and cultural conversation as a bold sovereign — her authority in every room is total before she speaks." },
     ],
   },
   "Grounded Sovereign": {

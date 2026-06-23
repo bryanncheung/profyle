@@ -154,6 +154,7 @@ async function render(req: NextRequest) {
   const blindSpot = sp.get("b") ?? "";
   const compat1   = sp.get("w1") ?? "";
   const compat2   = sp.get("w2") ?? "";
+  const pct       = sp.get("pct") ?? "";
 
   const gradient = GRADIENTS[archetype] ?? GRADIENTS.Builder;
   const prefixLabel = `The ${prefix}`;
@@ -204,21 +205,26 @@ async function render(req: NextRequest) {
         <div style={{
           position: "absolute", inset: 0,
           display: "flex", flexDirection: "column",
-          padding: `${22*S}px ${20*S}px ${18*S}px`,
+          padding: `${22*S}px ${20*S}px ${38*S}px`,
         }}>
 
           {/* Top row: PROFYLE only */}
-          <div style={{ display: "flex", marginBottom: `${14*S}px` }}>
+          <div style={{ display: "flex", marginBottom: `${10*S}px` }}>
             <span style={{ fontSize: `${8*S}px`, fontWeight: 800, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
               Profyle
             </span>
           </div>
 
-          {/* "I am" label */}
-          <div style={{ display: "flex", marginBottom: `${4*S}px` }}>
+          {/* "I am" label + percentage */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: `${8*S}px`, marginBottom: `${4*S}px` }}>
             <span style={{ fontSize: `${14*S}px`, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.75)", fontStyle: "italic" }}>
               I am
             </span>
+            {pct && (
+              <span style={{ fontSize: `${8.5*S}px`, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.03em" }}>
+                · only {pct}% of people
+              </span>
+            )}
           </div>
 
           {/* Prefix + wavy underline */}
@@ -251,7 +257,7 @@ async function render(req: NextRequest) {
           </div>
 
           {/* Attribute dots */}
-          <div style={{ display: "flex", flexDirection: "column", gap: `${9*S}px`, marginBottom: `${20*S}px` }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: `${7*S}px`, marginBottom: `${18*S}px` }}>
             {attrs.map(({ label, value }) => (
               <div key={label} style={{ display: "flex", alignItems: "center", gap: `${8*S}px` }}>
                 <span style={{ fontSize: `${7*S}px`, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", color: "rgba(255,255,255,0.82)", width: `${74*S}px` }}>
@@ -296,7 +302,7 @@ async function render(req: NextRequest) {
           )}
 
           {/* Blind spot */}
-          <div style={{ display: "flex", flexWrap: "wrap", fontSize: `${8.5*S}px`, fontWeight: 500, color: "rgba(255,255,255,0.82)", lineHeight: 1.5, marginBottom: `${14*S}px` }}>
+          <div style={{ display: "flex", flexWrap: "wrap", fontSize: `${8.5*S}px`, fontWeight: 500, color: "rgba(255,255,255,0.82)", lineHeight: 1.5, marginBottom: `${10*S}px` }}>
             <span style={{ fontWeight: 800, color: "#fff", marginRight: `${3*S}px` }}>Blind spot —</span>
             <span>{blindSpot}</span>
           </div>

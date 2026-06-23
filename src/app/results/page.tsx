@@ -18,6 +18,9 @@ import type { ShareCardHandle } from "@/components/ShareCard";
 
 function buildCardImageUrl(result: QuizResult): string {
   const base = typeof window !== "undefined" ? window.location.origin : "";
+  const archetypePct = ARCHETYPE_POPULATION[result.archetype] ?? 20;
+  const dimPct = DIMENSION_POPULATION[result.prefix] ?? 25;
+  const permutationPct = Math.round(archetypePct * dimPct / 100 * 10) / 10;
   const p = new URLSearchParams({
     p: result.prefix,
     a: result.archetype,
@@ -33,6 +36,7 @@ function buildCardImageUrl(result: QuizResult): string {
     b: result.blindSpot,
     w1: result.compatibleWith[0] ?? "",
     w2: result.compatibleWith[1] ?? "",
+    pct: String(permutationPct),
   });
   return `${base}/api/card-image?${p}`;
 }
