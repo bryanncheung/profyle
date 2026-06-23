@@ -18,8 +18,15 @@ const W = 270 * S;
 const H = 480 * S;
 
 export async function GET(req: NextRequest): Promise<Response> {
-  try { return await render(req); }
-  catch (err) {
+  try {
+    const img = await render(req);
+    return new Response(img.body, {
+      headers: {
+        ...Object.fromEntries(img.headers.entries()),
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    });
+  } catch (err) {
     return new Response(JSON.stringify({ error: String(err) }), { status: 500, headers: { "content-type": "application/json" } });
   }
 }
