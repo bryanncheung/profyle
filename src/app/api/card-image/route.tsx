@@ -10,8 +10,6 @@ const GRADIENTS: Record<string, string> = {
   Catalyst:  "linear-gradient(175deg, #907800 0%, #AEA000 22%, #C4B830 48%, #D8CC70 70%, #EADFA8 85%, #FAF8E8 100%)",
   Sovereign: "linear-gradient(175deg, #7040C8 0%, #9060DE 22%, #AA80EC 48%, #C4A8F8 70%, #D8C4FE 85%, #EDE6FF 100%)",
 };
-const ENTRY_BASES: Record<string, number> = { Builder: 1203, Disruptor: 2891, Anchor: 3540, Catalyst: 4126, Sovereign: 5407 };
-const PREFIX_OFFSET: Record<string, number> = { Relentless: 0, Quiet: 412, Bold: 718, Grounded: 1034 };
 
 const S = 3;
 const W = 270 * S;
@@ -159,7 +157,6 @@ async function render(req: NextRequest) {
 
   const gradient = GRADIENTS[archetype] ?? GRADIENTS.Builder;
   const prefixLabel = `The ${prefix}`;
-  const entry = `#${((ENTRY_BASES[archetype] ?? 0) + (PREFIX_OFFSET[prefix] ?? 0)).toLocaleString("en-US")}`;
   const adjectives = [adj1, adj2, adj3].filter(Boolean);
   const compats = [compat1, compat2].filter(Boolean);
   const attrs = [
@@ -210,13 +207,17 @@ async function render(req: NextRequest) {
           padding: `${22*S}px ${20*S}px ${18*S}px`,
         }}>
 
-          {/* Top row: PROFYLE + entry */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: `${18*S}px` }}>
+          {/* Top row: PROFYLE only */}
+          <div style={{ display: "flex", marginBottom: `${14*S}px` }}>
             <span style={{ fontSize: `${8*S}px`, fontWeight: 800, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
               Profyle
             </span>
-            <span style={{ fontSize: `${9*S}px`, fontWeight: 800, color: "rgba(255,255,255,0.55)" }}>
-              {entry}
+          </div>
+
+          {/* "I am" label */}
+          <div style={{ display: "flex", marginBottom: `${4*S}px` }}>
+            <span style={{ fontSize: `${9*S}px`, fontWeight: 500, letterSpacing: "0.06em", color: "rgba(255,255,255,0.6)", fontStyle: "italic" }}>
+              I am
             </span>
           </div>
 
