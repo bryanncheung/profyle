@@ -216,7 +216,7 @@ async function render(req: NextRequest) {
 
           {/* "I am" label */}
           <div style={{ display: "flex", marginBottom: `${4*S}px` }}>
-            <span style={{ fontSize: `${9*S}px`, fontWeight: 500, letterSpacing: "0.06em", color: "rgba(255,255,255,0.6)", fontStyle: "italic" }}>
+            <span style={{ fontSize: `${14*S}px`, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.75)", fontStyle: "italic" }}>
               I am
             </span>
           </div>
