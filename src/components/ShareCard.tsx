@@ -226,35 +226,35 @@ function WavyUnderline({ width = 60 }: { width?: number }) {
 // ─── Adjective badge shapes ──────────────────────────────────────────────────
 
 const ADJ_SHAPES = [
-  // star
+  // star — fixed-size container; SVG is absolute background, text is flex-centered (no transform)
   (adj: string) => (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0 }}>
-      <svg width="62" height="26" viewBox="0 0 62 26" fill="none" style={{ display: "block" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: "62px", height: "26px" }}>
+      <svg width="62" height="26" viewBox="0 0 62 26" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
         <path d="M31 1 L35 8 L43 5 L40 13 L48 16 L40 19 L43 23 L35 20 L31 25 L27 20 L19 23 L22 19 L14 16 L22 13 L19 5 L27 8 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>
       </svg>
-      <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
+      <span style={{ position: "relative", zIndex: 1, fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
         {adj}
       </span>
     </span>
   ),
   // hexagon
   (adj: string) => (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0 }}>
-      <svg width="70" height="26" viewBox="0 0 70 26" fill="none" style={{ display: "block" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: "70px", height: "26px" }}>
+      <svg width="70" height="26" viewBox="0 0 70 26" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
         <path d="M12 2 L58 2 L68 13 L58 24 L12 24 L2 13 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>
       </svg>
-      <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
+      <span style={{ position: "relative", zIndex: 1, fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
         {adj}
       </span>
     </span>
   ),
   // oval
   (adj: string) => (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0 }}>
-      <svg width="62" height="26" viewBox="0 0 62 26" fill="none" style={{ display: "block" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: "62px", height: "26px" }}>
+      <svg width="62" height="26" viewBox="0 0 62 26" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
         <ellipse cx="31" cy="13" rx="28" ry="11" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8" transform="rotate(-6 31 13)"/>
       </svg>
-      <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
+      <span style={{ position: "relative", zIndex: 1, fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
         {adj}
       </span>
     </span>
@@ -265,14 +265,14 @@ const ADJ_SHAPES = [
 
 function CompatPill({ archetype, shape = "pill" }: { archetype: Archetype; shape?: "pill" | "diamond" }) {
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0 }}>
-      <svg width="84" height="28" viewBox="0 0 84 28" fill="none" style={{ display: "block" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: "84px", height: "28px" }}>
+      <svg width="84" height="28" viewBox="0 0 84 28" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
         {shape === "pill"
           ? <path d="M14 2 L70 2 Q82 2 82 14 Q82 26 70 26 L14 26 Q2 26 2 14 Q2 2 14 2 Z" fill="rgba(255,255,255,0.22)" stroke="rgba(255,255,255,0.4)" strokeWidth="1"/>
           : <path d="M14 2 L70 2 L82 14 L70 26 L14 26 L2 14 Z" fill="rgba(255,255,255,0.22)" stroke="rgba(255,255,255,0.4)" strokeWidth="1"/>
         }
       </svg>
-      <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", display: "flex", alignItems: "center", gap: "4px", fontSize: "7.5px", fontWeight: 800, whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
+      <span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "4px", fontSize: "7.5px", fontWeight: 800, whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
         <MiniIcon archetype={archetype}/>
         The {archetype}
       </span>
@@ -499,13 +499,13 @@ function LinkedInCard({ result, cardRef }: { result: QuizResult; cardRef: React.
         {/* Adjective badges (smaller) */}
         <div style={{ display: "flex", gap: "5px" }}>
           {result.adjectives.map((adj, i) => (
-            <span key={adj} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0 }}>
-              <svg width={i === 1 ? 62 : 54} height="22" viewBox={`0 0 ${i === 1 ? 66 : 56} 24`} fill="none" style={{ display: "block" }}>
+            <span key={adj} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: i === 1 ? "62px" : "54px", height: "22px" }}>
+              <svg width={i === 1 ? 62 : 54} height="22" viewBox={`0 0 ${i === 1 ? 66 : 56} 24`} fill="none" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}>
                 {i === 0 && <path d="M28 1 L32 8 L39 5 L37 12 L44 15 L37 18 L39 21 L32 18 L28 23 L24 18 L17 21 L19 18 L12 15 L19 12 L17 5 L24 8 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>}
                 {i === 1 && <path d="M10 2 L56 2 L64 12 L56 22 L10 22 L2 12 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8"/>}
                 {i === 2 && <ellipse cx="28" cy="12" rx="25" ry="10" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.45)" strokeWidth="0.8" transform="rotate(-5 28 12)"/>}
               </svg>
-              <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: "7px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
+              <span style={{ position: "relative", zIndex: 1, fontSize: "7px", fontWeight: 800, letterSpacing: "0.03em", whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
                 {adj}
               </span>
             </span>
@@ -524,14 +524,14 @@ function LinkedInCard({ result, cardRef }: { result: QuizResult; cardRef: React.
           </p>
           <div style={{ display: "flex", gap: "6px" }}>
             {result.compatibleWith.map((arch, i) => (
-              <span key={arch} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0 }}>
-                <svg width="78" height="24" viewBox="0 0 78 24" fill="none" style={{ display: "block" }}>
+              <span key={arch} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", position: "relative", flexShrink: 0, width: "78px", height: "24px" }}>
+                <svg width="78" height="24" viewBox="0 0 78 24" fill="none" style={{ position: "absolute", top: 0, left: 0 }}>
                   {i === 0
                     ? <path d="M12 2 L66 2 Q76 2 76 12 Q76 22 66 22 L12 22 Q2 22 2 12 Q2 2 12 2 Z" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/>
                     : <path d="M12 2 L66 2 L76 12 L66 22 L12 22 L2 12 Z" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.35)" strokeWidth="1"/>
                   }
                 </svg>
-                <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", display: "flex", alignItems: "center", gap: "3px", fontSize: "7px", fontWeight: 800, whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
+                <span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "3px", fontSize: "7px", fontWeight: 800, whiteSpace: "nowrap", color: "rgba(0,0,0,0.72)" }}>
                   <MiniIcon archetype={arch}/>
                   The {arch}
                 </span>
@@ -546,9 +546,9 @@ function LinkedInCard({ result, cardRef }: { result: QuizResult; cardRef: React.
 
 // ─── Capture helpers ─────────────────────────────────────────────────────────
 
-// Use html2canvas to screenshot the actual rendered DOM element (pixel-perfect
-// match to the on-screen preview). Falls back to the canvas renderer if
-// html2canvas throws (e.g. older iOS Safari).
+// Capture the card via html2canvas. Clones the element off-screen so the live
+// preview never flickers (no style mutations on the visible element).
+// Falls back to the canvas renderer if html2canvas throws.
 async function captureCardElement(
   el: HTMLDivElement | null,
   result: QuizResult,
@@ -556,9 +556,13 @@ async function captureCardElement(
   if (el) {
     try {
       const { default: h2c } = await import("html2canvas");
-      const prevShadow = el.style.boxShadow;
-      el.style.boxShadow = "none"; // strip drop-shadow so PNG has clean edges
-      const canvas = await h2c(el, {
+      const clone = el.cloneNode(true) as HTMLDivElement;
+      clone.style.boxShadow = "none";
+      clone.style.position = "absolute";
+      clone.style.top = "0";
+      clone.style.left = "-9999px";
+      document.body.appendChild(clone);
+      const canvas = await h2c(clone, {
         scale: 3,
         useCORS: true,
         allowTaint: false,
@@ -566,7 +570,7 @@ async function captureCardElement(
         logging: false,
         removeContainer: true,
       });
-      el.style.boxShadow = prevShadow;
+      document.body.removeChild(clone);
       return new Promise<Blob | null>(resolve => canvas.toBlob(resolve, "image/png"));
     } catch (err) {
       console.warn("html2canvas failed, falling back to canvas renderer:", err);
@@ -594,9 +598,9 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
 
     useImperativeHandle(ref, () => ({
       async captureStory(): Promise<Blob | null> {
-        // Use canvas renderer for pre-caching — it's fast and works reliably on iOS.
-        // Desktop "Save as PNG" uses captureCardElement (html2canvas) for quality.
-        return renderCardToBlob(result);
+        // Use html2canvas so iOS share-sheet image matches the preview exactly.
+        // The clone approach means no visual flash on the live card.
+        return captureCardElement(cardRef.current, result);
       },
     }));
 
