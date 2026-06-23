@@ -582,9 +582,9 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
 
     useImperativeHandle(ref, () => ({
       async captureStory(): Promise<Blob | null> {
-        // Capture the visible element directly — no clone, no style mutations.
-        // cardRef has no boxShadow so the output is clean.
-        return captureCardElement(cardRef.current, result);
+        // Canvas renderer: instant, reliable, no dynamic imports.
+        // Custom shapes are now implemented so output matches the preview.
+        return renderCardToBlob(result);
       },
     }));
 
@@ -596,28 +596,42 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
       const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
         (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 
-      // iOS: use native share sheet (lets user Save to Photos / Files).
-      // Must call navigator.share synchronously within the user gesture, so
-      // we can only do this when the blob is already pre-cached (no await before share).
-      const cachedBlob = mobileBlob && mobileBlob.size > 0 ? mobileBlob : null;
-      if (isIOS && cachedBlob && navigator.share) {
-        const file = new File([cachedBlob], filename, { type: "image/png" });
-        if (navigator.canShare?.({ files: [file] })) {
-          try { await navigator.share({ files: [file] }); }
-          catch (err) { if ((err as Error)?.name !== "AbortError") console.error("share failed:", err); }
+      if (isIOS) {
+        // iOS: use native share sheet. Pre-cached canvas blob is always ready
+        // (renderCardToBlob is synchronous-ish and never fails).
+        // If somehow missing, render on demand within the gesture context.
+        let blob: Blob | null = (mobileBlob && mobileBlob.size > 0) ? mobileBlob : null;
+        if (!blob) blob = await renderCardToBlob(result);
+
+        if (blob && navigator.share) {
+          const file = new File([blob], filename, { type: "image/png" });
+          if (navigator.canShare?.({ files: [file] })) {
+            try { await navigator.share({ files: [file] }); }
+            catch (err) { if ((err as Error)?.name !== "AbortError") console.error("share failed:", err); }
+            setIsDownloading(false);
+            return;
+          }
+        }
+
+        // Fallback: open image in new tab so user can long-press → Save to Photos
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          window.open(url, "_blank");
+          setTimeout(() => URL.revokeObjectURL(url), 60000);
           setIsDownloading(false);
           return;
         }
+
+        setIsDownloading(false);
+        return;
       }
 
-      // Desktop + Android: always capture via html2canvas for pixel-perfect match to preview.
-      // (The pre-cached canvas blob is only used for the iOS share sheet above.)
+      // Desktop + Android: html2canvas → <a download>
       try {
         const rendered = await captureCardElement(cardRef.current, result);
         if (!rendered || rendered.size === 0) throw new Error("could not generate image");
-        const blob = rendered;
 
-        const objectUrl = URL.createObjectURL(blob);
+        const objectUrl = URL.createObjectURL(rendered);
         const a = document.createElement("a");
         a.href = objectUrl;
         a.download = filename;
