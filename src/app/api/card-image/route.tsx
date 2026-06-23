@@ -215,16 +215,14 @@ async function render(req: NextRequest) {
             </span>
           </div>
 
-          {/* "I am" label + percentage */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: `${8*S}px`, marginBottom: `${4*S}px` }}>
+          {/* "I am" label */}
+          <div style={{ display: "flex", flexDirection: "column", marginBottom: `${4*S}px` }}>
             <span style={{ fontSize: `${14*S}px`, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.75)", fontStyle: "italic" }}>
               I am
             </span>
-            {pct && (
-              <span style={{ fontSize: `${8.5*S}px`, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.03em" }}>
-                · only {pct}% of people
-              </span>
-            )}
+            <span style={{ fontSize: `${8*S}px`, fontWeight: 600, color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em", marginTop: `${2*S}px` }}>
+              {pct ? `only ${pct}% of people` : ""}
+            </span>
           </div>
 
           {/* Prefix + wavy underline */}
