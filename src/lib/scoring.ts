@@ -126,7 +126,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You're the person who makes things real. While others are still debating the idea, you've already started. There's a quiet satisfaction you get from tangible progress that most people don't understand — for you, a finished thing will always beat a perfect plan. People underestimate you until they see your output, and by then you're already onto the next thing.",
     howYouWork: "You work best with autonomy and a clear goal. Give you a problem and space to solve it and you'll deliver something nobody expected. You don't need a lot of meetings, check-ins, or validation — you need time and trust.",
     adjectives: ["Unstoppable", "Precise", "Driven"],
-    blindSpot: "Runs so fast they forget to check if they're still going the right way.",
+    blindSpot: "Builds so fast they risk perfecting the wrong thing before realising it.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
       { name: "Jensen Huang", reason: "Ran 30-year sprints at Nvidia — obsessive output that never let up until the world caught up to his vision." },
@@ -139,7 +139,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You're the person who makes things real. While others are still debating the idea, you've already started. There's a quiet satisfaction you get from tangible progress that most people don't understand — for you, a finished thing will always beat a perfect plan. People underestimate you until they see your output, and by then you're already onto the next thing.",
     howYouWork: "You work best with autonomy and a clear goal. Give you a problem and space to solve it and you'll deliver something nobody expected. You don't need a lot of meetings, check-ins, or validation — you need time and trust.",
     adjectives: ["Focused", "Dependable", "Sharp"],
-    blindSpot: "Does the work without taking credit, then wonders why they're overlooked.",
+    blindSpot: "Does exceptional work and then waits — indefinitely — for someone to notice.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
       { name: "Jony Ive", reason: "Designed the iMac, iPod, and iPhone in near-silence — his work spoke so loudly he never had to." },
@@ -152,7 +152,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You're the person who makes things real. While others are still debating the idea, you've already started. There's a quiet satisfaction you get from tangible progress that most people don't understand — for you, a finished thing will always beat a perfect plan. People underestimate you until they see your output, and by then you're already onto the next thing.",
     howYouWork: "You work best with autonomy and a clear goal. Give you a problem and space to solve it and you'll deliver something nobody expected. You don't need a lot of meetings, check-ins, or validation — you need time and trust.",
     adjectives: ["Decisive", "Ambitious", "Direct"],
-    blindSpot: "Moves so fast they sometimes leave the team behind without realising.",
+    blindSpot: "Makes big promises about what they're building, then has to ship under the weight of their own hype.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
       { name: "Mark Cuban", reason: "Declared ambitions loudly, then built the companies and deals to back every word." },
@@ -165,7 +165,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You're the person who makes things real. While others are still debating the idea, you've already started. There's a quiet satisfaction you get from tangible progress that most people don't understand — for you, a finished thing will always beat a perfect plan. People underestimate you until they see your output, and by then you're already onto the next thing.",
     howYouWork: "You work best with autonomy and a clear goal. Give you a problem and space to solve it and you'll deliver something nobody expected. You don't need a lot of meetings, check-ins, or validation — you need time and trust.",
     adjectives: ["Reliable", "Methodical", "Steady"],
-    blindSpot: "So committed to the plan they can be slow to pivot when things change.",
+    blindSpot: "Builds exactly what was agreed — even when what was agreed has quietly become wrong.",
     compatibleWith: ["Catalyst", "Disruptor"],
     famousPeople: [
       { name: "Tim Cook", reason: "Turned Apple's supply chain into an unbeatable moat — patient, methodical building compounded into the world's most valuable company." },
@@ -178,7 +178,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You have an almost allergic reaction to the way things have always been done. You notice inefficiencies, assumptions, and blind spots that others walk past every day — and you can't help but say something. You're not difficult, you're just operating at a different altitude. The best teams in the world need someone like you, even when they don't immediately realise it.",
     howYouWork: "You do your sharpest thinking alone, away from consensus and noise. Your ideas need space to develop before they're ready for the room. Once you've figured out what you think, you communicate it with a clarity that's hard to argue with.",
     adjectives: ["Relentless", "Unconventional", "Sharp"],
-    blindSpot: "Challenges everything so consistently that people sometimes stop listening.",
+    blindSpot: "Challenges so much, so often, that the one time it really matters people have stopped listening.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
       { name: "Steve Jobs", reason: "Refused to ship anything ordinary — relentlessly tore up his own drafts until the product was impossible to ignore." },
@@ -191,7 +191,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You have an almost allergic reaction to the way things have always been done. You notice inefficiencies, assumptions, and blind spots that others walk past every day — and you can't help but say something. You're not difficult, you're just operating at a different altitude. The best teams in the world need someone like you, even when they don't immediately realise it.",
     howYouWork: "You do your sharpest thinking alone, away from consensus and noise. Your ideas need space to develop before they're ready for the room. Once you've figured out what you think, you communicate it with a clarity that's hard to argue with.",
     adjectives: ["Perceptive", "Unconventional", "Deep"],
-    blindSpot: "Sees the problem clearly but waits too long to say something about it.",
+    blindSpot: "Watches the wrong thing happen in slow motion, certain someone else will eventually say something.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
       { name: "Elon Musk", reason: "Worked in near-isolation on electric vehicles and private rocketry long before they were mainstream — disrupting industries one quiet, obsessive bet at a time." },
@@ -204,7 +204,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You have an almost allergic reaction to the way things have always been done. You notice inefficiencies, assumptions, and blind spots that others walk past every day — and you can't help but say something. You're not difficult, you're just operating at a different altitude. The best teams in the world need someone like you, even when they don't immediately realise it.",
     howYouWork: "You do your sharpest thinking alone, away from consensus and noise. Your ideas need space to develop before they're ready for the room. Once you've figured out what you think, you communicate it with a clarity that's hard to argue with.",
     adjectives: ["Provocative", "Visionary", "Fearless"],
-    blindSpot: "Can be so convinced they're right that they don't leave room for other perspectives.",
+    blindSpot: "Says what needs to change so loudly they get excluded from the rooms where change actually happens.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
       { name: "Jack Dorsey", reason: "Publicly challenged how communication and finance work, launching platforms that rewrote both conversations." },
@@ -217,7 +217,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You have an almost allergic reaction to the way things have always been done. You notice inefficiencies, assumptions, and blind spots that others walk past every day — and you can't help but say something. You're not difficult, you're just operating at a different altitude. The best teams in the world need someone like you, even when they don't immediately realise it.",
     howYouWork: "You do your sharpest thinking alone, away from consensus and noise. Your ideas need space to develop before they're ready for the room. Once you've figured out what you think, you communicate it with a clarity that's hard to argue with.",
     adjectives: ["Thoughtful", "Independent", "Calm"],
-    blindSpot: "Challenges the system quietly enough that the impact doesn't always land.",
+    blindSpot: "Raises the right challenges so calmly that the system absorbs them without actually changing.",
     compatibleWith: ["Anchor", "Builder"],
     famousPeople: [
       { name: "Ray Dalio", reason: "Challenged conventional investing wisdom with principles-first thinking, disrupting finance from a place of deep, steady conviction." },
@@ -230,7 +230,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You are the person every high performing team quietly depends on. Not because you're the loudest or the most visible, but because you're the most reliable. When things get uncertain, people look to you — not for answers necessarily, but for steadiness. You have a rare ability to hold a team together under pressure without making it look like effort.",
     howYouWork: "You work best when you're connected to people and purpose. You're not just executing tasks, you're holding the fabric of the team together while doing it. Your consistency is your superpower — people build their best work on top of your reliability.",
     adjectives: ["Dependable", "Tireless", "Selfless"],
-    blindSpot: "Gives so much to others that their own needs consistently come last.",
+    blindSpot: "Pours everything into holding others steady until there's nothing left to steady themselves with.",
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
       { name: "Beyoncé", reason: "Holds an unrelenting standard for herself and her entire team — no detail is too small, no output too polished." },
@@ -243,7 +243,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You are the person every high performing team quietly depends on. Not because you're the loudest or the most visible, but because you're the most reliable. When things get uncertain, people look to you — not for answers necessarily, but for steadiness. You have a rare ability to hold a team together under pressure without making it look like effort.",
     howYouWork: "You work best when you're connected to people and purpose. You're not just executing tasks, you're holding the fabric of the team together while doing it. Your consistency is your superpower — people build their best work on top of your reliability.",
     adjectives: ["Steady", "Trustworthy", "Understated"],
-    blindSpot: "So understated that people don't always realise how much they're carrying.",
+    blindSpot: "Carries more than anyone realises, and never mentions it until they're already at the limit.",
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
       { name: "Fred Rogers", reason: "Anchored a generation of children with quiet, consistent warmth — no spotlight needed, just presence." },
@@ -256,7 +256,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You are the person every high performing team quietly depends on. Not because you're the loudest or the most visible, but because you're the most reliable. When things get uncertain, people look to you — not for answers necessarily, but for steadiness. You have a rare ability to hold a team together under pressure without making it look like effort.",
     howYouWork: "You work best when you're connected to people and purpose. You're not just executing tasks, you're holding the fabric of the team together while doing it. Your consistency is your superpower — people build their best work on top of your reliability.",
     adjectives: ["Warm", "Magnetic", "Grounding"],
-    blindSpot: "Takes up so much space holding others together that they neglect their own direction.",
+    blindSpot: "Becomes so central to holding things together that the team quietly stops functioning without them.",
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
       { name: "Michelle Obama", reason: "Publicly anchors values of empathy, service, and dignity — her bold presence makes whole rooms believe in what's possible." },
@@ -269,7 +269,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You are the person every high performing team quietly depends on. Not because you're the loudest or the most visible, but because you're the most reliable. When things get uncertain, people look to you — not for answers necessarily, but for steadiness. You have a rare ability to hold a team together under pressure without making it look like effort.",
     howYouWork: "You work best when you're connected to people and purpose. You're not just executing tasks, you're holding the fabric of the team together while doing it. Your consistency is your superpower — people build their best work on top of your reliability.",
     adjectives: ["Unshakeable", "Patient", "Loyal"],
-    blindSpot: "So focused on stability that they can resist necessary change for too long.",
+    blindSpot: "So good at absorbing turbulence that they protect the team from the disruption it actually needed.",
     compatibleWith: ["Disruptor", "Catalyst"],
     famousPeople: [
       { name: "Angela Merkel", reason: "Anchored Germany and the EU through 16 years of turbulence through calm, methodical, long-term governance." },
@@ -282,7 +282,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You operate through people. Your superpower isn't an idea or a skill — it's your ability to unlock both of those things in everyone around you. You make people feel capable of more than they thought, and that's rarer and more valuable than most people realise. The best versions of teams, projects, and companies have someone like you somewhere near the centre of them.",
     howYouWork: "You thrive in environments where collaboration is the currency. You're at your best when you're connecting people, ideas, and momentum — and at your worst when you're isolated or working in a silo. You need people the way some people need quiet.",
     adjectives: ["Energising", "Driven", "Infectious"],
-    blindSpot: "Moves so fast between ideas that the people they inspire can't keep up.",
+    blindSpot: "Lights fires across the room and moves on before knowing if any of them actually caught.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Oprah Winfrey", reason: "Relentlessly catalyses transformation in the people she platforms — her output across media, giving, and community never slows." },
@@ -295,7 +295,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You operate through people. Your superpower isn't an idea or a skill — it's your ability to unlock both of those things in everyone around you. You make people feel capable of more than they thought, and that's rarer and more valuable than most people realise. The best versions of teams, projects, and companies have someone like you somewhere near the centre of them.",
     howYouWork: "You thrive in environments where collaboration is the currency. You're at your best when you're connecting people, ideas, and momentum — and at your worst when you're isolated or working in a silo. You need people the way some people need quiet.",
     adjectives: ["Magnetic", "Intuitive", "Deep"],
-    blindSpot: "Unlocks everyone around them but rarely stops to invest in themselves.",
+    blindSpot: "Creates the conditions for everyone else's breakthrough and is rarely in the story they tell about it.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Sheryl Sandberg", reason: "Shifted the conversation around women in leadership through precise, understated advocacy that moved organisations from the inside." },
@@ -308,7 +308,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You operate through people. Your superpower isn't an idea or a skill — it's your ability to unlock both of those things in everyone around you. You make people feel capable of more than they thought, and that's rarer and more valuable than most people realise. The best versions of teams, projects, and companies have someone like you somewhere near the centre of them.",
     howYouWork: "You thrive in environments where collaboration is the currency. You're at your best when you're connecting people, ideas, and momentum — and at your worst when you're isolated or working in a silo. You need people the way some people need quiet.",
     adjectives: ["Electric", "Charismatic", "Visionary"],
-    blindSpot: "So focused on what's possible that they underestimate what's actually hard.",
+    blindSpot: "So magnetic on the vision that people leave the room energised but unclear on what to actually do.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Richard Branson", reason: "Publicly declares belief in people and ideas — turning his enthusiasm into companies that pull others along with him." },
@@ -321,7 +321,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You operate through people. Your superpower isn't an idea or a skill — it's your ability to unlock both of those things in everyone around you. You make people feel capable of more than they thought, and that's rarer and more valuable than most people realise. The best versions of teams, projects, and companies have someone like you somewhere near the centre of them.",
     howYouWork: "You thrive in environments where collaboration is the currency. You're at your best when you're connecting people, ideas, and momentum — and at your worst when you're isolated or working in a silo. You need people the way some people need quiet.",
     adjectives: ["Warm", "Consistent", "Inspiring"],
-    blindSpot: "So invested in the team's success that they downplay their own contribution.",
+    blindSpot: "Consistently raises everyone around them while their own ambitions quietly stall in the background.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Nelson Mandela", reason: "Catalysed national transformation through 27 years of patient, grounded conviction — then held a fractured country together with steady purpose." },
@@ -334,7 +334,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You don't fit neatly into one mode because you've never needed to. You can hold a vision and execute it. You can lead a room and do the quiet work. Most people develop one of these as a strength and compensate for the others — you've developed all of them, which makes you genuinely rare. People often find you difficult to read at first, and then realise that what they mistook for mystery was just range.",
     howYouWork: "You adapt to what the moment needs rather than defaulting to one style. In a crisis you're calm. In a vacuum you lead. In execution mode you deliver. The challenge isn't capability — it's deciding where to point it.",
     adjectives: ["Formidable", "Versatile", "Driven"],
-    blindSpot: "Takes on everything because they can, until they're spread too thin to excel at any of it.",
+    blindSpot: "Operates across every domain at once and risks being formidable in none of them.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Jeff Bezos", reason: "Relentlessly expanded Amazon's scope across a dozen industries simultaneously, never pausing to consolidate before pushing further." },
@@ -347,7 +347,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You don't fit neatly into one mode because you've never needed to. You can hold a vision and execute it. You can lead a room and do the quiet work. Most people develop one of these as a strength and compensate for the others — you've developed all of them, which makes you genuinely rare. People often find you difficult to read at first, and then realise that what they mistook for mystery was just range.",
     howYouWork: "You adapt to what the moment needs rather than defaulting to one style. In a crisis you're calm. In a vacuum you lead. In execution mode you deliver. The challenge isn't capability — it's deciding where to point it.",
     adjectives: ["Enigmatic", "Razor-sharp", "Composed"],
-    blindSpot: "So self-sufficient that people don't always feel needed or invited in.",
+    blindSpot: "So self-contained that people around them feel like observers in a partnership rather than participants.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Barack Obama", reason: "Held vision and execution across the world's most complex job, doing it with a quiet composure that made the range invisible." },
@@ -360,7 +360,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You don't fit neatly into one mode because you've never needed to. You can hold a vision and execute it. You can lead a room and do the quiet work. Most people develop one of these as a strength and compensate for the others — you've developed all of them, which makes you genuinely rare. People often find you difficult to read at first, and then realise that what they mistook for mystery was just range.",
     howYouWork: "You adapt to what the moment needs rather than defaulting to one style. In a crisis you're calm. In a vacuum you lead. In execution mode you deliver. The challenge isn't capability — it's deciding where to point it.",
     adjectives: ["Commanding", "Visionary", "Dynamic"],
-    blindSpot: "Can dominate a room so naturally that collaboration becomes performance rather than partnership.",
+    blindSpot: "Decides with such authority that the people closest to the work stop sharing what they actually think.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Jay-Z", reason: "Built music, spirits, sports, and media empires while boldly declaring his ambition — a sovereign who claims every room before entering it." },
@@ -373,7 +373,7 @@ const COPY: Record<string, Pick<QuizResult, "tagline" | "description" | "howYouW
     description: "You don't fit neatly into one mode because you've never needed to. You can hold a vision and execute it. You can lead a room and do the quiet work. Most people develop one of these as a strength and compensate for the others — you've developed all of them, which makes you genuinely rare. People often find you difficult to read at first, and then realise that what they mistook for mystery was just range.",
     howYouWork: "You adapt to what the moment needs rather than defaulting to one style. In a crisis you're calm. In a vacuum you lead. In execution mode you deliver. The challenge isn't capability — it's deciding where to point it.",
     adjectives: ["Composed", "Adaptable", "Rare"],
-    blindSpot: "So balanced that they sometimes lack the single-minded intensity a moment demands.",
+    blindSpot: "Moves through every mode so smoothly that people can't tell when something actually needs urgency.",
     compatibleWith: ["Builder", "Anchor"],
     famousPeople: [
       { name: "Warren Buffett", reason: "A sovereign across investing, capital allocation, and public influence — built over decades through patient, grounded compounding." },
