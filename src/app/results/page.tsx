@@ -99,7 +99,14 @@ export default function ResultsPage() {
   };
 
   const captureAndShare = async (mode: "whatsapp" | "generic") => {
-    const file = cardBlob ? new File([cardBlob], shareSlug, { type: "image/png" }) : null;
+    let blob = cardBlob;
+
+    // If pre-cache missed, fetch on-demand (within user gesture context window)
+    if (!blob && shareCardRef.current) {
+      try { blob = await shareCardRef.current.captureStory() ?? null; } catch { /* ignore */ }
+    }
+
+    const file = blob ? new File([blob], shareSlug, { type: "image/png" }) : null;
 
     // Mobile: native share sheet — call navigator.share before any await
     if (navigator.share) {

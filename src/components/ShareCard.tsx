@@ -3,6 +3,7 @@
 import { useRef, useState, forwardRef, useImperativeHandle, Fragment } from "react";
 import type { ReactElement } from "react";
 import { QuizResult, Archetype } from "@/lib/types";
+import { renderCardToBlob } from "@/lib/card-canvas";
 
 // ─── Gradient configs ───────────────────────────────────────────────────────
 
@@ -557,84 +558,57 @@ interface ShareCardProps {
 export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
   function ShareCard({ result, format = "story", mobileBlob }, ref) {
     const cardRef = useRef<HTMLDivElement>(null);
-    const hiddenStoryRef = useRef<HTMLDivElement>(null);
-    const screenshotCardRef = useRef<HTMLDivElement>(null);
-    const [saveDataUrl, setSaveDataUrl] = useState<string | null>(null);
-    const [showScreenshotOverlay, setShowScreenshotOverlay] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
-
-    const runHtml2canvas = async (el: HTMLDivElement): Promise<string> => {
-      await document.fonts.ready;
-      const { default: html2canvas } = await import("html2canvas");
-      const canvas = await html2canvas(el, {
-        scale: 3,
-        useCORS: true,
-        backgroundColor: null,
-        logging: false,
-      });
-      return canvas.toDataURL("image/png");
-    };
-
-    const blobToDataUrl = (blob: Blob): Promise<string> =>
-      new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
 
     useImperativeHandle(ref, () => ({
       async captureStory() {
-        const target = hiddenStoryRef.current;
-        if (!target) return null;
-        try {
-          await document.fonts.ready;
-          const { default: html2canvas } = await import("html2canvas");
-          const canvas = await html2canvas(target, {
-            scale: 3,
-            useCORS: true,
-            backgroundColor: null,
-            logging: false,
-          });
-          return await new Promise<Blob | null>((resolve) => {
-            canvas.toBlob((blob) => resolve(blob), "image/png");
-          });
-        } catch { return null; }
+        return renderCardToBlob(result);
       },
     }));
 
     const handleDownload = async () => {
-      if (isDownloading || !cardRef.current) return;
+      if (isDownloading) return;
+      setIsDownloading(true);
 
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      const filename = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
         (/Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 
-      if (isMobile) {
-        if (mobileBlob) {
-          setIsDownloading(true);
-          try {
-            const dataUrl = await blobToDataUrl(mobileBlob);
-            setSaveDataUrl(dataUrl);
-          } catch {
-            setShowScreenshotOverlay(true);
-          } finally {
-            setIsDownloading(false);
-          }
-        } else {
-          // html2canvas didn't produce a blob — show DOM card for screenshot
-          setShowScreenshotOverlay(true);
+      // iOS: use native share sheet (lets user Save to Photos / Files).
+      // Must call navigator.share synchronously within the user gesture, so
+      // we can only do this when the blob is already pre-cached (no await before share).
+      const cachedBlob = mobileBlob && mobileBlob.size > 0 ? mobileBlob : null;
+      if (isIOS && cachedBlob && navigator.share) {
+        const file = new File([cachedBlob], filename, { type: "image/png" });
+        if (navigator.canShare?.({ files: [file] })) {
+          try { await navigator.share({ files: [file] }); }
+          catch (err) { if ((err as Error)?.name !== "AbortError") console.error("share failed:", err); }
+          setIsDownloading(false);
+          return;
         }
-        return;
       }
 
-      // Desktop
-      setIsDownloading(true);
+      // Desktop + Android (and iOS fallback when blob not yet cached): render then download
       try {
-        const dataUrl = await runHtml2canvas(cardRef.current);
-        setSaveDataUrl(dataUrl);
+        let blob: Blob;
+        if (cachedBlob) {
+          blob = cachedBlob;
+        } else {
+          const rendered = await renderCardToBlob(result);
+          if (!rendered || rendered.size === 0) throw new Error("canvas render returned empty blob");
+          blob = rendered;
+        }
+
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = objectUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
       } catch (err) {
         console.error("Save failed:", err);
-        setShowScreenshotOverlay(true);
       } finally {
         setIsDownloading(false);
       }
@@ -646,11 +620,6 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
           ? <StoryCard result={result} cardRef={cardRef}/>
           : <LinkedInCard result={result} cardRef={cardRef}/>
         }
-
-        {/* Hidden story card always available for image sharing */}
-        <div style={{ position: "fixed", left: "-10000px", top: "-10000px", pointerEvents: "none" }}>
-          <StoryCard result={result} cardRef={hiddenStoryRef}/>
-        </div>
 
         <button
           onClick={handleDownload}
@@ -678,84 +647,6 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
           </svg>
           {isDownloading ? "Saving…" : "Save as PNG"}
         </button>
-
-        {/* Screenshot overlay — shown when html2canvas fails (always works) */}
-        {showScreenshotOverlay && (
-          <div
-            style={{
-              position: "fixed", inset: 0, zIndex: 9999,
-              background: "#000",
-              display: "flex", flexDirection: "column",
-              alignItems: "center", justifyContent: "center",
-              gap: "20px", padding: "24px",
-              overflowY: "auto",
-            }}
-          >
-            <StoryCard result={result} cardRef={screenshotCardRef} />
-            <p style={{
-              color: "rgba(255,255,255,0.75)", fontFamily: "inherit",
-              fontSize: "14px", textAlign: "center", margin: 0, lineHeight: 1.6,
-            }}>
-              Take a screenshot to save your card
-            </p>
-            <button
-              onClick={() => setShowScreenshotOverlay(false)}
-              style={{
-                padding: "12px 32px", borderRadius: "10px",
-                background: "rgba(255,255,255,0.12)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: "white", fontSize: "14px", fontWeight: 600,
-                cursor: "pointer", fontFamily: "inherit",
-              }}
-            >
-              Done
-            </button>
-          </div>
-        )}
-
-        {/* Save overlay — long-press (mobile) or right-click (desktop) */}
-        {saveDataUrl && (
-          <div
-            onClick={() => setSaveDataUrl(null)}
-            style={{
-              position: "fixed", inset: 0, zIndex: 9999,
-              background: "rgba(0,0,0,0.92)",
-              display: "flex", flexDirection: "column",
-              alignItems: "center", justifyContent: "center",
-              gap: "20px", padding: "32px 24px",
-            }}
-          >
-            <img
-              src={saveDataUrl}
-              onClick={(e) => e.stopPropagation()}
-              style={{ maxWidth: "85vw", maxHeight: "65dvh", display: "block", borderRadius: "0px" }}
-              alt="Your Profyle card"
-            />
-            <p style={{
-              color: "rgba(255,255,255,0.75)",
-              fontFamily: "inherit", fontSize: "15px",
-              textAlign: "center", margin: 0, lineHeight: 1.5,
-            }}>
-              {/iPhone|iPad|iPod|Android/i.test(
-                typeof navigator !== "undefined" ? navigator.userAgent : ""
-              )
-                ? "Hold down on the image to save it to your photos"
-                : "Right-click the image and choose 'Save Image As'"}
-            </p>
-            <button
-              onClick={() => setSaveDataUrl(null)}
-              style={{
-                padding: "12px 32px", borderRadius: "10px",
-                background: "rgba(255,255,255,0.12)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: "white", fontSize: "14px", fontWeight: 600,
-                cursor: "pointer", fontFamily: "inherit",
-              }}
-            >
-              Done
-            </button>
-          </div>
-        )}
       </div>
     );
   }
