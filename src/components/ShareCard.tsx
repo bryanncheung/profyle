@@ -543,6 +543,37 @@ function LinkedInCard({ result, cardRef }: { result: QuizResult; cardRef: React.
   );
 }
 
+// ─── Capture helpers ─────────────────────────────────────────────────────────
+
+// Use html2canvas to screenshot the actual rendered DOM element (pixel-perfect
+// match to the on-screen preview). Falls back to the canvas renderer if
+// html2canvas throws (e.g. older iOS Safari).
+async function captureCardElement(
+  el: HTMLDivElement | null,
+  result: QuizResult,
+): Promise<Blob | null> {
+  if (el) {
+    try {
+      const { default: h2c } = await import("html2canvas");
+      const prevShadow = el.style.boxShadow;
+      el.style.boxShadow = "none"; // strip drop-shadow so PNG has clean edges
+      const canvas = await h2c(el, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: null,
+        logging: false,
+        removeContainer: true,
+      });
+      el.style.boxShadow = prevShadow;
+      return new Promise<Blob | null>(resolve => canvas.toBlob(resolve, "image/png"));
+    } catch (err) {
+      console.warn("html2canvas failed, falling back to canvas renderer:", err);
+    }
+  }
+  return renderCardToBlob(result);
+}
+
 // ─── Export ──────────────────────────────────────────────────────────────────
 
 export interface ShareCardHandle {
@@ -561,8 +592,8 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
     const [isDownloading, setIsDownloading] = useState(false);
 
     useImperativeHandle(ref, () => ({
-      async captureStory() {
-        return renderCardToBlob(result);
+      async captureStory(): Promise<Blob | null> {
+        return captureCardElement(cardRef.current, result);
       },
     }));
 
@@ -594,8 +625,8 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
         if (cachedBlob) {
           blob = cachedBlob;
         } else {
-          const rendered = await renderCardToBlob(result);
-          if (!rendered || rendered.size === 0) throw new Error("canvas render returned empty blob");
+          const rendered = await captureCardElement(cardRef.current, result);
+          if (!rendered || rendered.size === 0) throw new Error("could not generate image");
           blob = rendered;
         }
 
