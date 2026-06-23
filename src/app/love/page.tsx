@@ -23,10 +23,13 @@ const INTRO_LINES = [
   "You've felt it before.",
   "That pull toward someone.",
   "The way you love is unlike anyone else's.",
-  "Some love loudly. Some love in silence.",
-  "Some love freely. Some love carefully.",
+  "Some love loudly.",
+  "Some love in silence.",
+  "Some love freely.",
+  "Some love carefully.",
   "This is yours.",
 ];
+const SESSION_KEY = "love-intro-seen";
 
 const LOVE_TYPES = [
   {
@@ -90,6 +93,7 @@ function CinematicIntro({ onDismiss }: { onDismiss: () => void }) {
   function dismiss() {
     timersRef.current.forEach(clearTimeout);
     setDismissing(true);
+    sessionStorage.setItem(SESSION_KEY, "1");
     setTimeout(onDismiss, 500);
   }
 
@@ -154,9 +158,9 @@ function CinematicIntro({ onDismiss }: { onDismiss: () => void }) {
             onClick={dismiss}
             style={{
               padding: "16px 44px", borderRadius: "12px",
-              background: "white", color: BURGUNDY,
+              background: "transparent", color: "white",
               fontSize: "15px", fontWeight: 700, letterSpacing: "0.01em",
-              border: "none", cursor: "pointer", fontFamily: "inherit",
+              border: "1.5px solid rgba(255,255,255,0.7)", cursor: "pointer", fontFamily: "inherit",
             }}
           >
             Find out how you love →
@@ -169,6 +173,10 @@ function CinematicIntro({ onDismiss }: { onDismiss: () => void }) {
 
 export default function LovePage() {
   const [introDone, setIntroDone] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem(SESSION_KEY)) setIntroDone(true);
+  }, []);
 
   const divider: React.CSSProperties = {
     borderTop: `1.5px solid ${BURGUNDY_BORDER}`,
