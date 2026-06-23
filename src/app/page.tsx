@@ -1,358 +1,201 @@
 import Link from "next/link";
-import { ARCHETYPE_THEMES } from "@/lib/archetypes";
-import {
-  BuilderCharacter,
-  DisruptorCharacter,
-  AnchorCharacter,
-  CatalystCharacter,
-  SovereignCharacter,
-} from "@/components/characters";
 
-const ARCHETYPE_NAMES = ["Builder", "Disruptor", "Anchor", "Catalyst", "Sovereign"] as const;
-
-const ARCHETYPE_COPY: Record<typeof ARCHETYPE_NAMES[number], { headline: string; body: string }> = {
-  Builder:   { headline: "The Builder",   body: "The one who makes it real. While others are still talking, you're already building." },
-  Disruptor: { headline: "The Disruptor", body: "Wired to question everything. You don't break rules for fun — you break the ones that deserve it." },
-  Anchor:    { headline: "The Anchor",    body: "The person people look for when things go sideways. Calm, reliable, and quietly powerful." },
-  Catalyst:  { headline: "The Catalyst",  body: "You light the match. Others catch fire. Energy is your tool and rooms remember you." },
-  Sovereign: { headline: "The Sovereign", body: "You play a different game entirely. Impossible to categorise, impossible to ignore." },
-};
-
-const CHAR_COMPONENTS = {
-  Builder: BuilderCharacter,
-  Disruptor: DisruptorCharacter,
-  Anchor: AnchorCharacter,
-  Catalyst: CatalystCharacter,
-  Sovereign: SovereignCharacter,
-};
-
-const divider: React.CSSProperties = {
-  borderTop: "1.5px solid var(--border)",
-  maxWidth: "960px",
-  margin: "0 auto",
-};
-
-const section: React.CSSProperties = {
-  maxWidth: "960px",
-  margin: "0 auto",
-  padding: "0 24px",
-};
+const DOT_BG = "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1.4' fill='%230E0E0E' fill-opacity='0.07'/%3E%3C/svg%3E\")";
 
 export default function Home() {
   return (
-    <div style={{
-        background: "var(--bg)",
-        minHeight: "100vh",
-        backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1.4' fill='%230E0E0E' fill-opacity='0.07'/%3E%3C/svg%3E\")",
-        backgroundSize: "20px 20px",
-      }}>
+    <div style={{ background: "var(--bg)", minHeight: "100vh", backgroundImage: DOT_BG, backgroundSize: "20px 20px" }}>
 
       {/* ── NAV ── */}
       <nav style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
         padding: "20px 32px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
         <Link href="/" style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ink)", textDecoration: "none" }}>
           Profyle
         </Link>
-        <Link
-          href="/quiz"
-          style={{
-            padding: "9px 20px",
-            borderRadius: "8px",
-            background: "var(--ink)",
-            color: "white",
-            fontSize: "13px",
-            fontWeight: 700,
-            letterSpacing: "0.01em",
-            textDecoration: "none",
-          }}
-        >
-          Take the quiz
+        <Link href="#dimensions" style={{ fontSize: "13px", fontWeight: 600, color: "var(--muted)", textDecoration: "none", letterSpacing: "0.01em" }}>
+          Explore →
         </Link>
       </nav>
 
-      {/* ── HERO ── */}
+      {/* ── SECTION 1: HERO ── */}
       <section style={{
         minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        padding: "120px 24px 80px",
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        textAlign: "center", padding: "120px 24px 80px",
       }}>
-        <span style={{
-          fontSize: "11px",
-          fontWeight: 700,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: "var(--muted)",
-          marginBottom: "28px",
-          display: "block",
-        }}>
-          Professional Identity
-        </span>
-
         <h1 style={{
-          fontSize: "clamp(48px, 9vw, 84px)",
+          fontSize: "clamp(52px, 10vw, 96px)",
           fontWeight: 900,
           letterSpacing: "-0.04em",
-          lineHeight: 1.02,
+          lineHeight: 1.0,
           color: "var(--ink)",
-          maxWidth: "720px",
-          textWrap: "balance" as const,
-          marginBottom: "32px",
+          maxWidth: "800px",
+          marginBottom: "28px",
         }}>
-          Your professional<br />identity. Revealed.
+          You are more than<br />one thing.
         </h1>
 
         <p style={{
-          fontSize: "clamp(16px, 2vw, 19px)",
+          fontSize: "clamp(16px, 2vw, 20px)",
           fontWeight: 400,
           color: "var(--muted)",
-          maxWidth: "480px",
-          lineHeight: 1.6,
-          marginBottom: "40px",
+          maxWidth: "520px",
+          lineHeight: 1.65,
+          marginBottom: "44px",
         }}>
-          20 questions. A profile built around how you actually think and work — not who you wish you were.
+          Profyle maps every dimension of who you are — how you work, how you love, and everything in between.
         </p>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center", marginBottom: "48px" }}>
-          {ARCHETYPE_NAMES.map((name) => {
-            const theme = ARCHETYPE_THEMES[name];
-            return (
-              <span
-                key={name}
-                style={{
-                  padding: "8px 18px",
-                  borderRadius: "99px",
-                  background: theme.pillBg,
-                  border: `1.5px solid ${theme.pillBorder}`,
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: theme.accent,
-                }}
-              >
-                The {name}
-              </span>
-            );
-          })}
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "14px" }}>
-          <Link
-            href="/quiz"
-            style={{
-              display: "inline-block",
-              padding: "16px 44px",
-              borderRadius: "12px",
-              background: "var(--ink)",
-              color: "white",
-              fontSize: "15px",
-              fontWeight: 700,
-              letterSpacing: "0.01em",
-              textDecoration: "none",
-            }}
-          >
-            Find your type →
-          </Link>
-          <p style={{ fontSize: "13px", color: "var(--faint)", fontWeight: 500, letterSpacing: "0.02em" }}>
-            Free · No signup · 5 minutes
-          </p>
-        </div>
-      </section>
-
-      <div style={divider} />
-
-      {/* ── THE 5 TYPES ── */}
-      <section style={{ padding: "80px 0 88px" }}>
-        <div style={section}>
-          <div style={{ marginBottom: "48px" }}>
-            <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "16px" }}>
-              The 5 types
-            </div>
-            <h2 style={{ fontSize: "clamp(26px, 4vw, 36px)", fontWeight: 900, letterSpacing: "-0.03em", color: "var(--ink)", lineHeight: 1.15 }}>
-              Which one are you?
-            </h2>
-          </div>
-
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            gap: "16px",
-          }}>
-            {ARCHETYPE_NAMES.map((name) => {
-              const theme = ARCHETYPE_THEMES[name];
-              const copy = ARCHETYPE_COPY[name];
-              const Char = CHAR_COMPONENTS[name];
-              return (
-                <div
-                  key={name}
-                  style={{
-                    padding: "28px 22px 24px",
-                    borderRadius: "20px",
-                    background: theme.bgTint,
-                    border: `1.5px solid ${theme.pillBorder}`,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <div style={{ marginBottom: "16px", alignSelf: "center" }}>
-                    <Char size={96} />
-                  </div>
-                  <div style={{
-                    fontSize: "13px",
-                    fontWeight: 800,
-                    letterSpacing: "0.01em",
-                    color: theme.accent,
-                    marginBottom: "8px",
-                  }}>
-                    {copy.headline}
-                  </div>
-                  <p style={{
-                    fontSize: "13px",
-                    fontWeight: 400,
-                    color: "var(--muted)",
-                    lineHeight: 1.55,
-                    margin: 0,
-                  }}>
-                    {copy.body}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <div style={divider} />
-
-      {/* ── HOW IT WORKS ── */}
-      <section style={{ padding: "80px 0 88px" }}>
-        <div style={section}>
-          <div style={{ marginBottom: "48px" }}>
-            <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "16px" }}>
-              How it works
-            </div>
-            <h2 style={{ fontSize: "clamp(26px, 4vw, 36px)", fontWeight: 900, letterSpacing: "-0.03em", color: "var(--ink)", lineHeight: 1.15 }}>
-              Three steps to your type
-            </h2>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "32px" }}>
-            {[
-              {
-                num: "01",
-                title: "Answer 20 questions",
-                body: "Scenario-based, word-association, and reflective prompts — no vague personality sliders.",
-              },
-              {
-                num: "02",
-                title: "Get your professional type",
-                body: "One of 20 possible outcomes built from 5 archetypes and 4 behavioural prefixes.",
-              },
-              {
-                num: "03",
-                title: "Share your card",
-                body: "Download a shareable card for Instagram or LinkedIn. Show the world how you work.",
-              },
-            ].map(({ num, title, body }) => (
-              <div key={num}>
-                <div style={{
-                  fontSize: "13px",
-                  fontWeight: 800,
-                  color: "var(--faint)",
-                  letterSpacing: "0.08em",
-                  marginBottom: "16px",
-                }}>
-                  {num}
-                </div>
-                <h3 style={{
-                  fontSize: "18px",
-                  fontWeight: 800,
-                  letterSpacing: "-0.02em",
-                  color: "var(--ink)",
-                  marginBottom: "10px",
-                  lineHeight: 1.25,
-                }}>
-                  {title}
-                </h3>
-                <p style={{ fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
-                  {body}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div style={divider} />
-
-      {/* ── BOTTOM CTA ── */}
-      <section style={{ padding: "96px 24px 112px", textAlign: "center" }}>
-        <p style={{
-          fontSize: "11px",
+        <Link href="#dimensions" style={{
+          display: "inline-block",
+          padding: "16px 44px",
+          borderRadius: "12px",
+          background: "var(--ink)",
+          color: "white",
+          fontSize: "15px",
           fontWeight: 700,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: "var(--faint)",
-          marginBottom: "24px",
+          letterSpacing: "0.01em",
+          textDecoration: "none",
         }}>
-          Free · No signup · 5 minutes
-        </p>
-        <h2 style={{
-          fontSize: "clamp(36px, 6vw, 60px)",
-          fontWeight: 900,
-          letterSpacing: "-0.04em",
-          lineHeight: 1.05,
-          color: "var(--ink)",
-          marginBottom: "36px",
-          textWrap: "balance" as const,
-        }}>
-          Stop guessing how you work.<br />Find out.
-        </h2>
-        <Link
-          href="/quiz"
-          style={{
-            display: "inline-block",
-            padding: "18px 52px",
-            borderRadius: "14px",
-            background: "var(--ink)",
-            color: "white",
-            fontSize: "16px",
-            fontWeight: 700,
-            letterSpacing: "0.01em",
-            textDecoration: "none",
-          }}
-        >
-          Find your type →
+          Start building your Profyle →
         </Link>
+      </section>
+
+      {/* ── SECTION 2: THE TWO PATHS ── */}
+      <section id="dimensions" style={{ padding: "80px 24px 100px", maxWidth: "1040px", margin: "0 auto" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: "20px",
+        }}>
+
+          {/* Left card — violet */}
+          <div style={{
+            borderRadius: "24px",
+            background: "#6B3FD0",
+            padding: "48px 40px 40px",
+            display: "flex", flexDirection: "column",
+            backgroundImage: DOT_BG.replace("0E0E0E", "FFFFFF").replace("0.07", "0.08"),
+            backgroundSize: "20px 20px",
+            minHeight: "380px",
+          }}>
+            <span style={{
+              fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em",
+              textTransform: "uppercase", color: "rgba(255,255,255,0.6)",
+              marginBottom: "32px", display: "block",
+            }}>
+              Dimension 01
+            </span>
+            <div style={{ flex: 1 }}>
+              <h2 style={{
+                fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 900,
+                letterSpacing: "-0.03em", color: "#fff", lineHeight: 1.05,
+                marginBottom: "16px",
+              }}>
+                How you work
+              </h2>
+              <p style={{ fontSize: "16px", fontWeight: 500, color: "rgba(255,255,255,0.75)", marginBottom: "10px", lineHeight: 1.5 }}>
+                Discover your professional identity.
+              </p>
+              <p style={{ fontSize: "14px", fontWeight: 400, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, margin: 0 }}>
+                Are you The Relentless Builder or The Quiet Sovereign?
+              </p>
+            </div>
+            <Link href="/work" style={{
+              display: "inline-block", marginTop: "36px",
+              padding: "14px 28px", borderRadius: "10px",
+              background: "rgba(255,255,255,0.15)",
+              border: "1.5px solid rgba(255,255,255,0.3)",
+              color: "#fff", fontSize: "14px", fontWeight: 700,
+              letterSpacing: "0.01em", textDecoration: "none",
+              alignSelf: "flex-start",
+            }}>
+              Take the work test →
+            </Link>
+          </div>
+
+          {/* Right card — burgundy */}
+          <div style={{
+            borderRadius: "24px",
+            background: "#8B2252",
+            padding: "48px 40px 40px",
+            display: "flex", flexDirection: "column",
+            backgroundImage: DOT_BG.replace("0E0E0E", "FFFFFF").replace("0.07", "0.08"),
+            backgroundSize: "20px 20px",
+            minHeight: "380px",
+          }}>
+            <span style={{
+              fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em",
+              textTransform: "uppercase", color: "rgba(255,255,255,0.6)",
+              marginBottom: "32px", display: "block",
+            }}>
+              Dimension 02
+            </span>
+            <div style={{ flex: 1 }}>
+              <h2 style={{
+                fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 900,
+                letterSpacing: "-0.03em", color: "#fff", lineHeight: 1.05,
+                marginBottom: "16px",
+              }}>
+                How you love
+              </h2>
+              <p style={{ fontSize: "16px", fontWeight: 500, color: "rgba(255,255,255,0.75)", marginBottom: "10px", lineHeight: 1.5 }}>
+                Discover your love identity.
+              </p>
+              <p style={{ fontSize: "14px", fontWeight: 400, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, margin: 0 }}>
+                Are you The Fierce Flame or The Guarded Architect?
+              </p>
+            </div>
+            <Link href="/love" style={{
+              display: "inline-block", marginTop: "36px",
+              padding: "14px 28px", borderRadius: "10px",
+              background: "rgba(255,255,255,0.15)",
+              border: "1.5px solid rgba(255,255,255,0.3)",
+              color: "#fff", fontSize: "14px", fontWeight: 700,
+              letterSpacing: "0.01em", textDecoration: "none",
+              alignSelf: "flex-start",
+            }}>
+              Take the love test →
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── SECTION 3: THE VISION ── */}
+      <section style={{
+        padding: "80px 24px 112px",
+        textAlign: "center",
+        borderTop: "1.5px solid var(--border)",
+        maxWidth: "680px",
+        margin: "0 auto",
+      }}>
+        <p style={{ fontSize: "clamp(17px, 2vw, 21px)", fontWeight: 600, color: "var(--ink)", lineHeight: 1.6, marginBottom: "16px" }}>
+          Every quiz adds a new dimension to your Profyle.
+        </p>
+        <p style={{ fontSize: "clamp(15px, 1.8vw, 18px)", fontWeight: 400, color: "var(--muted)", lineHeight: 1.7, marginBottom: "28px" }}>
+          Share it as a link. Put it in your bio. Let people know who they&apos;re dealing with.
+        </p>
+        <p style={{ fontSize: "clamp(14px, 1.6vw, 16px)", fontWeight: 600, color: "var(--faint)", letterSpacing: "0.03em" }}>
+          profyle.one/yourname — coming soon.
+        </p>
       </section>
 
       {/* ── FOOTER ── */}
       <footer style={{
         borderTop: "1.5px solid var(--border)",
         padding: "28px 32px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        gap: "12px",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        flexWrap: "wrap", gap: "12px",
       }}>
         <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--faint)" }}>
           Profyle
         </span>
         <span style={{ fontSize: "12px", color: "var(--faint)" }}>
-          20 questions · 20 possible outcomes
+          profyle.one
         </span>
       </footer>
 
