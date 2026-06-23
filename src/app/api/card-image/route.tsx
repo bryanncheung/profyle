@@ -216,12 +216,9 @@ async function render(req: NextRequest) {
           </div>
 
           {/* "I am" label */}
-          <div style={{ display: "flex", flexDirection: "column", marginBottom: `${4*S}px` }}>
+          <div style={{ display: "flex", marginBottom: `${4*S}px` }}>
             <span style={{ fontSize: `${14*S}px`, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.75)", fontStyle: "italic" }}>
               I am
-            </span>
-            <span style={{ fontSize: `${8*S}px`, fontWeight: 600, color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em", marginTop: `${2*S}px` }}>
-              {pct ? `only ${pct}% of people` : ""}
             </span>
           </div>
 
@@ -275,6 +272,13 @@ async function render(req: NextRequest) {
                 </span>
               </div>
             ))}
+          </div>
+
+          {/* Population stat */}
+          <div style={{ display: "flex", marginBottom: `${14*S}px`, marginTop: `-${4*S}px` }}>
+            <span style={{ fontSize: `${7*S}px`, fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              {pct ? `Only ${pct}% of people share this profile` : ""}
+            </span>
           </div>
 
           {/* Adjective badges — star / hexagon / oval */}
