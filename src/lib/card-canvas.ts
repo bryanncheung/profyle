@@ -14,7 +14,6 @@ const GRADIENT_STOPS: Record<Archetype, [number, string][]> = {
 const ENTRY_BASES: Record<Archetype, number> = { Builder:1203, Disruptor:2891, Anchor:3540, Catalyst:4126, Sovereign:5407 };
 const PREFIX_OFFSET = { Relentless:0, Quiet:412, Bold:718, Grounded:1034 } as const;
 
-// arcTo-based rounded rect — works on iOS 9+
 function rrect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   const R = Math.min(r, w / 2, h / 2);
   ctx.beginPath();
@@ -30,14 +29,44 @@ function rrect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h
   ctx.closePath();
 }
 
-// Read Next.js font CSS variable so canvas uses the actual loaded font
+// Get font-family: reads body computed style which resolves the Next.js CSS variable
 function getManropeFontFamily(): string {
   if (typeof document === "undefined") return "sans-serif";
-  const v = getComputedStyle(document.documentElement).getPropertyValue("--font-manrope").trim();
-  return v || "Manrope, sans-serif";
+  const body = getComputedStyle(document.body).fontFamily;
+  if (body && body !== "serif" && body !== "sans-serif") return body;
+  const cssVar = getComputedStyle(document.documentElement).getPropertyValue("--font-manrope").trim();
+  if (cssVar) return cssVar;
+  for (const font of document.fonts) {
+    if (font.family.toLowerCase().includes("manrope")) return font.family;
+  }
+  return "sans-serif";
 }
 
-// ── Ghost character drawing (all 5 archetypes) ───────────────────────────────
+// Pre-wrap text; returns each line with its draw coordinates
+function prewrap(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  startX: number,
+  startY: number,
+  maxRight: number,
+  lineH: number,
+  wrapX = startX,
+): { lines: { text: string; x: number; y: number }[]; endY: number } {
+  const words = text.split(" ");
+  const lines: { text: string; x: number; y: number }[] = [];
+  let line = ""; let x = startX; let y = startY;
+  for (const word of words) {
+    const test = line ? `${line} ${word}` : word;
+    if (x + ctx.measureText(test).width > maxRight && line) {
+      lines.push({ text: line, x, y });
+      line = word; x = wrapX; y += lineH;
+    } else line = test;
+  }
+  if (line) lines.push({ text: line, x, y });
+  return { lines, endY: y };
+}
+
+// ── Ghost character drawing ──────────────────────────────────────────────────
 
 function ghostSovereign(ctx: CanvasRenderingContext2D) {
   ctx.fill(new Path2D("M24 30 L30 12 L42 24 L55 8 L68 24 L80 12 L86 30 Z"));
@@ -66,9 +95,11 @@ function ghostDisruptor(ctx: CanvasRenderingContext2D) {
   ctx.fill(new Path2D("M32 36 L36 16 L42 30 L48 12 L55 28 L62 12 L68 30 L74 16 L78 36 Z"));
   ctx.beginPath(); ctx.arc(55, 54, 22, 0, Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(55, 86, 18, 0, Math.PI*2); ctx.fill();
+  ctx.save();
   ctx.strokeStyle = "white"; ctx.lineWidth = 12; ctx.lineCap = "round";
   ctx.beginPath(); ctx.moveTo(36, 68); ctx.lineTo(14, 46); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(74, 68); ctx.lineTo(96, 46); ctx.stroke();
+  ctx.restore();
   ctx.fill(new Path2D("M88 18 L90 24 L96 24 L91 28 L93 34 L88 30 L83 34 L85 28 L80 24 L86 24 Z"));
 }
 
@@ -78,10 +109,12 @@ function ghostAnchor(ctx: CanvasRenderingContext2D) {
   ctx.beginPath(); ctx.ellipse(55, 96, 48, 16, 0, 0, Math.PI*2); ctx.fill();
   rrect(ctx, 0, 60, 24, 14, 7); ctx.fill();
   rrect(ctx, 86, 60, 24, 14, 7); ctx.fill();
+  ctx.save();
   ctx.strokeStyle = "white"; ctx.lineWidth = 2.5; ctx.lineCap = "round";
   ctx.beginPath(); ctx.arc(55, 69, 5, 0, Math.PI*2); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(55, 73); ctx.lineTo(55, 82); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(47, 76); ctx.lineTo(63, 76); ctx.stroke();
+  ctx.restore();
 }
 
 function ghostCatalyst(ctx: CanvasRenderingContext2D) {
@@ -89,30 +122,26 @@ function ghostCatalyst(ctx: CanvasRenderingContext2D) {
     [55,55,55,8,6],[55,55,94,16,5],[55,55,102,55,5],[55,55,94,94,5],
     [55,55,55,102,4],[55,55,16,94,5],[55,55,8,55,5],[55,55,16,16,5],
   ];
+  ctx.save();
   ctx.strokeStyle = "white"; ctx.lineCap = "round";
   for (const [x1,y1,x2,y2,w] of spokes) {
     ctx.lineWidth = w;
     ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
   }
-  const dots: [number,number,number][] = [
-    [55,8,5],[94,16,4],[102,55,4],[94,94,4],[55,102,4],[16,94,4],[8,55,4],[16,16,4],
-  ];
-  ctx.fillStyle = "white";
-  for (const [cx,cy,r] of dots) {
+  ctx.restore();
+  for (const [cx,cy,r] of [[55,8,5],[94,16,4],[102,55,4],[94,94,4],[55,102,4],[16,94,4],[8,55,4],[16,16,4]] as [number,number,number][]) {
     ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
   }
   ctx.beginPath(); ctx.arc(55, 55, 26, 0, Math.PI*2); ctx.fill();
 }
 
 function drawGhost(ctx: CanvasRenderingContext2D, archetype: Archetype) {
-  // Position: top=56, right=10, size=104×104
   const size = 104, tx = W - 10 - size, ty = 56;
   ctx.save();
   ctx.translate(tx, ty);
   ctx.scale(size / 110, size / 110);
   ctx.globalAlpha = 0.2;
   ctx.fillStyle = "white";
-  ctx.strokeStyle = "white";
   switch (archetype) {
     case "Builder":   ghostBuilder(ctx);   break;
     case "Disruptor": ghostDisruptor(ctx); break;
@@ -133,17 +162,17 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
     const ctx = canvas.getContext("2d");
     if (!ctx) return null;
 
-    const FF = getManropeFontFamily();
-    const f = (weight: number, size: number) => { ctx.font = `${weight} ${size}px ${FF}`; };
-
-    // Ensure the font is ready before drawing text
+    // Wait for all @font-face declarations to resolve (includes Next.js Manrope)
     try {
       await Promise.race([
-        document.fonts.load(`700 12px ${FF}`),
-        document.fonts.load(`800 12px ${FF}`),
-        new Promise<void>(r => setTimeout(r, 1200)),
+        document.fonts.ready,
+        new Promise<void>(r => setTimeout(r, 2000)),
       ]);
-    } catch { /* fall back to system font */ }
+    } catch { /* continue with whatever is loaded */ }
+
+    // Body's computed font-family is the resolved value of var(--font-manrope), sans-serif
+    const FF = getManropeFontFamily();
+    const f = (weight: number, size: number) => { ctx.font = `${weight} ${size}px ${FF}`; };
 
     ctx.scale(SCALE, SCALE);
 
@@ -171,7 +200,7 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
     const px = 20;
     let cy = 22;
 
-    // ── PROFYLE + entry ──
+    // ── PROFYLE + entry number ──
     f(800, 8); ctx.fillStyle = "rgba(255,255,255,0.55)";
     ctx.fillText("PROFYLE", px, cy + 7);
     const entry = `#${(ENTRY_BASES[result.archetype] + PREFIX_OFFSET[result.prefix]).toLocaleString("en-US")}`;
@@ -199,25 +228,25 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
     // ── Archetype name ──
     f(800, 42); ctx.fillStyle = "#ffffff";
     ctx.fillText(result.archetype.toUpperCase(), px, cy + 36);
-    cy += 54;
+    cy += 52;
 
-    // ── Tagline with left border ──
+    // ── Tagline: pre-calculate wrapping so border height matches text ──
+    f(500, 10);
+    const { lines: tagLines, endY: tagEndY } = prewrap(
+      ctx, result.tagline, px + 9, cy + 11, W - px - 4, 15.5
+    );
+    const tagH = Math.max(tagEndY - cy + 16, 28);
+
+    ctx.save();
     ctx.strokeStyle = "rgba(255,255,255,0.55)"; ctx.lineWidth = 2.5; ctx.lineCap = "butt";
-    ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, cy + 50); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, cy + tagH); ctx.stroke();
+    ctx.restore();
 
-    f(500, 10); ctx.fillStyle = "rgba(255,255,255,0.88)";
-    const words = result.tagline.split(" ");
-    let line = ""; let tY = cy + 11;
-    for (const word of words) {
-      const test = line ? `${line} ${word}` : word;
-      if (ctx.measureText(test).width > 176 && line) {
-        ctx.fillText(line, px + 9, tY); line = word; tY += 15.5;
-      } else line = test;
-    }
-    if (line) ctx.fillText(line, px + 9, tY);
-    cy = Math.max(cy + 50, tY) + 20;
+    ctx.fillStyle = "rgba(255,255,255,0.88)";
+    for (const { text, x, y } of tagLines) ctx.fillText(text, x, y);
+    cy += tagH + 18;
 
-    // ── Attribute rows ──
+    // ── Attribute rows (label · dots · number) ──
     const attrs: [string, number][] = [
       ["Execution",    result.attributes.execution],
       ["Vision",       result.attributes.vision],
@@ -231,12 +260,18 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
       for (let i = 1; i <= 5; i++) {
         const dx = px + 76 + (i-1)*12;
         ctx.beginPath(); ctx.arc(dx, cy+4, 4, 0, Math.PI*2);
-        if (i <= val) { ctx.fillStyle = "rgba(255,255,255,0.95)"; ctx.fill(); }
-        else { ctx.strokeStyle = "rgba(255,255,255,0.45)"; ctx.lineWidth = 1.5; ctx.stroke(); }
+        if (i <= val) {
+          ctx.fillStyle = "rgba(255,255,255,0.95)"; ctx.fill();
+        } else {
+          ctx.fillStyle = "rgba(0,0,0,0)";
+          ctx.strokeStyle = "rgba(255,255,255,0.45)"; ctx.lineWidth = 1.5; ctx.stroke();
+        }
       }
-      cy += 14;
+      f(800, 7); ctx.fillStyle = "rgba(255,255,255,0.9)";
+      ctx.fillText(String(val), px + 76 + 5*12 + 5, cy + 6);
+      cy += 15;
     }
-    cy += 8;
+    cy += 6;
 
     // ── Adjective badges ──
     let bx = px;
@@ -249,25 +284,22 @@ export async function renderCardToBlob(result: QuizResult): Promise<Blob | null>
       ctx.fillStyle = "rgba(0,0,0,0.72)"; ctx.fillText(adj, bx+8, cy+13);
       bx += bw + 6;
     }
-    cy += 26;
+    cy += 28;
 
-    // ── Blind spot ──
+    // ── Blind spot (bold prefix + normal text, wraps back to left margin) ──
     f(800, 8.5); ctx.fillStyle = "#ffffff";
     const bsPrefix = "Blind spot — ";
     ctx.fillText(bsPrefix, px, cy + 7);
     const bsPrefW = ctx.measureText(bsPrefix).width;
+
     f(500, 8.5); ctx.fillStyle = "rgba(255,255,255,0.82)";
     {
-      const bsWords = result.blindSpot.split(" ");
-      let bsLine = ""; let bsX = px + bsPrefW; let bsY = cy + 7;
-      for (const word of bsWords) {
-        const test = bsLine ? `${bsLine} ${word}` : word;
-        if (bsX + ctx.measureText(test).width > W - px && bsLine) {
-          ctx.fillText(bsLine, bsX, bsY); bsX = px; bsY += 13; bsLine = word;
-        } else bsLine = test;
-      }
-      if (bsLine) ctx.fillText(bsLine, bsX, bsY);
-      cy = bsY + 16;
+      // First line starts after the bold prefix; wrapped lines go back to px
+      const { lines: bsLines, endY: bsEndY } = prewrap(
+        ctx, result.blindSpot, px + bsPrefW, cy + 7, W - px, 13, px
+      );
+      for (const { text, x, y } of bsLines) ctx.fillText(text, x, y);
+      cy = bsEndY + 18;
     }
 
     // ── Works with ──
