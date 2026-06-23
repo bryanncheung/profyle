@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { questions } from "@/lib/questions";
 import { AnswerOption } from "@/lib/types";
@@ -20,9 +20,19 @@ export default function QuizPage() {
   const [submitting, setSubmitting] = useState(false);
   const [missingIds, setMissingIds] = useState<number[]>([]);
 
-  const question = questions[current];
-  const progress = ((current + 1) / questions.length) * 100;
-  const isLast = current === questions.length - 1;
+  // Shuffle once on mount so every session has a different question order
+  const shuffled = useMemo(() => {
+    const arr = [...questions];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, []);
+
+  const question = shuffled[current];
+  const progress = ((current + 1) / shuffled.length) * 100;
+  const isLast = current === shuffled.length - 1;
   const selectedAnswer = answers[question.id];
   const canGoForward = !isLast && !!answers[question.id];
 
@@ -61,7 +71,7 @@ export default function QuizPage() {
   }, [transition]);
 
   const handleSubmit = useCallback(async () => {
-    const allIds = questions.map((q) => q.id);
+    const allIds = shuffled.map((q) => q.id);
     const missing = allIds.filter((id) => !answers[id]);
     if (missing.length > 0) {
       setMissingIds(missing);
@@ -104,6 +114,17 @@ export default function QuizPage() {
         }} />
       </div>
 
+      {/* Profyle home link */}
+      <a href="/" style={{
+        position: "fixed", top: "16px", left: "50%", transform: "translateX(-50%)",
+        fontSize: "12px", fontWeight: 800, letterSpacing: "0.18em",
+        textTransform: "uppercase", color: "var(--ink)",
+        textDecoration: "none", zIndex: 50, opacity: 0.5,
+        fontFamily: "inherit",
+      }}>
+        Profyle
+      </a>
+
       {/* Back button */}
       {current > 0 && (
         <button onClick={handleBack} style={{
@@ -138,7 +159,7 @@ export default function QuizPage() {
         fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em",
         textTransform: "uppercase", color: "var(--faint)", zIndex: 50,
       }}>
-        {current + 1} of {questions.length}
+        {current + 1} of {shuffled.length}
       </div>
 
       {/* Main content */}
@@ -221,7 +242,7 @@ export default function QuizPage() {
                   </p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                     {missingIds.map((id) => {
-                      const idx = questions.findIndex((q) => q.id === id);
+                      const idx = shuffled.findIndex((q) => q.id === id);
                       return (
                         <button
                           key={id}
@@ -268,7 +289,7 @@ export default function QuizPage() {
         zIndex: 40,
       }}>
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", justifyContent: "center", maxWidth: "480px" }}>
-          {questions.map((q, idx) => {
+          {shuffled.map((q, idx) => {
             const isAnswered = !!answers[q.id];
             const isCurrent = idx === current;
             const isMissing = missingIds.includes(q.id);

@@ -321,11 +321,12 @@ function StoryCard({ result, cardRef }: { result: QuizResult; cardRef: React.Ref
         <GhostChar/>
       </div>
 
-      {/* Inner content */}
+      {/* Inner content — extra bottom padding reserves space for the absolute footer */}
       <div style={{
         position: "relative", zIndex: 1,
         display: "flex", flexDirection: "column", flex: 1,
-        padding: "22px 20px 18px",
+        padding: "22px 20px 36px",
+        overflow: "hidden",
       }}>
         {/* Top row */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "18px" }}>
@@ -396,8 +397,8 @@ function StoryCard({ result, cardRef }: { result: QuizResult; cardRef: React.Ref
         </div>
       </div>
 
-      {/* Footer */}
-      <div style={{ position: "relative", zIndex: 1, padding: "6px 20px 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* Footer — absolutely pinned so content overflow can never push it out */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, padding: "6px 20px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <span style={{ fontSize: "7px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.55)" }}>
           profyle.com
         </span>
@@ -593,7 +594,9 @@ export const ShareCard = forwardRef<ShareCardHandle, ShareCardProps>(
 
     useImperativeHandle(ref, () => ({
       async captureStory(): Promise<Blob | null> {
-        return captureCardElement(cardRef.current, result);
+        // Use canvas renderer for pre-caching — it's fast and works reliably on iOS.
+        // Desktop "Save as PNG" uses captureCardElement (html2canvas) for quality.
+        return renderCardToBlob(result);
       },
     }));
 
