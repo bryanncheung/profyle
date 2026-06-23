@@ -329,7 +329,7 @@ async function render(req: NextRequest) {
           display: "flex", alignItems: "center", justifyContent: "center",
         }}>
           <span style={{ fontSize: `${7*S}px`, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.55)" }}>
-            profyle.com
+            profyle.one
           </span>
         </div>
       </div>

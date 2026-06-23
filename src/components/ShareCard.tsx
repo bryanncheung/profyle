@@ -390,7 +390,7 @@ function StoryCard({ result, cardRef }: { result: QuizResult; cardRef: React.Ref
       {/* Footer — absolutely pinned so content overflow can never push it out */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, padding: "6px 20px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <span style={{ fontSize: "7px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.55)" }}>
-          profyle.com
+          profyle.one
         </span>
       </div>
     </div>
@@ -464,7 +464,7 @@ function LinkedInCard({ result, cardRef }: { result: QuizResult; cardRef: React.
           {result.tagline}
         </p>
         <p style={{ fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.55)", marginTop: "auto" }}>
-          profyle.com
+          profyle.one
         </p>
       </div>
 

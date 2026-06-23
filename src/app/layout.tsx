@@ -12,9 +12,11 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "Profyle — Your professional identity. Revealed.",
   description: "A 5-minute professional personality quiz. Find out how you work, who you work best with, and where you belong.",
+  metadataBase: new URL("https://www.profyle.one"),
   openGraph: {
     title: "Profyle — Your professional identity. Revealed.",
     description: "A 5-minute professional personality quiz. Find out how you work, who you work best with, and where you belong.",
+    url: "https://www.profyle.one",
   },
 };
 

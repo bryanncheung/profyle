@@ -141,7 +141,7 @@ export default function ResultsPage() {
     }
   };
 
-  const shareUrl = typeof window !== "undefined" ? window.location.origin : "https://profyle.co";
+  const shareUrl = typeof window !== "undefined" ? window.location.origin : "https://www.profyle.one";
   const shareMsg = `I'm a ${result.fullTitle} on Profyle.\n"${result.tagline}"\n\nWhat's your type? → ${shareUrl}`;
   const shareSlug = `profyle-${result.prefix.toLowerCase()}-${result.archetype.toLowerCase()}.png`;
 
@@ -676,7 +676,7 @@ export default function ResultsPage() {
           <div style={{ marginTop: "24px", padding: "18px 22px", borderRadius: "14px", background: "var(--surface)", border: "1.5px solid var(--border)" }}>
             <p style={{ fontSize: "14px", fontWeight: 500, color: "var(--muted)", lineHeight: 1.5 }}>
               Know someone who might match? Send them to{" "}
-              <strong style={{ color: "var(--ink)" }}>profyle.co</strong> to find their type.
+              <strong style={{ color: "var(--ink)" }}>profyle.one</strong> to find their type.
             </p>
           </div>
         </div>
