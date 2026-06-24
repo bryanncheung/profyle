@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { loveQuestions } from "@/lib/love-questions";
 import { LoveAnswer } from "@/lib/love-types";
@@ -255,7 +255,16 @@ export default function LoveQuizPage() {
   const [submitting, setSubmitting] = useState(false);
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const question = loveQuestions[current];
+  const shuffledQuestions = useMemo(() => {
+    const arr = [...loveQuestions];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, []);
+
+  const question = shuffledQuestions[current];
   const progress = (current + 1) / TOTAL;
   const isLast   = current === TOTAL - 1;
   const currentAnswer = answers[question.id];
@@ -451,7 +460,7 @@ export default function LoveQuizPage() {
           zIndex: 40, transition: "background 600ms ease",
         }}>
           <div style={{ display: "flex", gap: "5px", flexWrap: "wrap", justifyContent: "center", maxWidth: "520px" }}>
-            {loveQuestions.map((q, idx) => {
+            {shuffledQuestions.map((q, idx) => {
               const isAnswered = !!answers[q.id];
               const isCurrent  = idx === current;
               return (

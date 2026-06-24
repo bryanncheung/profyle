@@ -268,13 +268,15 @@ async function render(req: NextRequest) {
             </svg>
           </div>
 
-          {/* Archetype name — big, -2deg */}
+          {/* Archetype name — big, -2deg; font scales down for long names */}
           <div style={{
-            display: "flex", fontSize: `${58*S}px`, fontWeight: 900,
+            display: "flex",
+            fontSize: `${(archetype.length <= 5 ? 58 : archetype.length <= 6 ? 52 : archetype.length <= 7 ? 46 : archetype.length <= 8 ? 40 : 33) * S}px`,
+            fontWeight: 900,
             letterSpacing: "-0.05em", color: "#fff", lineHeight: 0.85,
             transform: "rotate(-2deg)", transformOrigin: "left center",
             marginLeft: `-${2*S}px`, marginBottom: `${14*S}px`,
-            textTransform: "uppercase",
+            textTransform: "uppercase", whiteSpace: "nowrap",
           }}>
             {archetype}
           </div>
@@ -384,7 +386,7 @@ async function render(req: NextRequest) {
           padding: `${6*S}px ${20*S}px ${14*S}px`,
           display: "flex", alignItems: "center", justifyContent: "center",
         }}>
-          <span style={{ fontSize: `${7*S}px`, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>
+          <span style={{ fontSize: `${7*S}px`, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(20,5,5,0.5)" }}>
             profyle.one
           </span>
         </div>

@@ -19,6 +19,9 @@ import {
 const BURGUNDY        = "#8B2252";
 const BURGUNDY_LIGHT  = "#FDF0F5";
 const BURGUNDY_BORDER = "#F0C8D8";
+const LOVE_GRADIENT   = "linear-gradient(110deg, #1A0505 0%, #4A0E0E 20%, #8B2020 45%, #C0402A 68%, #E8652A 85%, #F5A050 100%)";
+
+// ─── Character (hero) ─────────────────────────────────────────────────────────
 
 function CharacterForArchetype({ archetype, size }: { archetype: string; size: number }) {
   const props = { size };
@@ -31,6 +34,184 @@ function CharacterForArchetype({ archetype, size }: { archetype: string; size: n
   if (archetype === "Spark")     return <SparkCharacter {...props}/>;
   return <AnchorLoveCharacter {...props}/>;
 }
+
+// ─── Ghost SVG for landscape card preview ────────────────────────────────────
+
+function LoveLandscapeGhost({ archetype }: { archetype: string }) {
+  const s: React.CSSProperties = { width: "100%", height: "100%" };
+  if (archetype === "Flame") return (
+    <svg viewBox="0 0 130 130" fill="none" style={s}>
+      <ellipse cx="65" cy="88" rx="34" ry="38" fill="rgba(255,255,255,0.22)"/>
+      <path d="M44 56 C44 34 52 18 65 8 C78 18 86 34 86 56" fill="rgba(255,255,255,0.18)"/>
+      <path d="M50 60 C50 42 57 26 65 16 C73 26 80 42 80 60" fill="rgba(255,255,255,0.26)"/>
+      <path d="M56 63 C56 50 60 37 65 27 C70 37 74 50 74 63" fill="rgba(255,255,255,0.34)"/>
+      <circle cx="57" cy="80" r="4" fill="rgba(0,0,0,0.25)"/>
+      <circle cx="73" cy="80" r="4" fill="rgba(0,0,0,0.25)"/>
+    </svg>
+  );
+  if (archetype === "Harbour") return (
+    <svg viewBox="0 0 130 130" fill="none" style={s}>
+      <ellipse cx="65" cy="115" rx="56" ry="14" fill="rgba(255,255,255,0.15)"/>
+      <rect x="20" y="65" width="90" height="48" rx="16" fill="rgba(255,255,255,0.22)"/>
+      <circle cx="65" cy="44" r="24" fill="rgba(255,255,255,0.22)"/>
+      <path d="M50 90 L50 100 M65 85 L65 100 M80 90 L80 100" stroke="rgba(0,0,0,0.15)" strokeWidth="3" strokeLinecap="round"/>
+    </svg>
+  );
+  if (archetype === "Wanderer") return (
+    <svg viewBox="0 0 130 130" fill="none" style={s}>
+      <ellipse cx="60" cy="48" rx="18" ry="22" fill="rgba(255,255,255,0.22)"/>
+      <rect x="44" y="68" width="32" height="40" rx="10" fill="rgba(255,255,255,0.18)"/>
+      <rect x="26" y="74" width="22" height="10" rx="5" fill="rgba(255,255,255,0.18)" transform="rotate(-25 26 74)"/>
+      <rect x="70" y="80" width="28" height="10" rx="5" fill="rgba(255,255,255,0.18)" transform="rotate(20 70 80)"/>
+    </svg>
+  );
+  if (archetype === "Architect") return (
+    <svg viewBox="0 0 130 130" fill="none" style={s}>
+      <rect x="28" y="42" width="74" height="74" rx="8" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5"/>
+      <circle cx="65" cy="32" r="18" fill="rgba(255,255,255,0.22)"/>
+      <line x1="28" y1="70" x2="102" y2="70" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5"/>
+      <line x1="28" y1="90" x2="102" y2="90" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5"/>
+      <line x1="54" y1="42" x2="54" y2="116" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5"/>
+      <line x1="78" y1="42" x2="78" y2="116" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5"/>
+    </svg>
+  );
+  if (archetype === "Devotee") return (
+    <svg viewBox="0 0 130 130" fill="none" style={s}>
+      <circle cx="65" cy="46" r="20" fill="rgba(255,255,255,0.22)"/>
+      <rect x="40" y="64" width="50" height="44" rx="12" fill="rgba(255,255,255,0.18)"/>
+      <path d="M10 74 Q20 66 30 74 Q20 82 10 74" fill="rgba(255,255,255,0.18)" transform="rotate(-15 20 74)"/>
+      <path d="M120 74 Q110 66 100 74 Q110 82 120 74" fill="rgba(255,255,255,0.18)" transform="rotate(15 110 74)"/>
+    </svg>
+  );
+  if (archetype === "Mirror") return (
+    <svg viewBox="0 0 130 130" fill="none" style={s}>
+      <ellipse cx="65" cy="46" rx="26" ry="36" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.3)" strokeWidth="2"/>
+      <rect x="58" y="82" width="14" height="30" rx="4" fill="rgba(255,255,255,0.18)"/>
+      <rect x="40" y="108" width="50" height="10" rx="5" fill="rgba(255,255,255,0.22)"/>
+    </svg>
+  );
+  if (archetype === "Spark") return (
+    <svg viewBox="0 0 130 130" fill="none" style={s}>
+      <circle cx="65" cy="65" r="26" fill="rgba(255,255,255,0.22)"/>
+      {([0,45,90,135,180,225,270,315] as number[]).map((deg) => {
+        const rad = (deg * Math.PI) / 180;
+        return <line key={deg} x1={65 + 30 * Math.cos(rad)} y1={65 + 30 * Math.sin(rad)} x2={65 + 52 * Math.cos(rad)} y2={65 + 52 * Math.sin(rad)} stroke="rgba(255,255,255,0.28)" strokeWidth="3" strokeLinecap="round"/>;
+      })}
+    </svg>
+  );
+  // Anchor
+  return (
+    <svg viewBox="0 0 130 130" fill="none" style={s}>
+      <circle cx="65" cy="32" r="14" fill="rgba(255,255,255,0.22)" stroke="rgba(255,255,255,0.3)" strokeWidth="2"/>
+      <line x1="65" y1="46" x2="65" y2="110" stroke="rgba(255,255,255,0.28)" strokeWidth="8" strokeLinecap="round"/>
+      <path d="M28 80 Q28 110 65 110 Q102 110 102 80" stroke="rgba(255,255,255,0.28)" strokeWidth="5" strokeLinecap="round" fill="none"/>
+      <line x1="38" y1="65" x2="92" y2="65" stroke="rgba(255,255,255,0.28)" strokeWidth="5" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+// ─── Landscape card preview ───────────────────────────────────────────────────
+
+const ATTR_LABELS = ["Intimacy", "Expressiveness", "Independence", "Devotion", "Openness"] as const;
+
+function LoveLandscapeCard({ result, attrValues }: { result: LoveResult; attrValues: number[] }) {
+  const archLen = result.archetype.length;
+  const fontSize = archLen <= 5 ? "42px" : archLen <= 6 ? "38px" : archLen <= 7 ? "34px" : archLen <= 8 ? "29px" : "25px";
+
+  return (
+    <div style={{
+      width: "540px", height: "283px", borderRadius: "16px", overflow: "hidden",
+      background: LOVE_GRADIENT,
+      boxShadow: "0 24px 64px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.06)",
+      display: "flex", position: "relative",
+    }}>
+      {/* Ghost character */}
+      <div style={{ position: "absolute", bottom: "-8px", left: "140px", width: "84px", height: "84px", opacity: 0.14 }}>
+        <LoveLandscapeGhost archetype={result.archetype}/>
+      </div>
+
+      {/* Left panel */}
+      <div style={{ width: "215px", flexShrink: 0, padding: "22px 20px 16px", display: "flex", flexDirection: "column", position: "relative", zIndex: 2 }}>
+        <p style={{ fontSize: "7px", fontWeight: 800, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.38)", marginBottom: "14px" }}>
+          Profyle · Love
+        </p>
+        <span style={{ fontSize: "8px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.72)", display: "block", marginBottom: "2px" }}>
+          {result.dimension}
+        </span>
+        <p style={{ fontSize: fontSize, fontWeight: 900, letterSpacing: "-0.05em", color: "white", lineHeight: 0.85, marginBottom: "10px", textTransform: "uppercase", whiteSpace: "nowrap" }}>
+          {result.archetype}
+        </p>
+        <p style={{ fontSize: "8px", fontWeight: 600, color: "rgba(255,255,255,0.72)", lineHeight: 1.5, fontStyle: "italic", flex: 1 }}>
+          &ldquo;{result.tagline}&rdquo;
+        </p>
+        <p style={{ fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(20,5,5,0.45)" }}>
+          profyle.one
+        </p>
+      </div>
+
+      {/* Divider */}
+      <div style={{ width: "1px", background: "rgba(255,255,255,0.12)", alignSelf: "stretch", flexShrink: 0 }}/>
+
+      {/* Right frosted panel */}
+      <div style={{
+        flex: 1, margin: "12px 12px 12px 0",
+        borderRadius: "10px",
+        background: "rgba(255,255,255,0.14)",
+        border: "1px solid rgba(255,255,255,0.22)",
+        padding: "14px 16px",
+        display: "flex", flexDirection: "column", gap: "7px",
+        position: "relative", zIndex: 2,
+      }}>
+        {/* Diamond attributes */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          {ATTR_LABELS.map((label, idx) => (
+            <div key={label} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <span style={{ fontSize: "6px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)", width: "82px", flexShrink: 0 }}>
+                {label}
+              </span>
+              <div style={{ display: "flex", gap: "3px" }}>
+                {[1,2,3,4,5].map((i) => (
+                  <div key={i} style={{
+                    width: "7px", height: "7px",
+                    background: i <= attrValues[idx] ? "rgba(255,255,255,0.92)" : "transparent",
+                    border: `1.5px solid ${i <= attrValues[idx] ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.28)"}`,
+                    borderRadius: "1px", transform: "rotate(45deg)",
+                    flexShrink: 0,
+                  }}/>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Adjectives */}
+        <div style={{ display: "flex", gap: "4px" }}>
+          {result.adjectives.map((adj) => (
+            <span key={adj} style={{
+              fontSize: "7px", fontWeight: 800, color: "white",
+              padding: "2px 7px", border: "1px solid rgba(255,255,255,0.3)",
+              borderRadius: "4px", background: "rgba(255,255,255,0.14)",
+            }}>
+              {adj}
+            </span>
+          ))}
+        </div>
+
+        {/* Blind spot */}
+        <p style={{
+          fontSize: "7.5px", fontWeight: 500, color: "rgba(255,255,255,0.65)",
+          lineHeight: 1.5, borderLeft: "2px solid rgba(255,255,255,0.25)",
+          paddingLeft: "8px", flex: 1, overflow: "hidden",
+        }}>
+          <strong style={{ color: "white", fontWeight: 800 }}>Blind spot — </strong>
+          {result.blindSpot}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── URL builder ──────────────────────────────────────────────────────────────
 
 function buildCardImageUrl(result: LoveResult): string {
   const base = typeof window !== "undefined" ? window.location.origin : "";
@@ -57,7 +238,7 @@ function buildCardImageUrl(result: LoveResult): string {
   return `${base}/api/love-card-image?${p}`;
 }
 
-const ATTR_LABELS = ["Intimacy", "Expressiveness", "Independence", "Devotion", "Openness"] as const;
+// ─── Layout helpers ───────────────────────────────────────────────────────────
 
 const dividerStyle: React.CSSProperties = {
   borderTop: `1.5px solid ${BURGUNDY_BORDER}`,
@@ -66,6 +247,8 @@ const dividerStyle: React.CSSProperties = {
 const sectionStyle: React.CSSProperties = {
   maxWidth: "760px", margin: "0 auto", padding: "0 24px",
 };
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function LoveResultsPage() {
   const router = useRouter();
@@ -187,25 +370,43 @@ export default function LoveResultsPage() {
 
       {/* ─── 1. HERO ─── */}
       <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "120px 24px 80px" }}>
-        <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: BURGUNDY, marginBottom: "20px", display: "block" }}>
+
+        <span
+          className="animate-fade-up"
+          style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: BURGUNDY, marginBottom: "20px", display: "block", animationDelay: "0ms" }}
+        >
           Your love type
         </span>
 
-        <div style={{ marginBottom: "28px" }}>
+        <div className="animate-scale-in" style={{ marginBottom: "28px", animationDelay: "80ms" }}>
           <CharacterForArchetype archetype={result.archetype} size={160}/>
         </div>
 
-        <p style={{ fontSize: "clamp(13px, 1.8vw, 16px)", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(139,34,82,0.7)", marginBottom: "8px" }}>
+        <p
+          className="animate-fade-up"
+          style={{ fontSize: "clamp(13px, 1.8vw, 16px)", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(139,34,82,0.7)", marginBottom: "8px", animationDelay: "160ms" }}
+        >
           {result.dimension}
         </p>
-        <h1 style={{ fontSize: "clamp(52px, 10vw, 88px)", fontWeight: 900, letterSpacing: "-0.04em", lineHeight: 1.0, color: "var(--ink)", marginBottom: "20px" }}>
+
+        <h1
+          className="animate-fade-up"
+          style={{ fontSize: "clamp(52px, 10vw, 88px)", fontWeight: 900, letterSpacing: "-0.04em", lineHeight: 1.0, color: "var(--ink)", marginBottom: "20px", animationDelay: "220ms" }}
+        >
           The {result.archetype}
         </h1>
-        <p style={{ fontSize: "clamp(16px, 2.2vw, 20px)", fontWeight: 500, color: "var(--muted)", fontStyle: "italic", marginBottom: "40px", maxWidth: "480px", lineHeight: 1.55 }}>
-          "{result.tagline}"
+
+        <p
+          className="animate-fade-up"
+          style={{ fontSize: "clamp(16px, 2.2vw, 20px)", fontWeight: 500, color: "var(--muted)", fontStyle: "italic", marginBottom: "40px", maxWidth: "480px", lineHeight: 1.55, animationDelay: "280ms" }}
+        >
+          &ldquo;{result.tagline}&rdquo;
         </p>
 
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center" }}>
+        <div
+          className="animate-fade-up"
+          style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center", animationDelay: "340ms" }}
+        >
           <a href="#share-card" style={{
             display: "inline-block", padding: "14px 36px", borderRadius: "12px",
             background: BURGUNDY, color: "white",
@@ -283,76 +484,10 @@ export default function LoveResultsPage() {
                 </button>
               </div>
             ) : (
-              /* Landscape: CSS-rendered preview */
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div style={{
-                  width: "540px", height: "283px", borderRadius: "16px", overflow: "hidden",
-                  background: "linear-gradient(110deg, #1A0505 0%, #4A0E0E 20%, #8B2020 45%, #C0402A 68%, #E8652A 85%, #F5A050 100%)",
-                  boxShadow: "0 24px 64px rgba(0,0,0,0.35)",
-                  display: "flex", position: "relative",
-                }}>
-                  {/* Left panel */}
-                  <div style={{ width: "215px", padding: "22px 20px 16px", display: "flex", flexDirection: "column", position: "relative", zIndex: 2 }}>
-                    <p style={{ fontSize: "7px", fontWeight: 800, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.38)", marginBottom: "14px" }}>
-                      Profyle · Love
-                    </p>
-                    <span style={{ fontSize: "8px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.72)", display: "block", marginBottom: "2px" }}>
-                      {result.dimension}
-                    </span>
-                    <p style={{ fontSize: "42px", fontWeight: 900, letterSpacing: "-0.05em", color: "white", lineHeight: 0.85, marginBottom: "10px", textTransform: "uppercase" }}>
-                      {result.archetype}
-                    </p>
-                    <p style={{ fontSize: "8px", fontWeight: 600, color: "rgba(255,255,255,0.72)", lineHeight: 1.5, fontStyle: "italic", flex: 1 }}>
-                      "{result.tagline}"
-                    </p>
-                    <p style={{ fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.28)" }}>
-                      profyle.one
-                    </p>
-                  </div>
-                  {/* Divider */}
-                  <div style={{ width: "1px", background: "rgba(255,255,255,0.12)", alignSelf: "stretch", flexShrink: 0 }}/>
-                  {/* Right panel */}
-                  <div style={{ flex: 1, padding: "18px 18px 14px", display: "flex", flexDirection: "column", gap: "8px", position: "relative", zIndex: 2 }}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                      {ATTR_LABELS.map((label, idx) => (
-                        <div key={label} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                          <span style={{ fontSize: "6px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)", width: "80px", flexShrink: 0 }}>
-                            {label}
-                          </span>
-                          <div style={{ display: "flex", gap: "3px" }}>
-                            {[1,2,3,4,5].map((i) => (
-                              <div key={i} style={{
-                                width: "7px", height: "7px",
-                                background: i <= attrValues[idx] ? "rgba(255,255,255,0.92)" : "transparent",
-                                border: `1.5px solid ${i <= attrValues[idx] ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.28)"}`,
-                                borderRadius: "1px", transform: "rotate(45deg)",
-                                flexShrink: 0,
-                              }}/>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ display: "flex", gap: "0px" }}>
-                      {result.adjectives.map((adj, i) => (
-                        <span key={adj} style={{
-                          fontSize: "7px", fontWeight: 800, color: "white",
-                          padding: "3px 8px", border: "1px solid rgba(255,255,255,0.3)",
-                          borderRadius: i === 0 ? "4px" : i === 1 ? "0" : "4px",
-                          background: "rgba(255,255,255,0.14)",
-                        }}>
-                          {adj}
-                        </span>
-                      ))}
-                    </div>
-                    <p style={{ fontSize: "7.5px", fontWeight: 500, color: "rgba(255,255,255,0.65)", lineHeight: 1.5, borderLeft: "2px solid rgba(255,255,255,0.25)", paddingLeft: "8px", flex: 1 }}>
-                      <strong style={{ color: "white", fontWeight: 800 }}>Blind spot — </strong>
-                      {result.blindSpot}
-                    </p>
-                  </div>
-                </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px" }}>
+                <LoveLandscapeCard result={result} attrValues={attrValues}/>
                 <p style={{ fontSize: "12px", color: "var(--faint)" }}>
-                  Landscape preview — save from Vertical format for full-quality PNG
+                  Landscape preview — save from Vertical for full-quality PNG
                 </p>
               </div>
             )}

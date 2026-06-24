@@ -388,8 +388,8 @@ function StoryCard({ result, cardRef }: { result: QuizResult; cardRef: React.Ref
       </div>
 
       {/* Footer — absolutely pinned so content overflow can never push it out */}
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, padding: "6px 20px 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ fontSize: "7px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.55)" }}>
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, padding: "6px 20px 14px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(to top, rgba(0,0,0,0.12) 0%, transparent 100%)" }}>
+        <span style={{ fontSize: "7px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.65)" }}>
           profyle.one
         </span>
       </div>
@@ -463,7 +463,7 @@ function LinkedInCard({ result, cardRef }: { result: QuizResult; cardRef: React.
         <p style={{ fontSize: "8px", fontWeight: 500, color: "rgba(255,255,255,0.82)", lineHeight: 1.55, flex: 1 }}>
           {result.tagline}
         </p>
-        <p style={{ fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.55)", marginTop: "auto" }}>
+        <p style={{ fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.65)", marginTop: "auto" }}>
           profyle.one
         </p>
       </div>
