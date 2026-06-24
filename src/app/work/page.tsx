@@ -173,7 +173,7 @@ export default function WorkPage() {
           <Link href="/" style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ink)", textDecoration: "none" }}>
             Profyle
           </Link>
-          <Link href="/quiz" style={{
+          <Link href="/work/quiz" style={{
             padding: "9px 20px", borderRadius: "8px",
             background: "var(--ink)", color: "white",
             fontSize: "13px", fontWeight: 700, letterSpacing: "0.01em", textDecoration: "none",
@@ -228,7 +228,7 @@ export default function WorkPage() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "14px" }}>
-            <Link href="/quiz" style={{
+            <Link href="/work/quiz" style={{
               display: "inline-block", padding: "16px 44px", borderRadius: "12px",
               background: "var(--ink)", color: "white",
               fontSize: "15px", fontWeight: 700, letterSpacing: "0.01em", textDecoration: "none",
@@ -332,7 +332,7 @@ export default function WorkPage() {
           }}>
             Stop guessing how you work.<br />Find out.
           </h2>
-          <Link href="/quiz" style={{
+          <Link href="/work/quiz" style={{
             display: "inline-block", padding: "18px 52px", borderRadius: "14px",
             background: "var(--ink)", color: "white",
             fontSize: "16px", fontWeight: 700, letterSpacing: "0.01em", textDecoration: "none",

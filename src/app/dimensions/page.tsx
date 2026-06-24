@@ -101,7 +101,7 @@ export default function DimensionsPage() {
         <p style={{ fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400, color: "var(--muted)", maxWidth: "540px", margin: "0 auto 40px", lineHeight: 1.6 }}>
           Your archetype tells you <em>what</em> you are. Your dimension tells you <em>how</em> you are it. The same archetype can show up in radically different ways depending on your dimension.
         </p>
-        <Link href="/quiz" style={{ display: "inline-block", padding: "14px 32px", borderRadius: "12px", background: "var(--ink)", color: "white", fontSize: "14px", fontWeight: 700, textDecoration: "none", letterSpacing: "0.01em" }}>
+        <Link href="/work/quiz" style={{ display: "inline-block", padding: "14px 32px", borderRadius: "12px", background: "var(--ink)", color: "white", fontSize: "14px", fontWeight: 700, textDecoration: "none", letterSpacing: "0.01em" }}>
           Find your dimension →
         </Link>
       </section>
@@ -186,7 +186,7 @@ export default function DimensionsPage() {
         <p style={{ fontSize: "18px", fontWeight: 600, color: "var(--ink)", marginBottom: "16px" }}>
           Curious which dimension is yours?
         </p>
-        <Link href="/quiz" style={{ display: "inline-block", padding: "14px 32px", borderRadius: "12px", background: "var(--ink)", color: "white", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
+        <Link href="/work/quiz" style={{ display: "inline-block", padding: "14px 32px", borderRadius: "12px", background: "var(--ink)", color: "white", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
           Take the quiz — 5 minutes
         </Link>
       </section>

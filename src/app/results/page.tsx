@@ -56,13 +56,13 @@ export default function ResultsPage() {
   useEffect(() => {
     const raw = sessionStorage.getItem("profyle_result");
     if (!raw) {
-      router.replace("/quiz");
+      router.replace("/work/quiz");
       return;
     }
     try {
       setResult(JSON.parse(raw));
     } catch {
-      router.replace("/quiz");
+      router.replace("/work/quiz");
     }
     setMounted(true);
   }, [router]);
@@ -847,7 +847,7 @@ export default function ResultsPage() {
               WhatsApp
             </button>
             <Link
-              href="/quiz"
+              href="/work/quiz"
               style={{
                 padding: "14px 28px", borderRadius: "12px",
                 background: "transparent", color: "var(--ink)",

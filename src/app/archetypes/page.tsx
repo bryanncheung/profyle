@@ -79,7 +79,7 @@ export default function ArchetypesPage() {
         <p style={{ fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400, color: "var(--muted)", maxWidth: "520px", margin: "0 auto 40px", lineHeight: 1.6 }}>
           Every person operates from one of five core archetypes. These aren&apos;t job titles or personality quirks — they describe how you fundamentally create value.
         </p>
-        <Link href="/quiz" style={{ display: "inline-block", padding: "14px 32px", borderRadius: "12px", background: "var(--ink)", color: "white", fontSize: "14px", fontWeight: 700, textDecoration: "none", letterSpacing: "0.01em" }}>
+        <Link href="/work/quiz" style={{ display: "inline-block", padding: "14px 32px", borderRadius: "12px", background: "var(--ink)", color: "white", fontSize: "14px", fontWeight: 700, textDecoration: "none", letterSpacing: "0.01em" }}>
           Find your archetype →
         </Link>
       </section>
@@ -178,7 +178,7 @@ export default function ArchetypesPage() {
         <p style={{ fontSize: "18px", fontWeight: 600, color: "var(--ink)", marginBottom: "16px" }}>
           Don&apos;t know yours yet?
         </p>
-        <Link href="/quiz" style={{ display: "inline-block", padding: "14px 32px", borderRadius: "12px", background: "var(--ink)", color: "white", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
+        <Link href="/work/quiz" style={{ display: "inline-block", padding: "14px 32px", borderRadius: "12px", background: "var(--ink)", color: "white", fontSize: "14px", fontWeight: 700, textDecoration: "none" }}>
           Take the quiz — 5 minutes
         </Link>
       </section>
