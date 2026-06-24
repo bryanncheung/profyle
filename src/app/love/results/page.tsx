@@ -19,7 +19,17 @@ import {
 const BURGUNDY        = "#8B2252";
 const BURGUNDY_LIGHT  = "#FDF0F5";
 const BURGUNDY_BORDER = "#F0C8D8";
-const LOVE_GRADIENT   = "linear-gradient(110deg, #1A0505 0%, #4A0E0E 20%, #8B2020 45%, #C0402A 68%, #E8652A 85%, #F5A050 100%)";
+
+const LOVE_GRADIENTS: Record<string, string> = {
+  Flame:     "linear-gradient(110deg, #1A0505 0%, #8B2020 35%, #E8652A 72%, #F5A050 100%)",
+  Harbour:   "linear-gradient(110deg, #051018 0%, #0A4A5A 35%, #1A8A8A 72%, #A0D8D0 100%)",
+  Wanderer:  "linear-gradient(110deg, #081208 0%, #1A5A2A 35%, #4A8A3A 72%, #A8C870 100%)",
+  Architect: "linear-gradient(110deg, #080A10 0%, #1A2040 35%, #3A4A7A 72%, #8A9AC0 100%)",
+  Devotee:   "linear-gradient(110deg, #180510 0%, #6A1040 35%, #C0405A 72%, #F0A0A8 100%)",
+  Mirror:    "linear-gradient(110deg, #080510 0%, #2A1050 35%, #6A40A0 72%, #C0A8E8 100%)",
+  Spark:     "linear-gradient(110deg, #080810 0%, #1A1A6A 35%, #4A3AB0 72%, #F0C830 100%)",
+  Anchor:    "linear-gradient(110deg, #100808 0%, #4A2010 35%, #9A5030 72%, #D8A878 100%)",
+};
 
 // ─── Character (hero) ─────────────────────────────────────────────────────────
 
@@ -121,7 +131,7 @@ function LoveLandscapeCard({ result, attrValues }: { result: LoveResult; attrVal
   return (
     <div style={{
       width: "540px", height: "283px", borderRadius: "16px", overflow: "hidden",
-      background: LOVE_GRADIENT,
+      background: LOVE_GRADIENTS[result.archetype] ?? LOVE_GRADIENTS.Flame,
       boxShadow: "0 24px 64px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.06)",
       display: "flex", position: "relative",
     }}>
@@ -144,7 +154,7 @@ function LoveLandscapeCard({ result, attrValues }: { result: LoveResult; attrVal
         <p style={{ fontSize: "8px", fontWeight: 600, color: "rgba(255,255,255,0.72)", lineHeight: 1.5, fontStyle: "italic", flex: 1 }}>
           &ldquo;{result.tagline}&rdquo;
         </p>
-        <p style={{ fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(20,5,5,0.45)" }}>
+        <p style={{ fontSize: "6.5px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.42)" }}>
           profyle.one
         </p>
       </div>

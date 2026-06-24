@@ -3,7 +3,16 @@ import type { NextRequest } from "next/server";
 
 export const runtime = "nodejs";
 
-const GRADIENT = "linear-gradient(135deg, #1A0505 0%, #4A0E0E 25%, #8B2020 50%, #C0402A 72%, #E8652A 88%, #F5A050 100%)";
+const LOVE_GRADIENTS: Record<string, string> = {
+  Flame:     "linear-gradient(135deg, #1A0505 0%, #8B2020 33%, #E8652A 70%, #F5A050 100%)",
+  Harbour:   "linear-gradient(135deg, #051018 0%, #0A4A5A 33%, #1A8A8A 70%, #A0D8D0 100%)",
+  Wanderer:  "linear-gradient(135deg, #081208 0%, #1A5A2A 33%, #4A8A3A 70%, #A8C870 100%)",
+  Architect: "linear-gradient(135deg, #080A10 0%, #1A2040 33%, #3A4A7A 70%, #8A9AC0 100%)",
+  Devotee:   "linear-gradient(135deg, #180510 0%, #6A1040 33%, #C0405A 70%, #F0A0A8 100%)",
+  Mirror:    "linear-gradient(135deg, #080510 0%, #2A1050 33%, #6A40A0 70%, #C0A8E8 100%)",
+  Spark:     "linear-gradient(135deg, #080810 0%, #1A1A6A 33%, #4A3AB0 70%, #F0C830 100%)",
+  Anchor:    "linear-gradient(135deg, #100808 0%, #4A2010 33%, #9A5030 70%, #D8A878 100%)",
+};
 const S = 3;
 const W = 270 * S;
 const H = 480 * S;
@@ -207,13 +216,15 @@ async function render(req: NextRequest) {
 
   const waveW = Math.max(36, Math.min(dimension.length * 7, 70));
 
+  const gradient = LOVE_GRADIENTS[archetype] ?? LOVE_GRADIENTS.Flame;
+
   return new ImageResponse(
     (
       <div style={{
         width: `${W}px`, height: `${H}px`,
         display: "flex", flexDirection: "column",
         fontFamily: "sans-serif",
-        backgroundImage: GRADIENT,
+        backgroundImage: gradient,
         position: "relative", overflow: "hidden",
       }}>
 
@@ -386,7 +397,7 @@ async function render(req: NextRequest) {
           padding: `${6*S}px ${20*S}px ${14*S}px`,
           display: "flex", alignItems: "center", justifyContent: "center",
         }}>
-          <span style={{ fontSize: `${7*S}px`, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(20,5,5,0.5)" }}>
+          <span style={{ fontSize: `${7*S}px`, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(0,0,0,0.42)" }}>
             profyle.one
           </span>
         </div>
