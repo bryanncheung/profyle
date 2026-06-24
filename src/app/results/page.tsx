@@ -538,7 +538,49 @@ export default function ResultsPage() {
 
       <div style={dividerStyle} />
 
-      {/* ─── 4. WHO YOU ARE ─── */}
+      {/* ─── 4. ATTRIBUTES ─── */}
+      <section style={{ padding: "64px 0" }}>
+        <div style={sectionStyle}>
+          <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "24px" }}>
+            Your attributes
+          </div>
+          <div ref={barsRef} style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "520px" }}>
+            {attrEntries.map(([key, val], idx) => {
+              const pct = (val / 5) * 100;
+              return (
+                <div key={key}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "7px" }}>
+                    <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--ink)" }}>{ATTRIBUTE_LABELS[key]}</span>
+                    <span style={{ fontSize: "12px", fontWeight: 600, color: theme.accent }}>{val}/5</span>
+                  </div>
+                  <div style={{ height: "6px", background: theme.pillBorder, borderRadius: "3px", overflow: "hidden" }}>
+                    <div style={{
+                      height: "100%", background: theme.accent, borderRadius: "3px",
+                      width: barsVisible ? `${pct}%` : "0%",
+                      transition: `width 800ms cubic-bezier(0.16,1,0.3,1) ${idx * 100}ms`,
+                    }}/>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ display: "flex", gap: "8px", marginTop: "28px", flexWrap: "wrap" }}>
+            {result.adjectives.map((adj) => (
+              <span key={adj} style={{
+                padding: "8px 18px", borderRadius: "99px",
+                background: theme.pillBg, border: `1.5px solid ${theme.pillBorder}`,
+                fontSize: "13px", fontWeight: 700, color: theme.accent,
+              }}>
+                {adj}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div style={dividerStyle} />
+
+      {/* ─── 5. WHO YOU ARE (DEEP DIVE) ─── */}
       <section id="deep-dive" style={{ padding: "64px 0" }}>
         <div style={sectionStyle}>
           <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "20px" }}>

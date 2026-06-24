@@ -574,23 +574,62 @@ export default function LoveResultsPage() {
       {/* ─── 3. RARITY ─── */}
       <section id="profile" style={{ padding: "64px 0" }}>
         <div style={sectionStyle}>
+          <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "16px" }}>
+            How rare is your type
+          </div>
           <div style={{ marginBottom: "32px" }}>
-            <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "16px" }}>
-              Rarity
-            </div>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 34px)", fontWeight: 900, letterSpacing: "-0.03em", color: "var(--ink)", lineHeight: 1.15 }}>
-              Only {permPct}% of people are {result.fullTitle}
-            </h2>
+            <p style={{ fontSize: "clamp(22px, 3.5vw, 30px)", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--ink)", lineHeight: 1.2, marginBottom: "8px" }}>
+              Only <span style={{ color: BURGUNDY }}>{permPct}%</span> of people are {result.fullTitle}.
+            </p>
+            <p style={{ fontSize: "15px", fontWeight: 400, color: "var(--muted)", lineHeight: 1.6 }}>
+              {archPct}% of people share your archetype. Your {result.dimension.toLowerCase()} dimension narrows that to a rare {permPct}%.
+            </p>
           </div>
 
-          {/* Attribute bars */}
-          <div ref={barsRef} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+          {/* Archetype comparison bars */}
+          {(() => {
+            const allArchetypes = ["Flame", "Devotee", "Harbour", "Spark", "Anchor", "Mirror", "Wanderer", "Architect"] as const;
+            const maxPct = 14;
+            return (
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "480px" }}>
+                {allArchetypes.map((a) => {
+                  const pct = LOVE_ARCHETYPE_POPULATION[a] ?? 12;
+                  const isYours = a === result.archetype;
+                  return (
+                    <div key={a} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <span style={{ fontSize: "12px", fontWeight: isYours ? 700 : 500, color: isYours ? "var(--ink)" : "var(--muted)", width: "80px", flexShrink: 0 }}>
+                        {a}
+                      </span>
+                      <div style={{ flex: 1, height: "8px", borderRadius: "4px", background: "var(--border)", overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${(pct / maxPct) * 100}%`, borderRadius: "4px", background: isYours ? BURGUNDY : "var(--border)", transition: "width 800ms ease" }}/>
+                      </div>
+                      <span style={{ fontSize: "12px", fontWeight: isYours ? 700 : 400, color: isYours ? BURGUNDY : "var(--faint)", width: "36px", textAlign: "right" }}>
+                        {pct}%
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
+        </div>
+      </section>
+
+      <div style={dividerStyle}/>
+
+      {/* ─── 4. ATTRIBUTES ─── */}
+      <section style={{ padding: "64px 0" }}>
+        <div style={sectionStyle}>
+          <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "24px" }}>
+            Your attributes
+          </div>
+          <div ref={barsRef} style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "520px" }}>
             {ATTR_LABELS.map((label, idx) => {
               const val = attrValues[idx];
               const pctBar = (val / 5) * 100;
               return (
                 <div key={label}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "6px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "7px" }}>
                     <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--ink)" }}>{label}</span>
                     <span style={{ fontSize: "12px", fontWeight: 600, color: BURGUNDY }}>{val}/5</span>
                   </div>
@@ -605,8 +644,6 @@ export default function LoveResultsPage() {
               );
             })}
           </div>
-
-          {/* Adjective badges */}
           <div style={{ display: "flex", gap: "8px", marginTop: "28px", flexWrap: "wrap" }}>
             {result.adjectives.map((adj) => (
               <span key={adj} style={{
@@ -623,7 +660,7 @@ export default function LoveResultsPage() {
 
       <div style={dividerStyle}/>
 
-      {/* ─── 4. WHO YOU ARE ─── */}
+      {/* ─── 5. WHO YOU ARE ─── */}
       <section style={{ padding: "64px 0" }}>
         <div style={sectionStyle}>
           <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--faint)", marginBottom: "16px" }}>

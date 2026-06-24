@@ -12,6 +12,9 @@ export const questions: Question[] = [
       C: "Identify the exact blocker and fix it yourself",
       D: "Find who's best placed to solve it and remove their obstacles",
     },
+    format: "binary",
+    binaryLeft: "A",
+    binaryRight: "C",
   },
   {
     id: 2,
@@ -24,6 +27,7 @@ export const questions: Question[] = [
       C: "Steady",
       D: "Electric",
     },
+    format: "pill",
   },
   {
     id: 3,
@@ -36,6 +40,9 @@ export const questions: Question[] = [
       C: "Getting the whole team aligned on the idea",
       D: "Finding a faster way to execute the idea",
     },
+    format: "binary",
+    binaryLeft: "A",
+    binaryRight: "B",
   },
   {
     id: 4,
@@ -48,6 +55,7 @@ export const questions: Question[] = [
       C: "Makes everyone around them better",
       D: "Changes the energy of a room just by being in it",
     },
+    format: "pill",
   },
   {
     id: 5,
@@ -60,6 +68,7 @@ export const questions: Question[] = [
       C: "Focus — what's the fastest path to something concrete",
       D: "Strategy — who should I bring in to make this great",
     },
+    format: "bare",
   },
   {
     id: 6,
@@ -72,6 +81,7 @@ export const questions: Question[] = [
       C: "Out front, setting the pace, pulling people with you",
       D: "The calmest person in a chaotic situation",
     },
+    format: "slider",
   },
   {
     id: 7,
@@ -84,6 +94,9 @@ export const questions: Question[] = [
       C: "Systems",
       D: "People",
     },
+    format: "binary",
+    binaryLeft: "A",
+    binaryRight: "C",
   },
   {
     id: 8,
@@ -96,6 +109,7 @@ export const questions: Question[] = [
       C: '"They make you want to work harder just by being around"',
       D: '"Nothing seems to shake them"',
     },
+    format: "bare",
   },
   {
     id: 9,
@@ -108,6 +122,7 @@ export const questions: Question[] = [
       C: "Break it into steps and start on the first one immediately",
       D: "Map out who owns what and make sure everyone's unblocked",
     },
+    format: "pill",
   },
   {
     id: 10,
@@ -120,6 +135,9 @@ export const questions: Question[] = [
       C: "Gather people and address it head on",
       D: "Stay calm and be the stability others need",
     },
+    format: "binary",
+    binaryLeft: "A",
+    binaryRight: "D",
   },
   {
     id: 11,
@@ -132,6 +150,7 @@ export const questions: Question[] = [
       C: "The one connecting everyone, keeping culture alive",
       D: "The one in the market, understanding what people actually need",
     },
+    format: "bare",
   },
   {
     id: 12,
@@ -144,6 +163,7 @@ export const questions: Question[] = [
       C: "Loud and energising",
       D: "Calm and unshakeable",
     },
+    format: "slider",
   },
   {
     id: 13,
@@ -156,6 +176,7 @@ export const questions: Question[] = [
       C: "Making sure everyone is aligned and nobody is lost",
       D: "Challenging assumptions and pushing the team to think differently",
     },
+    format: "bare",
   },
   {
     id: 14,
@@ -168,6 +189,9 @@ export const questions: Question[] = [
       C: "Inject energy and reframe the situation positively",
       D: "Slow things down and bring the room back to earth",
     },
+    format: "binary",
+    binaryLeft: "A",
+    binaryRight: "D",
   },
   {
     id: 15,
@@ -180,6 +204,7 @@ export const questions: Question[] = [
       C: "Collaborating, energy bouncing between you and others",
       D: "Running a tight process, watching everything come together",
     },
+    format: "slider",
   },
   {
     id: 16,
@@ -192,6 +217,7 @@ export const questions: Question[] = [
       C: '"You just have this energy that pulls people in"',
       D: '"You never panic. Ever."',
     },
+    format: "bare",
   },
   {
     id: 17,
@@ -204,6 +230,7 @@ export const questions: Question[] = [
       C: "Find the fastest way to course correct within existing constraints",
       D: "Quietly work around it and deliver results that speak for themselves",
     },
+    format: "pill",
   },
   {
     id: 18,
@@ -216,6 +243,7 @@ export const questions: Question[] = [
       C: "People focused, mission driven, impact over profit",
       D: "Analytical, rigorous, high standards and high stakes",
     },
+    format: "pill",
   },
   {
     id: 19,
@@ -228,6 +256,7 @@ export const questions: Question[] = [
       C: "Led a team that genuinely loves working together",
       D: "Solved a problem that actually matters at scale",
     },
+    format: "bare",
   },
   {
     id: 20,
@@ -240,5 +269,8 @@ export const questions: Question[] = [
       C: "You brought people together and the energy was electric",
       D: "You were the rock — steady, reliable, exactly what was needed",
     },
+    format: "binary",
+    binaryLeft: "A",
+    binaryRight: "D",
   },
 ];

@@ -2,12 +2,17 @@ export type AnswerOption = "A" | "B" | "C" | "D";
 
 export type QuestionTag = "A" | "P" | "I";
 
+export type QuestionFormat = "standard" | "binary" | "pill" | "bare" | "slider";
+
 export interface Question {
   id: number;
   tag: QuestionTag;
   type: string;
   text: string;
   options: Record<AnswerOption, string>;
+  format?: QuestionFormat;
+  binaryLeft?: AnswerOption;
+  binaryRight?: AnswerOption;
 }
 
 export type Archetype = "Builder" | "Disruptor" | "Anchor" | "Catalyst" | "Sovereign";
