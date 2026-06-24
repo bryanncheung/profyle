@@ -253,6 +253,7 @@ export default function LoveQuizPage() {
   const [answers, setAnswers] = useState<Record<number, LoveAnswer>>({});
   const [visible, setVisible] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [missingIds, setMissingIds] = useState<number[]>([]);
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const shuffledQuestions = useMemo(() => {
@@ -280,19 +281,66 @@ export default function LoveQuizPage() {
     setTimeout(() => { fn(); setVisible(true); }, 200);
   }, []);
 
-  const advance = useCallback(() => {
-    if (!isLast) transition(() => setCurrent((c) => c + 1));
-  }, [isLast, transition]);
+  const submitWith = useCallback(async (finalAnswers: Record<number, LoveAnswer>) => {
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/love-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers: finalAnswers }),
+      });
+      const data = await res.json();
+      sessionStorage.setItem("profyle_love_result", JSON.stringify(data.result));
+      router.push("/love/results");
+    } catch {
+      setSubmitting(false);
+    }
+  }, [router]);
 
   const handleAnswer = useCallback((answer: LoveAnswer) => {
-    setAnswers((prev) => ({ ...prev, [question.id]: answer }));
-    if (autoAdvance && !isLast) {
+    const newAnswers = { ...answers, [question.id]: answer };
+    setAnswers(newAnswers);
+
+    const allIds = shuffledQuestions.map((q) => q.id);
+    const missing = allIds.filter((id) => !newAnswers[id]);
+
+    if (missing.length === 0) {
+      setMissingIds([]);
+      const delay = isBinary ? 800 : 600;
+      setTimeout(() => submitWith(newAnswers), delay);
+      return;
+    }
+
+    if (isLast) {
+      setMissingIds(missing);
+      return;
+    }
+
+    if (autoAdvance) {
       const delay = isBinary ? 800 : 600;
       autoAdvanceRef.current = setTimeout(() => {
         transition(() => setCurrent((c) => c + 1));
       }, delay);
     }
-  }, [question.id, autoAdvance, isBinary, isLast, transition]);
+  }, [answers, question.id, autoAdvance, isBinary, isLast, transition, shuffledQuestions, submitWith]);
+
+  const advance = useCallback(() => {
+    const allIds = shuffledQuestions.map((q) => q.id);
+    const missing = allIds.filter((id) => !answers[id]);
+
+    if (missing.length === 0) {
+      setMissingIds([]);
+      submitWith(answers);
+      return;
+    }
+
+    if (isLast) {
+      setMissingIds(missing);
+      return;
+    }
+
+    transition(() => setCurrent((c) => c + 1));
+  }, [isLast, transition, shuffledQuestions, answers, submitWith]);
 
   // Clear auto-advance timers on unmount
   useEffect(() => () => { if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current); }, []);
@@ -304,21 +352,6 @@ export default function LoveQuizPage() {
     }
   }, [question.id, isSlider, answers]);
 
-  const handleSubmit = useCallback(async () => {
-    setSubmitting(true);
-    try {
-      const res = await fetch("/api/love-submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers }),
-      });
-      const data = await res.json();
-      sessionStorage.setItem("profyle_love_result", JSON.stringify(data.result));
-      router.push("/love/results");
-    } catch {
-      setSubmitting(false);
-    }
-  }, [answers, router]);
 
   const bg = bgColor(progress);
 
@@ -395,23 +428,30 @@ export default function LoveQuizPage() {
             {isPill   && <PillQuestion   question={question} answer={currentAnswer} onAnswer={handleAnswer}/>}
             {isSlider && <SliderQuestion question={question} answer={currentAnswer} onAnswer={handleAnswer}/>}
 
-            {/* Next / Submit */}
-            {needsNext && (
+            {/* Next button for slider/pill (not last question) */}
+            {needsNext && !isLast && (
               <div style={{ marginTop: "36px" }}>
-                {isLast ? (
-                  <button
-                    onClick={handleSubmit}
-                    disabled={submitting}
-                    style={{
-                      width: "100%", padding: "16px", borderRadius: "12px",
-                      background: submitting ? "var(--muted)" : BURGUNDY,
-                      color: "white", fontSize: "15px", fontWeight: 700,
-                      border: "none", cursor: submitting ? "default" : "pointer",
-                      fontFamily: "inherit",
-                    }}
-                  >
-                    {submitting ? "Discovering your type…" : "See how I love →"}
-                  </button>
+                <button
+                  onClick={advance}
+                  style={{
+                    padding: "14px 36px", borderRadius: "12px",
+                    background: BURGUNDY, color: "white",
+                    fontSize: "14px", fontWeight: 700,
+                    border: "none", cursor: "pointer", fontFamily: "inherit",
+                  }}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+
+            {/* Last question: trigger auto-submit on Next, or show missing prompt */}
+            {needsNext && isLast && (
+              <div style={{ marginTop: "36px" }}>
+                {missingIds.length > 0 ? (
+                  <p style={{ fontSize: "13px", fontWeight: 600, color: "#E82B2B" }}>
+                    {missingIds.length} question{missingIds.length > 1 ? "s" : ""} still unanswered — tap the red dots below
+                  </p>
                 ) : (
                   <button
                     onClick={advance}
@@ -428,23 +468,11 @@ export default function LoveQuizPage() {
               </div>
             )}
 
-            {/* Auto-advance questions: show submit on last question */}
-            {autoAdvance && isLast && currentAnswer && (
-              <div style={{ marginTop: "36px" }}>
-                <button
-                  onClick={handleSubmit}
-                  disabled={submitting}
-                  style={{
-                    width: "100%", padding: "16px", borderRadius: "12px",
-                    background: submitting ? "var(--muted)" : BURGUNDY,
-                    color: "white", fontSize: "15px", fontWeight: 700,
-                    border: "none", cursor: submitting ? "default" : "pointer",
-                    fontFamily: "inherit",
-                  }}
-                >
-                  {submitting ? "Discovering your type…" : "See how I love →"}
-                </button>
-              </div>
+            {/* Auto-advance last question: show missing prompt if any */}
+            {autoAdvance && isLast && missingIds.length > 0 && (
+              <p style={{ marginTop: "24px", fontSize: "13px", fontWeight: 600, color: "#E82B2B" }}>
+                {missingIds.length} question{missingIds.length > 1 ? "s" : ""} still unanswered — tap the red dots below
+              </p>
             )}
           </div>
         </div>
@@ -463,15 +491,26 @@ export default function LoveQuizPage() {
             {shuffledQuestions.map((q, idx) => {
               const isAnswered = !!answers[q.id];
               const isCurrent  = idx === current;
+              const isMissing  = missingIds.includes(q.id);
               return (
                 <div
                   key={q.id}
-                  onClick={() => { if (!isBinary) { transition(() => setCurrent(idx)); } }}
+                  onClick={() => { if (!isBinary) { setMissingIds([]); transition(() => setCurrent(idx)); } }}
                   title={`Question ${idx + 1}`}
                   style={{
                     width: "24px", height: "24px", borderRadius: "6px",
-                    border: isCurrent ? `2px solid ${BURGUNDY}` : "2px solid transparent",
-                    background: isCurrent ? BURGUNDY : isAnswered ? "rgba(139,34,82,0.35)" : "rgba(0,0,0,0.1)",
+                    border: isCurrent
+                      ? `2px solid ${BURGUNDY}`
+                      : isMissing
+                      ? "2px solid #E82B2B"
+                      : "2px solid transparent",
+                    background: isCurrent
+                      ? BURGUNDY
+                      : isMissing
+                      ? "#FEF4F4"
+                      : isAnswered
+                      ? "rgba(139,34,82,0.35)"
+                      : "rgba(0,0,0,0.1)",
                     color: isCurrent ? "white" : "transparent",
                     fontSize: "9px", fontWeight: 700,
                     display: "flex", alignItems: "center", justifyContent: "center",
@@ -482,6 +521,19 @@ export default function LoveQuizPage() {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* Submitting overlay */}
+      {submitting && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 100,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: bg,
+        }}>
+          <p style={{ fontSize: "17px", fontWeight: 700, color: "var(--ink)", letterSpacing: "0.01em" }}>
+            Discovering your type…
+          </p>
         </div>
       )}
     </div>

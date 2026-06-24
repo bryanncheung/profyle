@@ -64,48 +64,47 @@ export default function QuizPage() {
     (option: AnswerOption) => {
       const newAnswers = { ...answers, [question.id]: option };
       setAnswers(newAnswers);
-      if (isLast) return;
+
+      const allIds = shuffled.map((q) => q.id);
+      const missing = allIds.filter((id) => !newAnswers[id]);
+
+      if (missing.length === 0) {
+        setMissingIds([]);
+        setTimeout(async () => {
+          setSubmitting(true);
+          try {
+            const res = await fetch("/api/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ answers: newAnswers }),
+            });
+            if (!res.ok) throw new Error("Error");
+            const data = await res.json();
+            sessionStorage.setItem("profyle_result", JSON.stringify(data.result));
+            router.push("/results");
+          } catch {
+            setSubmitting(false);
+          }
+        }, 380);
+        return;
+      }
+
+      if (isLast) {
+        setMissingIds(missing);
+        return;
+      }
+
       setTimeout(() => {
         transition(() => setCurrent((c) => c + 1));
       }, 220);
     },
-    [answers, question.id, isLast, transition]
+    [answers, question.id, isLast, shuffled, router, transition]
   );
 
   const jumpTo = useCallback((idx: number) => {
+    setMissingIds([]);
     transition(() => setCurrent(idx));
   }, [transition]);
-
-  const handleSubmit = useCallback(async () => {
-    const allIds = shuffled.map((q) => q.id);
-    const missing = allIds.filter((id) => !answers[id]);
-    if (missing.length > 0) {
-      setMissingIds(missing);
-      return;
-    }
-    setMissingIds([]);
-    setSubmitting(true);
-
-    try {
-      const res = await fetch("/api/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Something went wrong");
-      }
-
-      const data = await res.json();
-      sessionStorage.setItem("profyle_result", JSON.stringify(data.result));
-      router.push("/results");
-    } catch {
-      setSubmitting(false);
-      setMissingIds([]);
-    }
-  }, [answers, shuffled, router]);
 
   return (
     <div style={{
@@ -408,53 +407,11 @@ export default function QuizPage() {
             </div>
           )}
 
-          {/* Submit on last question */}
-          {isLast && selectedAnswer && (
-            <div style={{ marginTop: "28px" }}>
-              {missingIds.length > 0 && (
-                <div style={{ marginBottom: "16px" }}>
-                  <p style={{ fontSize: "14px", fontWeight: 600, color: "#E82B2B", marginBottom: "10px" }}>
-                    You skipped {missingIds.length} question{missingIds.length > 1 ? "s" : ""}:
-                  </p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                    {missingIds.map((id) => {
-                      const idx = shuffled.findIndex((q) => q.id === id);
-                      return (
-                        <button
-                          key={id}
-                          onClick={() => jumpTo(idx)}
-                          style={{
-                            padding: "6px 14px", borderRadius: "8px",
-                            background: "#FEF4F4", border: "1.5px solid #F5BABA",
-                            fontSize: "13px", fontWeight: 700, color: "#E82B2B",
-                            cursor: "pointer", fontFamily: "inherit",
-                          }}
-                        >
-                          Q{idx + 1}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-              <button
-                onClick={handleSubmit}
-                disabled={submitting}
-                style={{
-                  width: "100%", padding: "16px", borderRadius: "12px",
-                  background: submitting
-                    ? (isDark ? "rgba(255,255,255,0.25)" : "var(--muted)")
-                    : (isDark ? "rgba(255,255,255,0.90)" : "var(--ink)"),
-                  color: isDark ? "#1A0A2E" : "white",
-                  fontSize: "15px", fontWeight: 700,
-                  letterSpacing: "0.01em", border: "none",
-                  cursor: submitting ? "default" : "pointer",
-                  fontFamily: "inherit", transition: "background 180ms ease",
-                }}
-              >
-                {submitting ? "Revealing your type..." : "See my result →"}
-              </button>
-            </div>
+          {/* Missing questions reminder (shown when last question is answered but others remain) */}
+          {isLast && missingIds.length > 0 && (
+            <p style={{ marginTop: "24px", fontSize: "13px", fontWeight: 600, color: "#E82B2B", textAlign: "center" }}>
+              {missingIds.length} question{missingIds.length > 1 ? "s" : ""} still unanswered — tap the red dots below
+            </p>
           )}
         </div>
       </div>
@@ -511,6 +468,19 @@ export default function QuizPage() {
           })}
         </div>
       </div>
+
+      {/* Submitting overlay */}
+      {submitting && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 100,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          backgroundColor: bgColor, transition: "background-color 700ms ease",
+        }}>
+          <p style={{ fontSize: "17px", fontWeight: 700, color: inkColor, letterSpacing: "0.01em" }}>
+            Revealing your type…
+          </p>
+        </div>
+      )}
 
     </div>
   );
