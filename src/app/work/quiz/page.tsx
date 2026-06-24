@@ -32,25 +32,26 @@ export default function QuizPage() {
   const isLast = current === shuffled.length - 1;
   const selectedAnswer = answers[question.id];
 
-  // Background: warm white → deep violet
-  const bgR = Math.round(250 - 232 * p);
-  const bgG = Math.round(249 - 243 * p);
-  const bgB = Math.round(246 - 202 * p);
+  // Work signature violet: #6B3FD0 = rgb(107, 63, 208)
+  // Background: warm white → work violet
+  const bgR = Math.round(250 - 143 * p);  // 250 → 107
+  const bgG = Math.round(249 - 186 * p);  // 249 → 63
+  const bgB = Math.round(246 - 38 * p);   // 246 → 208
   const bgColor = `rgb(${bgR},${bgG},${bgB})`;
 
-  // Switch text/UI to light theme when bg is dark enough
-  const isDark = p >= 0.45;
+  // Switch to light text only in the last ~3 questions when bg is dark violet
+  const isDark = p >= 0.82;
 
-  const inkColor = isDark ? "rgba(245,243,238,0.92)" : "#0E0E0E";
-  const faintColor = isDark ? "rgba(245,243,238,0.45)" : "rgba(14,14,14,0.45)";
-  const optBg = isDark ? "rgba(255,255,255,0.09)" : "#F0EDEA";
-  const optBorder = isDark ? "rgba(255,255,255,0.15)" : "#E8E4DC";
-  const optSelBg = isDark ? "rgba(255,255,255,0.20)" : "#0E0E0E";
-  const optSelBorder = isDark ? "rgba(255,255,255,0.65)" : "#0E0E0E";
-  const optSelText = isDark ? "rgba(255,255,255,0.95)" : "white";
-  const optNormText = isDark ? "rgba(245,243,238,0.85)" : "var(--ink)";
-  const progressFill = isDark ? "rgba(255,255,255,0.85)" : "#0E0E0E";
-  const progressTrack = isDark ? "rgba(255,255,255,0.15)" : "var(--border)";
+  const inkColor = isDark ? "rgba(255,255,255,0.92)" : "#0E0E0E";
+  const faintColor = isDark ? "rgba(255,255,255,0.45)" : "rgba(14,14,14,0.45)";
+  const optBg = isDark ? "rgba(255,255,255,0.12)" : "#F0EDEA";
+  const optBorder = isDark ? "rgba(255,255,255,0.20)" : "#E8E4DC";
+  const optSelBg = isDark ? "rgba(255,255,255,0.22)" : "#6B3FD0";
+  const optSelBorder = isDark ? "rgba(255,255,255,0.70)" : "#6B3FD0";
+  const optSelText = "white";
+  const optNormText = isDark ? "rgba(255,255,255,0.80)" : "var(--ink)";
+  const progressFill = isDark ? "rgba(255,255,255,0.85)" : "#6B3FD0";
+  const progressTrack = isDark ? "rgba(255,255,255,0.18)" : "var(--border)";
 
   const transition = useCallback((fn: () => void) => {
     setVisible(false);
@@ -439,19 +440,19 @@ export default function QuizPage() {
                   width: "28px", height: "28px",
                   borderRadius: "8px",
                   border: isCurrent
-                    ? `2px solid ${isDark ? "rgba(255,255,255,0.85)" : "var(--ink)"}`
+                    ? `2px solid ${isDark ? "rgba(255,255,255,0.85)" : "#6B3FD0"}`
                     : isMissing
                     ? "2px solid #E82B2B"
                     : "2px solid transparent",
                   background: isCurrent
-                    ? (isDark ? "rgba(255,255,255,0.85)" : "var(--ink)")
+                    ? (isDark ? "rgba(255,255,255,0.85)" : "#6B3FD0")
                     : isAnswered
-                    ? (isDark ? "rgba(255,255,255,0.40)" : "#BEBBB5")
+                    ? (isDark ? "rgba(255,255,255,0.40)" : "rgba(107,63,208,0.35)")
                     : (isDark ? "rgba(255,255,255,0.12)" : "var(--border)"),
                   color: isCurrent
-                    ? (isDark ? "#1A0A2E" : "white")
+                    ? "white"
                     : isAnswered
-                    ? (isDark ? "rgba(255,255,255,0.9)" : "white")
+                    ? "white"
                     : faintColor,
                   fontSize: "10px",
                   fontWeight: 700,
